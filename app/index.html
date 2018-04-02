@@ -1,0 +1,2071 @@
+<apex:page sidebar="false" showQuickActionVfHeader="false" controller="CRM_R1_commomInterfaceforServices">
+
+  <html>
+
+  <head>
+    <title>CSAT_FormSender</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    </meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    </meta>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.min.css" rel="stylesheet"></link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-chosen-localytics/1.8.0/angular-chosen.min.js"></script>
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.min.css" rel="stylesheet"></link>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-chosen-localytics/1.8.0/angular-chosen.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.1/jszip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.1/xlsx.js"></script>
+    <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.js"></script>
+    <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />-->
+    <script src="app.js"></script>
+  </head>
+  <style>
+    body {
+      background-color: transparent;
+    }
+
+    *:focus {
+      outline: none;
+    }
+
+    *,
+    body,
+    td,
+    div,
+    span,
+    input,
+    select,
+    button,
+    textarea {
+      font-family: "Salesforce Sans", Arial, sans-serif;
+    }
+
+    html,
+    body {
+      font-family: 'Salesforce Sans', Arial, sans-serif !important;
+    }
+
+    .table-cxo {
+      font-size: 12px;
+      color: rgb(84, 105, 141);
+      border: 1px solid #eee;
+    }
+
+    .table-cxo tbody tr td,
+    .table-cxo thead tr th {
+      border: 1px solid #c4d6ef8f;
+      color: rgb(84, 105, 141);
+    }
+
+    .glyphicon-pencil {
+      cursor: pointer;
+    }
+
+    .table-cxo thead tr th {
+      text-transform: uppercase;
+      vertical-align: middle;
+      text-align: center;
+      font-weight: normal;
+      white-space: normal;
+      font-size: 11px;
+      padding: 3px 5px;
+      height: 24px;
+    }
+
+    .table-cxo tbody tr td {
+      text-transform: uppercase;
+      vertical-align: middle;
+      text-align: center;
+      font-weight: normal;
+      white-space: normal;
+      font-size: 14px;
+      padding: 5px;
+    }
+
+    .table-cxo>tbody>tr>td.align-top {
+      vertical-align: top;
+    }
+
+    .table-cxo>tbody>tr>td.align-bottom {
+      vertical-align: middle;
+    }
+
+    .table-cxo>tbody>tr>td>span.icon-down {
+      color: red;
+      font-size: 10px;
+    }
+
+    .table-cxo .popover-content textarea {
+      border: none;
+    }
+
+    .table-cxo>tbody>tr>td>span i {
+      padding-top: 4px;
+    }
+
+    .table-cxo>tbody>tr>td>span.icon-up {
+      color: green;
+      font-size: 10px;
+    }
+
+    .table-cxo thead tr th.accnt-det {
+      width: 9%;
+      text-align: left;
+    }
+
+    .table-cxo thead tr th.accnt-name {
+      width: 13%;
+      text-align: left;
+    }
+
+    td div.txt-ellipsis {
+      width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+      float: left;
+    }
+
+    td div.txt-ellipsis a {
+      padding-bottom: 0px;
+      padding-top: 0px;
+    }
+
+    td div.auth-left {
+      width: calc( 100% - 15px);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      position: relative;
+    }
+
+    .icon-middle {
+      color: #ffc266;
+      font-size: 10px;
+    }
+
+    .bg-pink {
+      background-color: #fff6f9;
+    }
+
+    .bg-gray {
+      background-color: #f6f7fb;
+    }
+
+    .bg-orange {
+      background-color: #fff8f0;
+    }
+
+    .bg-darkyellow {
+      background-color: #fdfbef;
+    }
+
+    .glyphicon.glyphicon-menu-right {
+      margin-left: -3px;
+    }
+
+    .glyphicon.pull-right {
+      /* float: right!important;
+                    position: absolute;
+                    width: 16px;
+                    right: 0px; 
+                    height: 22px;*/
+      margin-top: -22px;
+    }
+
+    table>tbody>tr>td.text-danger {
+      color: #dc110f !important;
+      font-weight: bold;
+    }
+
+    table>tbody>tr>td.text-success {
+      color: #009002 !important;
+      font-weight: bold;
+    }
+
+    .bgLightBlue {
+      /*background: rgba(168, 209, 255, 0.52);*/
+      background: rgb(237, 246, 249);
+    }
+
+
+    table.table-cxo>tbody>tr.subtotal>td {
+      background: #dceefd;
+    }
+
+    .custom-row {
+      padding: 10px 0 0 0;
+      margin-right: -15px;
+    }
+
+    .modal-submitsec {
+      padding-left: 60px;
+    }
+
+    .date-picker-cxo {
+      width: 125px;
+      height: 28px;
+      padding: 2px 4px;
+      float: left;
+      /*margin-right: 5px;*/
+      font-size: 12px;
+      /* margin-left: 5px;*/
+      height: 25px;
+      text-align: center;
+      margin-top: 1px;
+    }
+
+    .modal-contentsec textarea {
+      width: 100%;
+    }
+
+    .modal-contentsec {
+      padding: 12px 12px 15px 12px;
+      background: #fff;
+      margin-top: 25%;
+    }
+
+    .submit-btn {
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      background: #29689f;
+      border-color: rgb(0, 112, 210);
+      color: #fff !important;
+      border: none;
+      border-radius: 6px;
+      width: 75px;
+      height: 30px;
+    }
+
+    .include-btn {
+      color: rgb(0, 112, 210);
+      border-radius: 0;
+      font-size: 12px;
+      padding: 0px 5px;
+      text-align: center;
+      vertical-align: middle;
+      background: #29689f !important;
+      color: #fff !important;
+      border: none;
+      border-radius: 6px;
+      height: 25px;
+      margin-left: 0;
+    }
+
+    button.save-btn {
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      background: none;
+      background-color: #29689f;
+      border-color: #0070d2;
+      color: #fff !important;
+      border: 1px solid #0070d2;
+      border-radius: 6px; //padding-top: 2px;
+      height: auto;
+    }
+
+    .cancel-btn {
+      padding-top: 2px;
+      padding-bottom: 3px;
+      padding-left: 7px;
+      padding-right: 7px;
+
+    }
+
+    .cancel-option {
+      padding: 6px 10px !important;
+    }
+
+    button.cancel-btn,
+    input.cancel-btn {
+      padding: 3px 8px;
+      font-size: 12px;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      background: rgb(255, 255, 255);
+      color: rgb(0, 95, 178);
+      border: 1px solid rgb(216, 221, 230);
+      border-radius: 7px;
+    }
+
+    .custom-input {
+      max-width: 100%;
+      padding: 0 2px;
+      font-size: 11px;
+      margin: 2px 0;
+      height: 18px;
+      color: rgb(84, 105, 141) !important;
+    }
+
+    .Account-pickList {
+      width: 200px;
+      margin-right: 25px;
+      float: left;
+      height: 28px;
+      padding: 3px 12px;
+      font-size: 12px;
+      height: 25px;
+      visibility: hidden;
+    }
+
+    table.table-cxo.table {
+      margin-left: 0;
+      /*table-layout: fixed;*/
+    }
+
+    .table {
+      width: 100% !important;
+    }
+
+    input.custom-input.amount-field {
+      text-align: left;
+    }
+
+    .loder-div {
+      background: rgb(244, 246, 249);
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      opacity: 0.9;
+      z-index: 555;
+    }
+
+    .loader {
+      color: rgba(0, 112, 210, 0.7);
+      font-size: 10px;
+      margin: 0 auto;
+      width: 1em;
+      height: 1em;
+      border-radius: 50%;
+      position: fixed;
+      text-indent: -9999em;
+      -webkit-animation: load4 1.3s infinite linear;
+      animation: load4 1.3s infinite linear;
+      -webkit-transform: translateZ(0);
+      -ms-transform: translateZ(0);
+      transform: translateZ(0);
+      top: 45%;
+      left: 47%;
+      z-index: 999;
+    }
+
+    @-webkit-keyframes load4 {
+      0%,
+      100% {
+        box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+      }
+      12.5% {
+        box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+      }
+      25% {
+        box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+      }
+      37.5% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+      }
+      50% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+      }
+      62.5% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+      }
+      75% {
+        box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+      }
+      87.5% {
+        box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+      }
+    }
+
+    @keyframes load4 {
+      0%,
+      100% {
+        box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+      }
+      12.5% {
+        box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+      }
+      25% {
+        box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+      }
+      37.5% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+      }
+      50% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+      }
+      62.5% {
+        box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+      }
+      75% {
+        box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+      }
+      87.5% {
+        box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+      }
+    }
+
+    /* Modal popup Error */
+
+    .myModal-error .modal-content,
+    .myModal-chart .modal-content {
+      margin-top: 30%;
+      padding: 5% 4% 10% 4%;
+    }
+
+    .myModal-error h1,
+    .myModal-chart h1 {
+      font-size: 2.2em;
+      font-weight: 100;
+    }
+
+    .myModal-error .cancel-btn,
+    .myModal-chart .cancel-btn {
+      margin-right: 12px;
+    }
+
+    .myModal-error .modal-content,
+    .myModal-chart .modal-content {
+      margin-top: 30%;
+      padding: 10px 10px 41px 10px;
+      /*max-width: 306px;*/
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .myModal-error .modal-content p,
+    .myModal-chart .modal-content p {
+      padding: 10px 0;
+    }
+
+    .blue-color {
+      color: #89A9DC !important;
+      line-height: 22px;
+    }
+
+    .grey-color {
+      line-height: 22px;
+      color: gainsboro;
+    }
+
+    .pop-display,
+    .tierfild {
+      cursor: pointer;
+    }
+
+    .myModal-cancel .modal-content {
+      margin-top: 30%;
+      padding: 5% 4% 10% 4%;
+    }
+
+    .myModal-cancel h1 {
+      font-size: 2.2em;
+      font-weight: 100;
+    }
+
+    .myModal-cancel .cancel-btn {
+      margin-right: 12px;
+      width: 75px;
+    }
+
+    .form-group {
+      margin-bottom: 0px;
+    }
+
+    .slds *::selection {
+      background: rgb(216, 237, 255);
+    }
+
+    td.account-space {
+      text-indent: 12px;
+    }
+
+    .tierfild span {
+      display: inline-block;
+      width: 10px;
+    }
+
+    .thousand-message {
+      font-size: 12px;
+      color: rgb(84, 105, 141);
+    }
+
+    .cancelEdit {
+      /*margin-left: 6px;*/
+      padding: 2px 8px !important;
+      margin-right: 4px;
+      margin-top: 0;
+    }
+
+    .saveEdit {
+      margin-top: 0;
+      padding: 1px 8px !important;
+    }
+
+    .custom-row .cancel-btn,
+    .custom-row .save-btn {
+      width: 70px;
+      margin-right: 2px;
+      margin-left: 2px;
+      height: 25px;
+    }
+
+    .view-active {
+      background-color: rgb(255, 255, 255);
+      border-radius: 2px;
+      border: 1px solid rgb(207, 215, 230);
+      margin-top: 10px;
+      margin-bottom: 10px;
+      height: 49px;
+    }
+
+    .cxo-view {
+      float: left;
+      height: 28px;
+      padding: 4px 19px;
+      font-size: 12px;
+      width: 72px;
+      visibility: hidden;
+    }
+
+    .disabledCursor {
+      cursor: not-allowed !important;
+      background-color: #d3d3d3;
+    }
+
+    .disabledCursor .hover {
+      cursor: not-allowed !important;
+      background-color: #e5e5e5;
+    }
+
+    .cxo-cal-next {
+      color: #fff;
+      background: rgb(0, 112, 210);
+      border-radius: 7px;
+      border: 1px solid #0070d2;
+      font-size: 12px;
+      padding: 3px 8px;
+      height: 25px;
+      width: 110px;
+      font-weight: normal;
+    }
+
+    .cxo-cal-pre {
+      color: #fff;
+      background: rgb(0, 112, 210);
+      border-radius: 7px;
+      border: 1px solid #0070d2;
+      font-size: 12px;
+      padding: 3px 8px;
+      float: left;
+      height: 25px;
+      width: 125px;
+      font-weight: normal;
+    }
+
+    .custom-row-cal {
+      padding: 10px 0;
+      margin-left: 30px;
+    }
+
+    .refresh-cxo {
+      margin-bottom: 12px;
+      height: 23px;
+    }
+
+    .refresh-cxo-icon {
+      color: rgb(0, 112, 210);
+      font-size: 14px;
+    }
+
+    .popover-content {
+      padding: 4px !important;
+    }
+
+    .mr10 {
+      margin-right: 10px;
+    }
+
+    .pd0 {
+      padding: 0;
+    }
+
+    .mr-25 {
+      margin-right: -25px;
+    }
+
+    .ml-11 {
+      margin-left: -11px;
+    }
+
+    .current-time {
+      font-size: 12px;
+    }
+
+    .nextprev {
+      padding: 8px 0 0 0;
+    }
+
+    .bg-gray-dark {
+      background-color: rgb(112, 174, 228) !important;
+      color: #fff !important;
+    }
+
+    .contact-icon-place {
+      right: 23px;
+      top: 5px;
+      color: #89A9DC !important;
+    }
+
+    .position-pencil {
+      top: 27px;
+      cursor: pointer;
+      color: #D7D4D4;
+    }
+
+    .position-pencil:hover {
+      color: black;
+    }
+
+    tr.grand-total td {
+      font-weight: bold;
+    }
+
+    .cust-tooltip {
+      margin-left: 8px;
+      font-family: "Salesforce Sans", Arial, sans-serif;
+      text-indent: 0 !important;
+    }
+
+    /* .popover.right>.arrow {
+      top: 30px !important;
+    } */
+
+    textarea {
+      resize: none;
+      font-size: 12px !important;
+    }
+
+    .textColor {
+      text-align: left;
+      color: rgb(112, 110, 107);
+    }
+
+    .tooltip-size {
+      font-size: 10px !important;
+      font-family: "Salesforce Sans", Arial, sans-serif;
+      text-indent: 0 !important;
+    }
+
+    .cust-tooltip-family {
+      font-family: "Salesforce Sans", Arial, sans-serif;
+      text-indent: 0 !important;
+    }
+
+    .tier-space {
+      width: 80% !important;
+    }
+
+    .chart-icon {
+      float: right;
+      font-size: 12px;
+      margin-right: 3px;
+      margin-top: 4px;
+      color: #89A9DC !important;
+    }
+
+    .thousand-message2 {
+      margin-right: 60px;
+      font-size: 12px;
+    }
+
+    .chart-tr-center tr th,
+    .chart-tr-center tr td {
+      text-align: center;
+    }
+
+    .grand-total td span.chart-icon {
+      margin-right: 1px;
+    }
+
+    .table-cxo .popover-content textarea.form-control:focus {
+      box-shadow: none;
+    }
+
+    .asofMonth-pickList {
+      width: 23%;
+      display: inline-block;
+      padding: 5px 10px;
+      height: 25px;
+    }
+
+    select option {
+      font-size: 12px !important;
+    }
+
+    .btn-default {
+      margin-left: 5px;
+    }
+
+    .prev-button,
+    .next-button {
+      color: rgb(0, 112, 210);
+      background: transparent;
+      border-radius: 0;
+      border: 1px solid #ddd;
+      font-size: 12px;
+      padding: 6px 8px;
+      /*background-color: transparent;*/
+      box-shadow: none;
+    }
+
+    /* CSS used here will be applied after bootstrap.css */
+
+    /* custom checkboxes */
+
+    .custom-checkbox>[type="checkbox"],
+    .custom-checkbox>label {
+      float: right;
+      margin-bottom: 0px !important;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    .custom-checkbox>[type="checkbox"]:not(:checked),
+    .custom-checkbox>[type="checkbox"]:checked {
+      position: absolute;
+      left: -9999px;
+    }
+
+    .custom-checkbox>[type="checkbox"]:not(:checked)+label,
+    .custom-checkbox>[type="checkbox"]:checked+label {
+      position: relative;
+      padding-left: 22px;
+      cursor: pointer;
+    }
+
+    .custom-checkbox>[type="checkbox"]:not(:checked)+label:before,
+    .custom-checkbox>[type="checkbox"]:checked+label:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      margin-top: -9px;
+      width: 17px;
+      height: 17px;
+      border: 1px solid #ddd;
+      background: #ffffff;
+      border-radius: 2px;
+    }
+
+    .custom-checkbox>[type="checkbox"]:not(:checked)+label:after,
+    .custom-checkbox>[type="checkbox"]:checked+label:after {
+      font: normal normal normal 12px/1 'Glyphicons Halflings';
+      content: '\e013';
+      position: absolute;
+      top: 50%;
+      margin-top: -7px;
+      left: 2px;
+      color: #29689f;
+      xtransition: all .2s;
+    }
+
+    .custom-checkbox>[type="checkbox"]:not(:checked)+label:after {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    .custom-checkbox>[type="checkbox"]:checked+label:after {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .custom-checkbox>[type="checkbox"]:disabled:not(:checked)+label:before,
+    .custom-checkbox>[type="checkbox"]:disabled:checked+label:before {
+      box-shadow: none;
+      background-color: #eeeeee;
+      border-color: #eeeeee;
+      cursor: not-allowed;
+      opacity: 1;
+      color: #dadada;
+    }
+
+    .custom-checkbox {
+      font-size: 12px !important;
+      font-weight: normal !important;
+    }
+
+    .custom-checkbox label {
+      font-weight: normal !important;
+    }
+
+    .custom-checkbox>[type="checkbox"]:disabled:checked+label:after {
+      color: #dadada;
+      cursor: not-allowed;
+    }
+
+    .custom-checkbox>[type="checkbox"]:disabled+label {
+      color: #aaa;
+      cursor: not-allowed;
+    }
+
+    .custom-checkbox>[type="checkbox"]:checked:focus+label:before,
+    .custom-checkbox>[type="checkbox"]:not(:checked):focus+label:before {
+      border: 1px solid #66afe9;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    }
+
+    .custom-checkbox>label:hover:before {
+      border: 1px solid #88D2FF !important;
+    }
+
+    .custom-checkbox>[type="checkbox"]:disabled:not(:checked)+label:hover:before,
+    .custom-checkbox>[type="checkbox"]:disabled:checked+label:hover:before {
+      border: 1px solid #E4E4E4 !important;
+    }
+
+    .table-header {
+      background-color: #29689f !important;
+      color: #ffffff !important;
+    }
+
+    label[for=asOfChecbox] {
+      margin-top: 10px;
+    }
+
+    a {
+      text-decoration: none;
+      display: inline-block;
+      padding: 6px 10px;
+    }
+
+    a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    .previous {
+      background-color: #29689f;
+      color: black;
+    }
+
+    .next {
+      background-color: #29689f;
+      color: white;
+    }
+
+    .disable {
+      cursor: not-allowed;
+      background-color: #82B5E1 !important;
+      ;
+      color: rgb(112, 110, 107) !important;
+      border-radius: 5px 0 0 5px;
+      opacity: .6;
+    }
+
+    .asoffield {
+      margin-top: 4px;
+      margin-left: -6px;
+      font-size: 12px;
+      float: left;
+    }
+
+    .asoffield2 {
+      margin-left: 0px;
+    }
+
+    .table-header-singleCol {
+      width: 81px !important;
+    }
+
+    .asofMonth-pickList {
+      width: 43%;
+    }
+
+    .asofYear {
+      width: 55%;
+
+      background: #29689f;
+      color: #fff;
+      border-color: #29689f;
+      padding: 2px 10px;
+      padding-right: 8px;
+    }
+
+    .checkbox-inline {
+      margin-left: -9px;
+      float: left;
+      margin-top: 0;
+      margin-bottom: 0px;
+      padding-bottom: 0px;
+      padding-top: 0px;
+    }
+
+    .asofMonth {
+      margin-top: 10px;
+      margin-right: 10px;
+    }
+
+    .view-left {
+      padding-top: 5px;
+    }
+
+    .target {
+      text-align: center !important;
+    }
+
+    .asoffield .asofMonth-pickList {
+      margin-top: -7px;
+      background-color: #29689f;
+      padding-top: 0;
+      padding-bottom: 0;
+      color: #fff;
+    }
+
+    .asoffield .cxodatepicker {
+      padding-top: 2px;
+      border-bottom-width: 0px;
+      margin-top: 0;
+      /*margin-top:-3px;*/
+      border-radius: 0px;
+      background-color: #29689f;
+      color: #fff;
+      height: 25px !important;
+      border: none;
+      border-left: 1px solid white;
+      border-right: 1px solid;
+    }
+
+    .asoffield .btn {
+      color: #fff !important;
+      position: absolute;
+      left: 118px !important;
+      top: 13px;
+      margin: 1px;
+      padding: 2px 3px;
+      border: none;
+      background: transparent;
+      font-weight: bold;
+      font-size: .9em;
+    }
+
+    .date-picker-align {
+      float: left;
+      margin-top: -4px;
+      margin-left: 4px;
+    }
+
+    .asoflabel {
+      margin-right: 5px;
+      float: left;
+    }
+
+    .asoflabel1 {
+      margin-left: 4px;
+    }
+
+    .asoflabelDate {
+      margin-right: 0;
+    }
+
+    .custom-asofrow,
+    .custom-row {
+      color: rgb(84, 105, 141);
+    }
+
+    .custom-asofrow {
+      padding: 10px 0 0 0;
+    }
+
+    .custom-asofrow label {
+      font-weight: 500;
+    }
+
+    .thousand-message1 {
+      font-size: 12px;
+      color: red;
+    }
+
+    .ProjectionMsg {
+      text-transform: uppercase;
+      color: #8A433F;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .glyphicon-wrench {
+      cursor: pointer;
+      color: #29689f;
+      margin-left: 50px;
+    }
+
+    .glyphicon-refresh {
+      cursor: pointer;
+      color: #29689f;
+      margin-left: 6px;
+      font-size: 16px;
+      top: 3px;
+
+    }
+
+    .glyphicon-save {
+      top: 2px;
+      cursor: pointer;
+      color: #29689f;
+      margin-left: 10px;
+      margin-right: 10px;
+      font-size: 16px;
+    }
+
+    .glyphicon-info-sign {
+      color: #29689f;
+      font-size: 16px;
+    }
+
+    ..glyphicon {
+      top: 5px;
+    }
+
+    .glyphicon-size {
+      font-size: 16px;
+    }
+
+    .
+    /*tooltip.left .tooltip-arrow {
+      border-left-color: #E8E8E8;
+    }
+    .tooltip.top .tooltip-arrow {
+      border-left-color: #E8E8E8;
+    }*/
+
+    .custom_tooltip {
+      text-align: left !important;
+    }
+
+    #dailyProjection_table tbody tr td.commentsCol {
+      max-width: 150px;
+      min-width: 350px;
+      /* overflow: hidden; */
+    }
+
+    .tooltip-inner {
+      max-width: 200px;
+      text-align: left;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    .right-container {
+      margin-right: 17px;
+    }
+
+    .first-col {
+      width: 251px;
+    }
+
+    .last-col {
+      border-top-right-radius: 10px;
+      width: 328px;
+    }
+
+    #dailyProjection_table tbody tr td {
+      /*min-width:92px;  */
+    }
+
+    @media (min-width: 1600px) {
+      .custom-asofrow.col-lg-5 {
+        width: 32% !important;
+      }
+    }
+
+    .commentBox {
+      display: none;
+    }
+
+    #commentBoxIcon:hover>.commentBox {
+      display: block;
+    }
+
+    #commentBoxIcon {
+      display: inline-block;
+      float: right;
+      position: relative;
+      height: 0px;
+    }
+
+    .tip {
+      width: 0px;
+      height: 0px;
+      position: absolute;
+      background: transparent;
+      border: 10px solid #ccc;
+    }
+
+    .tip-down {
+      bottom: -25px;
+      left: 10px;
+      border-right-color: transparent;
+      border-left-color: transparent;
+      border-bottom-color: transparent;
+    }
+
+    .dialogbox .dialogboxBody {
+      left: -18px;
+      position: absolute;
+      height: 90px;
+      margin: 20px 10px;
+      padding: 5px;
+      background-color: #ffffff;
+      ;
+      border-radius: 3px;
+      border: 5px solid #ccc;
+      height: -44%;
+      bottom: 5px;
+      width: 150px;
+    }
+
+    .commentBoxInside {
+      height: 71px;
+      width: 135px;
+      overflow: hidden;
+      overflow-y: scroll;
+      display: inherit;
+      border: none;
+    }
+
+    .cxo-accountNameSearch {
+      height: 25px;
+      width: 200px;
+      font-size: 12px;
+      display: inline-block;
+    }
+
+    .cxo-search-btn {
+      display: inline-block;
+      height: 25px;
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+
+    .cxo-refresh-btn {
+      height: 25px;
+      padding: 4px 10px;
+      font-size: 12px;
+    }
+
+    .excelHeader {
+      display: none;
+    }
+
+    .edit-nowrapdiv {
+      display: block;
+      position: relative;
+      padding-right: 15px;
+    }
+
+    .edit-nowrapdiv .account-proj-data {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: block;
+    }
+
+    .edit-nowrapdiv .glyphicon {
+      position: absolute;
+      right: 1px;
+      margin: 0;
+      top: 5px;
+    }
+
+    .asoffield .asofMonth-pickList {
+      width: auto;
+    }
+
+    .buttons {
+      margin-right: 50px;
+    }
+
+    /*.text-center {
+      text-align:left;
+     }*/
+
+    .asoffield .asofMonth-pickList.monthSelectBx {
+      margin-top: -7px;
+      background-color: #29689f;
+      padding-top: 0;
+      /* padding-bottom: 0;*/
+      color: #fff;
+    }
+
+    .asofMonth-pickList.monthSelectBx {
+      padding: 0 0;
+      font-size: 12px;
+      padding-top: 0;
+    }
+
+    .form-control.asofMonth-pickList.monthSelectBx {
+      border-radius: 0;
+      border-color: #29689f;
+      margin-top: 0;
+      line-height: 17px;
+      margin-left: 2px;
+      margin-right: 2px;
+      float: left;
+    }
+
+    .asoffield .asofMonth-pickList.yearSelectBx {
+      margin-left: 2px;
+      border-radius: 0;
+      background-color: #29689f;
+      padding-top: 0px;
+      float: left;
+      padding-bottom: 0px;
+      color: #fff;
+      font-size: 12px;
+      /*float: right;*/
+      border-color: #29689f;
+      margin-top: 0;
+    }
+
+    .asoffield .asofMonth-pickList.yearSelectBx {
+      margin-right: 2px;
+    }
+
+    .as-of-today-editdiv {
+      position: relative;
+      padding-right: 14px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    .as-of-today-edit input.custom-input.amount-field {
+      width: 80%;
+      margin: 2px auto;
+    }
+
+    .as-of-today-editdiv .glyphicon-pencil {
+      margin: 0;
+      position: absolute;
+      top: 5px;
+      right: 1px;
+      float: none;
+    }
+
+    .table-cxo tbody tr td.target-td {
+      padding-right: 14px;
+    }
+
+    .table>tbody+tbody.tierList {
+      border-top: 0;
+    }
+
+
+
+    /***************************/
+
+    .noPadding {
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .header-tittle h3 {
+      display: inherit;
+      color: #16325b;
+      margin-bottom: 20px;
+      margin-top: 0;
+      font-size: 18px;
+    }
+
+    .filterResurce label {
+      color: #374f73;
+      font-weight: normal;
+      line-height: 28px;
+      padding-right: 10px;
+    }
+
+    .topContSection {
+      padding: 10px;
+      font-size: 12px;
+      box-shadow: inset 0px 1px 4px 0px #ccdaf3;
+      margin-top: 0;
+    }
+
+    .topContSection h5 {
+      font-size: 12px;
+    }
+
+    .topContSection .glyphicon-refresh {
+      cursor: pointer;
+      color: #29689f;
+      margin-left: 6px;
+      font-weight: 700;
+      font-size: 10px;
+      top: 0px;
+      padding: 5px;
+      border: 1px solid #9db1d4;
+      border-radius: 3px;
+    }
+
+    .notesSection {
+      color: #ee8771;
+      margin-top: 3px;
+      padding: 0;
+    }
+
+    .tableContainer .table-cxo thead tr th {
+      max-width: 120px;
+      min-width: 120px;
+    }
+
+    .righttableContSection {
+      overflow-x: auto;
+      border-right: 1px solid #c4d6ef8f;
+    }
+
+    .tableContainer .table tr.resource-row td {
+      background: #1f5c93;
+      color: #a8cff1;
+      /*font-weight: 700;*/
+    }
+
+    .tableContainer .table tr.resource-row td.resourcename {
+      background: #49b35c;
+      color: #fff;
+      /*font-size: 13px;*/
+      font-weight: 700;
+    }
+
+    .tableContainer .stickHeader.table tr.resource-row.first-child td.resourcename {
+      background: #1f5c93;
+      font-size: 0;
+    }
+
+    .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child {
+      text-align: left;
+      max-width: 250px;
+    }
+
+    .tableContainer .table-cxo tbody tr.resource-row td {
+      text-transform: uppercase;
+    }
+
+    .tableContainer .table tbody tr td {
+      text-transform: none;
+      vertical-align: middle;
+      text-align: center;
+      white-space: normal;
+      font-size: 11px;
+      padding: 3px 5px;
+      color: #000;
+      border: 1px solid #c4d6ef8f;
+      line-height: 10px;
+      height: 23px;
+      min-width: 75px;
+    }
+
+    .tableContainer .lefttableContSection .table-cxo tbody tr.supacc-row td:first-child {
+      /*font-size: 13px;*/
+      color: #000;
+    }
+
+    .tableContainer .table-cxo tbody tr.supacc-row td {
+      /*background: #dceefd;*/
+    }
+
+    .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child span.glyphicon {
+      font-weight: normal;
+      /* font-size: 11px; */
+    }
+
+    .tableContainer .table-cxo>tbody>tr>td>span i {
+      padding-top: 0;
+    }
+
+
+    .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child span {
+      float: right;
+      font-weight: 700;
+      font-size: 12px;
+      margin-top: -1px;
+      color: #0572d3;
+    }
+
+    .tableContainer .table-cxo tbody tr.subaccount-row td,
+    .tableContainer .table-cxo tbody tr.account-row td {
+      background: #fff;
+    }
+
+    .tableContainer .lefttableContSection .table-cxo tbody tr.account-row td:first-child {
+      /*font-size: 12px;*/
+      color: #2987d8;
+    }
+
+    .tableContainer .lefttableContSection .table-cxo thead tr th {
+      /*line-height: 42px;*/
+      height: 49px;
+    }
+
+    .filterResurce .dropdown-menu {
+      width: 100%;
+      padding: 0;
+      /* margin: 0; */
+    }
+
+    .filterResurce .dropdown-menu li {
+      margin-left: 0;
+      /* padding: 6px 0; */
+      /* display: inline-block; */
+      /* width: 100%; */
+    }
+
+    .filterResurce .dropdown-menu li a {
+      padding: 5px 15px;
+    }
+
+    .filterResurce .form-control {
+      height: 25px;
+      line-height: normal;
+      font-size: 11px;
+      padding: 5px 12px;
+    }
+
+    .righttableContSection table.table-cxo.table {
+      margin-left: 0;
+      /* table-layout: fixed; */
+      display: table-cell;
+      width: auto !important;
+      border-color: #627ea58f;
+      border-left: 0;
+      border-right: 0;
+    }
+
+    .tableContainer .righttableContSection .table tbody tr td:first-child,
+    .tableContainer .righttableContSection .table tr th:first-child {
+      border-left-color: transparent;
+    }
+
+    .tableContainer .table tbody tr.totalRow td {
+      background: #dce0e2;
+    }
+
+    .accountName label {
+      /*font-size: 12px;*/
+      margin-bottom: 0;
+    }
+
+    .account-row.accountHierarchy .txt-ellipsis {
+      padding-left: 15px;
+    }
+
+    .subaccount-row.accountHierarchy .txt-ellipsis {
+      padding-left: 40px;
+    }
+
+    .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child span.collapseIcon {
+      float: none;
+      font-weight: normal;
+    }
+
+    /*.subaccount-row.accountHierarchy .txt-ellipsis::before, .account-row.accountHierarchy .txt-ellipsis::before {
+        content: "-";
+    }*/
+
+    .collpeseSect {
+      float: left;
+      padding-right: 5px;
+    }
+
+    .CollapseExpandIcon {
+      color: #29689F;
+      width: 18px;
+      height: 18px;
+      margin-top: -5px;
+      cursor: pointer;
+    }
+
+    .stickHeader.table-cxo th,
+    .stickHeader.table-cxo tbody tr.first-child td.sortUser {
+      z-index: 1;
+    }
+
+    .first-child span.glyphicon {
+      float: right;
+      font-size: 8px;
+    }
+
+    .sortUser .tooltip {
+      min-width: 250px;
+    }
+
+    .table-cxo tbody tr.first-child td .tooltip .tooltip-inner {
+      max-width: 250px;
+      min-width: 250px;
+    }
+
+    .tableContainer {
+      padding: 0;
+    }
+
+    @media only screen and (max-width: 1650px) {
+      .righttableContSection {
+        width: 70%;
+      }
+      .lefttableContSection {
+        width: 30%;
+      }
+    }
+
+    @media only screen and (max-width: 1400px) {
+      .righttableContSection {
+        width: 65%;
+      }
+      .lefttableContSection {
+        width: 35%;
+      }
+    }
+
+    @media only screen and (max-width: 1300px) {
+      .righttableContSection {
+        width: 64%;
+      }
+      .lefttableContSection {
+        width: 36%;
+      }
+    }
+
+    /***************************/
+  </style>
+
+  <body ng-app="orderBookApp">
+    <div class="container-fluid" ng-controller="orderBookController as orderBook" ng-cloak="cloak">
+      <div order-by-popup=""></div>
+      <!-- Trigger the modal with a button -->
+      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#filter-popup">Open Modal</button>
+      <div class="row contentSection">
+        <div class="col-sm-12 topContSection">
+          <div class="col-sm-3 noPadding">
+            <div class="col-sm-12 filterTypes view-left">
+              <div class="custom-checkbox row checkbox-inline" ng-repeat="filter in orderBook.filterType">
+                <input id="{{filter.name}}-checkbox" name="{{filter.name}}-checkbox" type="checkbox" ng-model="orderBook.filterBy[filter.value]"
+                  ng-change="orderBook.onFilterHandler(filter.value);" value="" />
+                <label for="{{filter.name}}-checkbox">{{filter.name}}</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-12 tableContainer no-padding" ng-show="!rrpVm.spinningLoader" style=""></div>
+        <div class="col-sm-12 tableContainer no-padding">
+          <div class="col-sm-12 noPadding tableContSection" id="overAllTable">
+            <div class="col-sm-3 noPadding lefttableContSection" ng-if="orderBook.fixedColumns.length > 0">
+              <div grid="fixed" filter-handler="orderBook.addRowHandler()" columns="orderBook.fixedColumns" sub-columns="orderBook.fixedSubColumns"
+                rows="orderBook.mergedFixedColumns" grid-data="orderBook.data"></div>
+            </div>
+            <div class="col-sm-9 noPadding righttableContSection fixed-scrollbar" ng-if="orderBook.scrollableColumns.length > 0">
+              <div grid="scrollable" filter-handler="orderBook.addRowHandler()" columns="orderBook.scrollableColumns" sub-columns="orderBook.scrollableSubColumns"
+                rows="orderBook.mergedScrollableColumns" grid-data="orderBook.data"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+  </html>
+  <script type="text/javascript">
+    var app = angular.module("orderBookApp", ['ngSanitize']);
+    app.controller("orderBookController", function ($filter, $sce, $scope, $timeout, orderBookApi) {
+      var orderBook = this;
+      orderBook.fixedColumns = [];
+      orderBook.fixedSubColumns = [];
+      orderBook.scrollableColumns = [];
+      orderBook.scrollableSubColumns = [];
+      orderBook.mergedColumns = [];
+      orderBook.selectedMonth = 'March';
+      orderBook.filterType = [{ name: 'All', value: 'all' }, { name: 'Signed', value: 'signed' }, { name: 'Unsigned', value: 'unSigned' }, { name: 'Renewal', value: 'renewal' }, { name: 'Upside', value: 'upSide' }];
+      orderBook.filterBy = {
+        all: true,
+        signed: false,
+        unSigned: false,
+        renewal: false,
+        upSide: false,
+      };
+      orderBook.config = [
+        {
+          name: 'Account Name',
+          key: 'accountName',
+          isFixed: true,
+          isVisible: true
+        },
+        {
+          name: 'Agreement Category',
+          key: 'agreementCategory',
+          isFixed: true,
+          isVisible: true
+        },
+        {
+          name: 'Agreement Number',
+          key: 'agreementNumber',
+          isFixed: true,
+          isVisible: true
+        },
+        {
+          name: 'Agreement Name',
+          key: 'agreementName',
+          isFixed: true,
+          isVisible: true
+        },
+        {
+          name: 'Agreement State Date',
+          key: 'agreementStartDate',
+          isVisible: true
+        },
+        {
+          name: 'Agreement End Date',
+          key: 'agreementEndDate',
+          isVisible: true
+        },
+        {
+          name: 'Agreement',
+          isVisible: true,
+          subColumns: [
+            {
+              name: 'Signed',
+              key: 'signed',
+              isVisible: true
+            },
+            {
+              name: 'Unsigned',
+              key: 'unSigned',
+              isVisible: true
+            },
+            {
+              name: 'Renewal',
+              key: 'renewal',
+              isVisible: true
+            },
+            {
+              name: 'Upside',
+              key: 'upSide',
+              isVisible: true
+            }
+          ]
+        },
+        {
+          name: 'Total Agreement',
+          key: 'totalAgreement',
+          isVisible: true
+        },
+        {
+          name: 'Project ID',
+          key: 'projectId',
+          isVisible: true
+        },
+        {
+          name: 'Project Description',
+          key: 'projectDescription',
+          isVisible: true
+        },
+        {
+          name: 'Project Start Date',
+          key: 'projectStartDate',
+          isVisible: true
+        },
+        {
+          name: 'Project End Date',
+          key: 'projectEndDate',
+          isVisible: true
+        },
+        {
+          name: 'Revenue Recognized',
+          isVisible: true,
+          subColumns: [
+            {
+              name: 'March',
+              key: 'march',
+              isVisible: true
+            },
+            {
+              name: 'Total Burn',
+              key: 'totalBurn',
+              isVisible: true
+            }
+          ]
+        },
+        {
+          name: 'Balance',
+          key: 'balance',
+          isVisible: true
+        }
+      ];
+      orderBook.clonedConfig = $.extend(true, [], orderBook.config);
+      // orderBook.data = [{
+      //   accountName: 'Alliance Data',
+      //   agreementCategory: 'signed',
+      //   agreementNumber: '1234',
+      //   agreementName: 'Alliance Data TM',
+      //   agreementStartDate: 1522331646141,
+      //   agreementEndDate: 1522331646141,
+      //   signed: 1500,
+      //   unSigned: 1500,
+      //   renewal: 1500,
+      //   upSide: 1500,
+      //   totalAgreement: 1500000,
+      //   projectId: 11111,
+      //   projectDescription: 'description',
+      //   projectStartDate: 1522331646141,
+      //   projectEndDate: 1522331646141,
+      //   march: 1500,
+      //   totalBurn: 1200,
+      //   balance: 1200
+      // }
+      // ];
+
+      /** @description Function to remove column based on selected columns
+       * @param {config} array - contains the table configuration
+       * @param {columns} array - contains the selected columns
+       * @param {isRemove} boolean
+       **/
+      orderBook.removeColumn = function (config, columns, isRemove) {
+        let index = [];
+        let clonedColumns = $.extend(true, [], columns);
+        clonedColumns.forEach((column, j) => {
+          config.forEach((col, i) => {
+            if (col.name === column.name && !col.isFixed) {
+              if (isRemove) {
+                config.splice(i, 1);
+              } else {
+                let index = clonedColumns.length - columns.length;
+                columns.splice(j - index, 1);
+              }
+            }
+          });
+        });
+      }
+
+      /** @description callback function for up/down button
+       * @param {direction} string - denotes the direction to move
+       **/
+      orderBook.dragHandler = function (direction) {
+        let index = orderBook.clonedConfig.findIndex(column => column.name === orderBook.selectedColumns[0].name);
+        let prevColumn = orderBook.clonedConfig[index - 1];
+        let nextIndex = index;
+        let prevIndex = index;
+        if (direction === 'up' && !prevColumn.isFixed) {
+          nextIndex = index + 1;
+          prevIndex = index - 1;
+        } else if (direction === 'down') {
+          nextIndex = index;
+          prevIndex = index + 2;
+        }
+        orderBook.clonedConfig.splice(prevIndex, 0, orderBook.selectedColumns[0]);
+        orderBook.clonedConfig.splice(nextIndex, 1);
+      }
+
+      /** @description callback function for add button
+       **/
+      orderBook.addColumnHandler = function () {
+        if (orderBook.availableColumns && orderBook.availableColumns.length > 0) {
+          let config = $.extend(true, [], orderBook.clonedConfig);
+          orderBook.removeColumn(config, orderBook.availableColumns, false);
+          config = config.concat(orderBook.availableColumns);
+          orderBook.clonedConfig = config;
+        }
+      }
+
+      /** @description callback function for remove button
+       **/
+      orderBook.removeColumnHandler = function () {
+        if (orderBook.selectedColumns && orderBook.selectedColumns.length > 0) {
+          console.log(orderBook.selectedColumns);
+          let config = $.extend(true, [], orderBook.clonedConfig);
+          orderBook.removeColumn(config, orderBook.selectedColumns, true);
+          orderBook.clonedConfig = config;
+        }
+      }
+
+      /** @description function to split the fixed column and non-fixed columns
+       * for render the two different tables
+       * @param {columns} array - contains the table configuration
+       **/
+      orderBook.getColumns = function (columns) {
+        orderBook.fixedColumns = [];
+        orderBook.fixedSubColumns = [];
+        orderBook.scrollableColumns = [];
+        orderBook.scrollableSubColumns = [];
+        orderBook.mergedFixedColumns = [];
+        orderBook.mergedScrollableColumns = [];
+        columns.forEach(col => {
+          if (col.isFixed) {
+            orderBook.fixedColumns.push(col);
+            orderBook.mergedFixedColumns.push(col);
+            if (col.subColumns && col.subColumns.length > 0) {
+              orderBook.fixedSubColumns = orderBook.fixedSubColumns.concat(col.subColumns);
+              orderBook.mergedFixedColumns = orderBook.mergedFixedColumns.concat(col.subColumns);
+            }
+          } else {
+            orderBook.scrollableColumns.push(col);
+            orderBook.mergedScrollableColumns.push(col);
+            if (col.subColumns && col.subColumns.length > 0) {
+              orderBook.scrollableSubColumns = orderBook.scrollableSubColumns.concat(col.subColumns);
+              orderBook.mergedScrollableColumns = orderBook.mergedScrollableColumns.concat(col.subColumns);
+            }
+          }
+        });
+      }
+
+      orderBook.calculateTotal = function (data) {
+        let obj = {
+          isOverAllTotal: false,
+          isTotal: true,
+          signed: 0,
+          unSigned: 0,
+          renewal: 0,
+          upSide: 0,
+          totalAgreement: 0,
+          march: 0,
+          totalBurn: 0,
+          balance: 0,
+        };
+        data.forEach(row => {
+          obj.signed += row.signed;
+          obj.unSigned += row.unSigned;
+          obj.renewal += row.renewal;
+          obj.upSide += row.upSide;
+          obj.totalAgreement += row.totalAgreement;
+          obj.march += row.march;
+          obj.totalBurn += row.totalBurn;
+          obj.balance += row.balance;
+        });
+        data.unshift(obj);
+      }
+
+      /** @description callback function for filter select
+       * @param {value} string - filter type
+       */
+      orderBook.onFilterHandler = function (value) {
+        let filterArr = [];
+        if ((orderBook.filterBy.signed
+          && orderBook.filterBy.unSigned
+          && orderBook.filterBy.renewal
+          && orderBook.filterBy.upSide) || value === 'all') {
+          orderBook.filterBy = {
+            all: true,
+            signed: false,
+            unSigned: false,
+            renewal: false,
+            upSide: false,
+          };
+        } else {
+          orderBook.filterBy.all = false;
+          filterArr = Object.keys(orderBook.filterBy).filter(key => orderBook.filterBy[key]);
+        }
+        console.log(filterArr);
+        orderBook.filterColumns(filterArr);
+      }
+
+      /** @description  Funtion to remove the unwanted column
+        * except mentioned in given array
+        * @param {columns} array - contains the table configuration
+        */
+      orderBook.filterColumns = function (columns) {
+        let config = [];
+        orderBook.clonedConfig = $.extend(true, [], orderBook.config);
+        columns.forEach(col => {
+          orderBook.clonedConfig.forEach((column, i) => {
+            // if (!column.isFixed) {
+            //   if (column.name === col) {
+            //     orderBook.clonedConfig.splice(i, 1);
+            //     if (columns.subColumns) {
+            //       orderBook.clonedConfig[i].subColumns = [];
+            //     }
+            //   }
+            // }
+            if (!column.isFixed && column.subColumns) {
+              column.subColumns.map((subColumn, j) => {
+                if (subColumn.name.toLowerCase() === col.toLowerCase()) {
+                  orderBook.clonedConfig[i].subColumns.splice(j, 1);
+                }
+                if (orderBook.clonedConfig[i].subColumns.length === 0) {
+                  orderBook.clonedConfig.splice(i, 1);
+                }
+              });
+            }
+          });
+        });
+        orderBook.getColumns(orderBook.clonedConfig);
+      }
+
+      /** @description callback function for save button
+       */
+      orderBook.saveHandler = function () {
+        let config = $.extend(true, [], orderBook.clonedConfig);
+        orderBook.getColumns(config);
+        $('#filter-popup').modal('hide');
+      }
+
+      /** @description callback function for add row button
+       **/
+      orderBook.addRowHandler = function () {
+        // orderBook.data.push({
+        //   isEditable: true,
+        // });
+        orderBook.filterColumns(['Signed', 'Unsinged', 'Renewal', 'Upside']);
+      }
+
+      orderBook.dataMapping = function (data) {
+        return data.mainAccList.map(list => {
+          let obj = {};
+          let headerObj ={};
+          headerObj.accountName = list.Name;
+          let agreement = data.agreementList.filter(agreement => {
+            if (list.Id === agreement.Apttus__Account__c) {
+              let obj = {};
+              let signed = (agreement.Apttus__Status_Category__c === 'signed') ? obj.signed = agreement.Phtn_SOW_Contract_Value__c : obj.unSigned = agreement.Phtn_SOW_Contract_Value__c;
+              obj.accountName = '';
+              obj.accountCategory = agreement.Apttus__Status_Category__c;
+              obj.agreementNumber = agreement.Apttus__Agreement_Number__c;
+              obj.agreementName = agreement.Name;
+              obj.agreementStartDate = agreement.Apttus__Contract_Start_Date__c;
+              obj.agreementEndDate = agreement.Apttus__Contract_End_Date__c;
+              obj.renewal = ''
+              obj.upSide = ''
+              obj.totalAgreement = agreement.Phtn_SOW_Contract_Value__c;
+              obj.projectId = agreement.Project_Id__c;
+              obj.projectDescription = agreement.Project_Name__c;
+              obj.projectStartDate = agreement.Project_Start_Date__c;
+              obj.projectEndDate = agreement.Project_End_Date__c;
+              obj.march = 1500;
+              obj.totalBurn = 1200;
+              obj.balance = 1200;
+              return {
+                obj,
+                ...signed,
+              }
+            }
+            return [];
+          });
+          let upside = data.orderBookUpsideList.filter(upside => {
+            if (list.Id === upside.AccountId__c) {
+              let obj = {};
+              obj.accountName = '';
+              obj.accountCategory = upside.Agreement_Name__c;
+              obj.agreementNumber = '';
+              obj.agreementName = '';
+              obj.agreementStartDate = upside.Start_Date__c;
+              obj.agreementEndDate = upside.End_Date__c;
+              obj.renewal = upside.Agreement_Renewal__c;
+              obj.signed = upside.Agreement_signed__c;
+              obj.unSigned = upside.Agreement_unsigned__c;
+              obj.upSide = upside.Agreement_Upside__c
+              obj.totalAgreement = upside.Agreement_Total__c;
+              obj.projectId = '';
+              obj.projectDescription = '';
+              obj.projectStartDate = '';
+              obj.projectEndDate = '';
+              obj.march = '';
+              obj.totalBurn = '';
+              obj.balance = '';
+              return obj;
+            }
+            return [];
+          });
+          obj.agreement = agreement;
+          obj.upside = upside;
+          obj.account = headerObj;
+          return obj;
+        });
+      }
+
+      orderBook.init = function () {
+        orderBook.getColumns(orderBook.clonedConfig);
+        orderBookApi.getOrderBookData().then(function (response) {
+          orderBook.data = orderBook.dataMapping(response.responseObject);
+          console.log(orderBook.data);
+        });
+      }
+
+      orderBook.init();
+    });
+
+    /** @description - directive for render grid based on type and data
+     * scope values:
+     * type - string - denotes the grid is fixed or not.
+     * columns - array - contains the column configuration
+     * subColumns - array - contains the sub column configuration
+     */
+    app.directive('grid', function ($compile, $timeout) {
+      return {
+        restrict: 'A',
+        scope: {
+          type: '@grid',
+          columns: '=',
+          subColumns: '=',
+          rows: '=',
+          data: '=gridData',
+          filterHandler: '&',
+        },
+        controller: 'orderBookController',
+        controllerAs: 'orderBook',
+        bindToController: true,
+        // template: '<table class="table table-cxo"> <thead> <tr ng-data="{{orderBook.subColumns}}"> <th ng-if="headerCol.isVisible" ng-repeat="headerCol in orderBook.columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="orderBook.subColumns.length > 0"> <th ng-data="{{subHeaderCol}}" ng-if="subHeaderCol.isVisible" ng-repeat="subHeaderCol in orderBook.subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody> <tr ng-if="!row.isEditable" ng-repeat-start="row in orderBook.data"> <td ng-if="col.key" ng-repeat="col in orderBook.rows"> <button ng-click="orderBook.filterHandler()" ng-if="$parent.$index===0 && $parent.$parent.$index===orderBook.data.length - 1 && orderBook.type===\'fixed\'">edit</button>{{row[col.key]}}</td></tr><tr ng-if="row.isEditable" ng-repeat-end> <td ng-if="col.key" ng-repeat="col in orderBook.rows"> <button ng-click="orderBook.filterHandler()" ng-if="$parent.$index===0 && $parent.$parent.$index===orderBook.data.length - 1 && orderBook.type===\'fixed\'">edit</button> <input type="text"/> </td></tr></tbody></table>',
+        templateUrl: 'template.html'
+      };
+    });
+
+    app.directive('orderByPopup', function ($compile, $timeout) {
+      return {
+        restrict: 'A',
+        controller: 'orderBookController',
+        controllerAs: 'orderBook',
+        bindToController: true,
+        template: '<div id="filter-popup" class="modal fade" role="dialog"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button> <h4 class="modal-title">Modal Header</h4> </div><div class="modal-body"> <div class="col-sm-4 noPadding"> <select multiple ng-model="orderBook.availableColumns" ng-options="col.name disable when col.isFixed for col in orderBook.config"> </select> </div><div class="col-sm-2 noPadding"> <button ng-disabled="(!orderBook.selectedColumns || orderBook.selectedColumns.length==0)" ng-click="orderBook.removeColumnHandler()">left</button> <button ng-disabled="(!orderBook.availableColumns || orderBook.availableColumns.length==0)" ng-click="orderBook.addColumnHandler()">right</button> </div><div class="col-sm-4 noPadding"> <select multiple ng-model="orderBook.selectedColumns" ng-options="col.name disable when col.isFixed for col in orderBook.clonedConfig"> </select> </div><div class="col-sm-2 noPadding"> <button ng-data="{{orderBook.selectedColumns}}" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'up\')">up</button> <button ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'down\')">down</button> </div></div><div class="modal-footer"> <button type="button" class="btn btn-default" ng-click="orderBook.saveHandler()">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div></div></div></div>',
+      };
+    });
+    app.factory('orderBookApi', function ($q) {
+      var orderBookFactory = {};
+
+      orderBookFactory.getOrderBookData = function () {
+        var deferred = $q.defer();
+        // Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', function (result, event) {
+        try {
+          deferred.resolve(result[0].result);
+        } catch (err) {
+          deferred.reject(result);
+        }
+        // });
+        return deferred.promise;
+      }
+      return orderBookFactory;
+    });
+  </script>
+</apex:page>
