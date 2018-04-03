@@ -1,0 +1,6 @@
+<span ng-if="!edit.isEditable">
+  {{value}}
+  <a ng-if="edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil" ng-click="edit.editHandler()"></a>
+</span>
+<input ng-blur="edit.blurHandler()" ng-if="edit.isEditable && (key !== 'agreementEndDate' && key !== 'agreementStartDate')" type="text" ng-model="value" />
+<input date-picker ng-if="edit.isEditable && (key === 'agreementEndDate' || key === 'agreementStartDate')" ng-blur="edit.blurHandler()" type="text" ng-model="value" />
