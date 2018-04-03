@@ -1,11 +1,11 @@
 <table class="table table-cxo">
   <thead>
     <tr>
-      <th>#</th>
+      <th ng-if="orderBook.type === 'fixed'">#</th>
       <th ng-repeat="headerCol in orderBook.columns" colspan="{{headerCol.subColumns ?  headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th>
     </tr>
     <tr ng-if="orderBook.subColumns.length > 0">
-      <th></th>
+      <th ng-if="orderBook.type === 'fixed'"></th>
       <th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in orderBook.subColumns">{{subHeaderCol.name}}</th>
     </tr>
   </thead>
@@ -16,31 +16,31 @@
   </tbody>
   <tbody ng-if="orderBook.data && orderBook.data.mainAccList.length > 0">
     <tr class="table-crm-grand-bg">
-      <td></td>
+      <td ng-if="orderBook.type === 'fixed'"></td>
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         {{orderBook.data.grandTotal[col.key]}}
       </td>
     </tr>
     <tr class="table-crm-bg" ng-repeat-start="account in orderBook.data.mainAccList">
-      <td>{{$index + 1}}</td>
+      <td ng-if="orderBook.type === 'fixed'">{{$index + 1}}</td>
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         {{account.account[col.key]}}
       </td>
     </tr>
     <tr ng-repeat="agreement in account.agreement">
-      <td></td>
+      <td ng-if="orderBook.type === 'fixed'"></td>
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         <span>{{agreement[col.key]}}</span>
       </td>
     </tr>
     <tr ng-repeat="oppty in account.oppty">
-      <td></td>
+      <td ng-if="orderBook.type === 'fixed'"></td>
       <td ng-if="col.key" ng-class="{red: col.name == 'Agreement Name'}" ng-repeat="col in orderBook.rows">
         {{oppty[col.key]}}
       </td>
     </tr>
     <tr ng-repeat-end ng-repeat="upside in account.upside">
-      <td></td>
+      <td ng-if="orderBook.type === 'fixed'"></td>
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         <span ng-hide="$parent.$parent.$parent.$index == orderBook.selectedInputField[0] && $parent.$parent.$index == orderBook.selectedInputField[1] && $index == orderBook.selectedInputField[2]">
           {{upside[col.key]}}
