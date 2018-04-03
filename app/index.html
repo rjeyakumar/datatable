@@ -1611,13 +1611,13 @@
       orderBook.scrollableSubColumns = [];
       orderBook.mergedColumns = [];
       orderBook.selectedMonth = 'March';
-      orderBook.filterType = [{ name: 'All', value: 'all' }, { name: 'Signed', value: 'signed' }, { name: 'Unsigned', value: 'unSigned' }, { name: 'Renewal', value: 'renewal' }, { name: 'Upside', value: 'upSide' }];
+      orderBook.filterType = [{ name: 'All', value: 'all' }, { name: 'Signed', value: 'signed' }, { name: 'Unsigned', value: 'unsigned' }, { name: 'Renewal', value: 'renewal' }, { name: 'Upside', value: 'upside' }];
       orderBook.filterBy = {
         all: true,
         signed: false,
-        unSigned: false,
+        unsigned: false,
         renewal: false,
-        upSide: false,
+        upside: false,
       };
       orderBook.config = [
         {
@@ -1843,53 +1843,26 @@
         });
       }
 
-      orderBook.calculateTotal = function (data) {
-        let obj = {
-          isOverAllTotal: false,
-          isTotal: true,
-          signed: 0,
-          unSigned: 0,
-          renewal: 0,
-          upSide: 0,
-          totalAgreement: 0,
-          march: 0,
-          totalBurn: 0,
-          balance: 0,
-        };
-        data.forEach(row => {
-          obj.signed += row.signed;
-          obj.unSigned += row.unSigned;
-          obj.renewal += row.renewal;
-          obj.upSide += row.upSide;
-          obj.totalAgreement += row.totalAgreement;
-          obj.march += row.march;
-          obj.totalBurn += row.totalBurn;
-          obj.balance += row.balance;
-        });
-        data.unshift(obj);
-      }
-
       /** @description callback function for filter select
        * @param {value} string - filter type
        */
       orderBook.onFilterHandler = function (value) {
         let filterArr = [];
         if ((orderBook.filterBy.signed
-          && orderBook.filterBy.unSigned
+          && orderBook.filterBy.unsigned
           && orderBook.filterBy.renewal
-          && orderBook.filterBy.upSide) || value === 'all') {
+          && orderBook.filterBy.upside) || value === 'all') {
           orderBook.filterBy = {
             all: true,
             signed: false,
-            unSigned: false,
+            unsigned: false,
             renewal: false,
-            upSide: false,
+            upside: false,
           };
         } else {
           orderBook.filterBy.all = false;
           filterArr = Object.keys(orderBook.filterBy).filter(key => orderBook.filterBy[key]);
         }
-        console.log(filterArr);
         orderBook.filterColumns(filterArr);
       }
 
@@ -1900,28 +1873,19 @@
       orderBook.filterColumns = function (columns) {
         let config = [];
         orderBook.clonedConfig = $.extend(true, [], orderBook.config);
-        columns.forEach(col => {
-          orderBook.clonedConfig.forEach((column, i) => {
-            // if (!column.isFixed) {
-            //   if (column.name === col) {
-            //     orderBook.clonedConfig.splice(i, 1);
-            //     if (columns.subColumns) {
-            //       orderBook.clonedConfig[i].subColumns = [];
-            //     }
-            //   }
-            // }
-            if (!column.isFixed && column.subColumns) {
-              column.subColumns.map((subColumn, j) => {
-                if (subColumn.name.toLowerCase() === col.toLowerCase()) {
-                  orderBook.clonedConfig[i].subColumns.splice(j, 1);
-                }
-                if (orderBook.clonedConfig[i].subColumns.length === 0) {
-                  orderBook.clonedConfig.splice(i, 1);
-                }
-              });
+        if (columns && columns.length > 0) {
+          orderBook.clonedConfig = orderBook.clonedConfig.filter((column, i) => {
+            if (column.isFixed) return column;
+            if (column.subColumns) {
+              column.subColumns = column.subColumns.filter((subColumn, j) => columns.indexOf(subColumn.name.toLowerCase()) > -1);
+              if (column.subColumns.length > 0) {
+                return column;
+              }
+            } else if (columns.indexOf(column.name.toLowerCase()) > -1) {
+              return column;
             }
           });
-        });
+        }
         orderBook.getColumns(orderBook.clonedConfig);
       }
 
@@ -1942,52 +1906,71 @@
         orderBook.filterColumns(['Signed', 'Unsinged', 'Renewal', 'Upside']);
       }
 
+      orderBook.editHandler = function (event, parentIndex, index, childIndex) {
+        event.preventDefault();
+        console.log(event.target.id);
+        orderBook.selectedInputField = event.target.id.split('-');
+        // orderBook.editFieldChildIndex = childIndex;
+        // orderBook.editFieldIndex = index;
+        // orderBook.isEditable = true;
+      }
+
+      orderBook.calculateTotal = function (array, key) {
+        let total = 0;
+        array.forEach(data => {
+          if (data && data[key]) {
+            total += parseFloat(data[key].substr(1));
+          }
+        });
+        return $filter('currency')(total);
+      }
+
       orderBook.dataMapping = function (data) {
         return data.mainAccList.map(list => {
           let obj = {};
-          let headerObj ={};
+          let headerObj = {};
           headerObj.accountName = list.Name;
-          let agreement = data.agreementList.filter(agreement => {
-            if (list.Id === agreement.Apttus__Account__c) {
+          headerObj.id = list.Id;
+          let agreementList = data.agreementList.map(agreement => {
+            if (headerObj.id === agreement.Apttus__Account__c) {
               let obj = {};
-              let signed = (agreement.Apttus__Status_Category__c === 'signed') ? obj.signed = agreement.Phtn_SOW_Contract_Value__c : obj.unSigned = agreement.Phtn_SOW_Contract_Value__c;
+              let signed = (agreement.Signature_Other_Party__c && agreement.Signature_Other_Party__c) ? obj.signed = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c) : obj.unSigned = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
               obj.accountName = '';
-              obj.accountCategory = agreement.Apttus__Status_Category__c;
+              obj.agreementCategory = agreement.Apttus__Status_Category__c;
               obj.agreementNumber = agreement.Apttus__Agreement_Number__c;
               obj.agreementName = agreement.Name;
-              obj.agreementStartDate = agreement.Apttus__Contract_Start_Date__c;
-              obj.agreementEndDate = agreement.Apttus__Contract_End_Date__c;
+              obj.agreementStartDate = $filter('date')(agreement.Apttus__Contract_Start_Date__c, "dd-MMM-yy");
+              obj.agreementEndDate = $filter('date')(agreement.Apttus__Contract_End_Date__c, "dd-MMM-yy");
               obj.renewal = ''
               obj.upSide = ''
-              obj.totalAgreement = agreement.Phtn_SOW_Contract_Value__c;
+              obj.totalAgreement = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
               obj.projectId = agreement.Project_Id__c;
               obj.projectDescription = agreement.Project_Name__c;
-              obj.projectStartDate = agreement.Project_Start_Date__c;
-              obj.projectEndDate = agreement.Project_End_Date__c;
-              obj.march = 1500;
-              obj.totalBurn = 1200;
-              obj.balance = 1200;
+              obj.projectStartDate = $filter('date')(agreement.Project_Start_Date__c, "dd-MMM-yy");
+              obj.projectEndDate = $filter('date')(agreement.Project_End_Date__c, "dd-MMM-yy");
+              obj.march = '';
+              obj.totalBurn = '';
+              obj.balance = '';
               return {
-                obj,
+                ...obj,
                 ...signed,
               }
             }
-            return [];
           });
-          let upside = data.orderBookUpsideList.filter(upside => {
-            if (list.Id === upside.AccountId__c) {
+          let upsideList = data.orderBookUpsideList.map(upside => {
+            if (headerObj.id === upside.AccountId__c) {
               let obj = {};
               obj.accountName = '';
-              obj.accountCategory = upside.Agreement_Name__c;
+              obj.agreementCategory = upside.Agreement_Name__c;
               obj.agreementNumber = '';
               obj.agreementName = '';
-              obj.agreementStartDate = upside.Start_Date__c;
-              obj.agreementEndDate = upside.End_Date__c;
-              obj.renewal = upside.Agreement_Renewal__c;
-              obj.signed = upside.Agreement_signed__c;
-              obj.unSigned = upside.Agreement_unsigned__c;
-              obj.upSide = upside.Agreement_Upside__c
-              obj.totalAgreement = upside.Agreement_Total__c;
+              obj.agreementStartDate = $filter('date')(upside.Start_Date__c, "dd-MMM-yy");
+              obj.agreementEndDate = $filter('date')(upside.End_Date__c, "dd-MMM-yy");
+              obj.renewal = $filter('currency')(upside.Agreement_Renewal__c);
+              obj.signed = $filter('currency')(upside.Agreement_signed__c);
+              obj.unSigned = $filter('currency')(upside.Agreement_unsigned__c);
+              obj.upSide = $filter('currency')(upside.Agreement_Upside__c);
+              obj.totalAgreement = $filter('currency')(upside.Agreement_Total__c);
               obj.projectId = '';
               obj.projectDescription = '';
               obj.projectStartDate = '';
@@ -1997,10 +1980,14 @@
               obj.balance = '';
               return obj;
             }
-            return [];
           });
-          obj.agreement = agreement;
-          obj.upside = upside;
+          let mergeDataObj = agreementList.concat(upsideList);
+          headerObj.signed = orderBook.calculateTotal(mergeDataObj, 'signed');
+          headerObj.unSigned = orderBook.calculateTotal(mergeDataObj, 'unSigned');
+          headerObj.renewal = orderBook.calculateTotal(mergeDataObj, 'renewal');
+          headerObj.upSide = orderBook.calculateTotal(mergeDataObj, 'upSide');
+          obj.agreement = agreementList;
+          obj.upside = upsideList;
           obj.account = headerObj;
           return obj;
         });
@@ -2037,7 +2024,7 @@
         controller: 'orderBookController',
         controllerAs: 'orderBook',
         bindToController: true,
-        // template: '<table class="table table-cxo"> <thead> <tr ng-data="{{orderBook.subColumns}}"> <th ng-if="headerCol.isVisible" ng-repeat="headerCol in orderBook.columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="orderBook.subColumns.length > 0"> <th ng-data="{{subHeaderCol}}" ng-if="subHeaderCol.isVisible" ng-repeat="subHeaderCol in orderBook.subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody> <tr ng-if="!row.isEditable" ng-repeat-start="row in orderBook.data"> <td ng-if="col.key" ng-repeat="col in orderBook.rows"> <button ng-click="orderBook.filterHandler()" ng-if="$parent.$index===0 && $parent.$parent.$index===orderBook.data.length - 1 && orderBook.type===\'fixed\'">edit</button>{{row[col.key]}}</td></tr><tr ng-if="row.isEditable" ng-repeat-end> <td ng-if="col.key" ng-repeat="col in orderBook.rows"> <button ng-click="orderBook.filterHandler()" ng-if="$parent.$index===0 && $parent.$parent.$index===orderBook.data.length - 1 && orderBook.type===\'fixed\'">edit</button> <input type="text"/> </td></tr></tbody></table>',
+        // template: '<table class="table table-cxo"> <thead> <tr> <th ng-if="headerCol.isVisible" ng-repeat="headerCol in orderBook.columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="orderBook.subColumns.length > 0"> <th ng-data="{{subHeaderCol}}" ng-if="subHeaderCol.isVisible" ng-repeat="subHeaderCol in orderBook.subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody> <tr ng-repeat-start="account in orderBook.data"> <td ng-if="col.key" ng-repeat="col in orderBook.rows">{{account.account[col.key]}}</td></tr><tr ng-repeat="agreement in account.agreement"> <td ng-if="col.key" ng-repeat="col in orderBook.rows"> <span>{{agreement[col.key]}}</span> </td></tr><tr ng-repeat-end ng-repeat="upside in account.upside"> <td ng-if="col.key" ng-repeat="col in orderBook.rows">{{upside[col.key]}}<a id="{{$parent.$parent.$parent.$index}}-{{$parent.$parent.$index}}-{{$index}}" href="glyphicon glyphicon-pencil" ng-click="orderBook.editHandler($event, $parent.$parent.$parent.$index, $parent.$parent.$index, $index)">edit</a> </td></tr></tbody></table>',
         templateUrl: 'template.html'
       };
     });
