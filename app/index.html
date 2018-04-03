@@ -1541,8 +1541,9 @@
 
     .table-crm-bg{background: #8ED6AD}
     .table-crm-grand-bg{ background: #77BC93}
-
-    .crm-date-picker{width: 140px}
+    .list-inline>li.crm-inline{display: inline-flex; line-height: 32px;}
+    .crm-date-picker{width: 140px; margin-left: 5px; margin-right: 40px;}
+    .crm-date-picker .input-group-addon{right: 39px; position: relative; z-index: 999;}
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
         width: 70%;
@@ -1613,7 +1614,7 @@
             <li><button type="button" class="btn" data-color="primary">Live contracts</button>
               <input type="checkbox" class="hidden" /></li>
             <li>|</li>
-            <li>Agreement date from <div class="input-group crm-date-picker"> <input class="form-control" id="date" name="student_dob" placeholder="MM/DD/YYYY" type="date">
+            <li class="crm-inline">Agreement date from <div class="input-group crm-date-picker"> <input class="form-control" id="date" name="student_dob" placeholder="MM/DD/YYYY" type="date">
                 <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar aria-hidden=" true""=""></span>
                   </div>
