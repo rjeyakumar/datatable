@@ -44,7 +44,7 @@
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         <span ng-hide="$parent.$parent.$parent.$index == orderBook.selectedInputField[0] && $parent.$parent.$index == orderBook.selectedInputField[1] && $index == orderBook.selectedInputField[2]">
           {{upside[col.key]}}
-          <a id="{{$parent.$parent.$parent.$index}}-{{$parent.$parent.$index}}-{{$index}}" href="glyphicon glyphicon-pencil" ng-click="orderBook.editHandler($event, $parent.$parent.$parent.$index, $parent.$parent.$index, $index)">edit</a>
+          <a id="{{$parent.$parent.$parent.$index}}-{{$parent.$parent.$index}}-{{$index}}" class="glyphicon glyphicon-pencil" ng-click="orderBook.editHandler($event, $parent.$parent.$parent.$index, $parent.$parent.$index, $index)"></a>
         </span>
         <input ng-if="$parent.$parent.$parent.$index == orderBook.selectedInputField[0] && $parent.$parent.$index == orderBook.selectedInputField[1] && $index == orderBook.selectedInputField[2]"
           type="text" value="{{upside[col.key]}}" />
