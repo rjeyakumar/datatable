@@ -718,10 +718,11 @@
     }
 
     .asofMonth-pickList {
-      width: 23%;
+      width: 100px;
       display: inline-block;
       padding: 5px 10px;
       height: 25px;
+      margin-top: 0;
     }
 
     select option {
@@ -907,18 +908,16 @@
       width: 81px !important;
     }
 
-    .asofMonth-pickList {
-      width: 43%;
-    }
+   
 
     .asofYear {
-      width: 55%;
-
-      background: #29689f;
+      background: #019089;
       color: #fff;
-      border-color: #29689f;
-      padding: 2px 10px;
+      border-color: #019089;
+      padding: 8px 8px;
       padding-right: 8px;
+      height: auto;
+      border-radius: 0
     }
 
     .checkbox-inline {
@@ -931,8 +930,12 @@
     }
 
     .asofMonth {
-      margin-top: 10px;
-      margin-right: 10px;
+      margin-right: 1px;
+      background: #019089;
+      color: #fff;
+      padding: 8px 8px;
+    height: auto;
+    border-radius: 0
     }
 
     .view-left {
@@ -945,7 +948,7 @@
 
     .asoffield .asofMonth-pickList {
       margin-top: -7px;
-      background-color: #29689f;
+      background-color: #019089;
       padding-top: 0;
       padding-bottom: 0;
       color: #fff;
@@ -1544,6 +1547,18 @@
     .list-inline>li.crm-inline{display: inline-flex; line-height: 32px;}
     .crm-date-picker{width: 140px; margin-left: 5px; margin-right: 40px;}
     .crm-date-picker .input-group-addon{right: 39px; position: relative; z-index: 999;}
+    .crm-green-icons .glyphicon{color: #019089;margin-right: 5px;margin-left: 5px}
+    .crm-btn-white{background: transparent;border: 1px solid #dadada; padding: 5px 10px; font-size: 14px;}
+    .crm-head-title{font-size: 18px; margin: 5px 0 15px;font-weight: 700; }
+    .prevNxtSec {display: inline;}
+    .prevNxtSec .glyphicon-triangle-left, .prevNxtSec .glyphicon-triangle-right{color: white;font-size: 15px;background:#019089;padding: 10px}
+    .prevNxtSec .glyphicon-triangle-left {
+border-radius: 5px 0 0 5px;
+    }
+    
+    .prevNxtSec .glyphicon-triangle-right{
+      border-radius: 0 5px 5px 0;
+    }
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
         width: 70%;
@@ -1579,33 +1594,34 @@
       <div order-by-popup=""></div>
       <show-error-message error-msg="orderBook.errorMessage"></show-error-message>
       <!-- Trigger the modal with a button -->
-      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#filter-popup">Open Modal</button>
-      <div>
-        <label>As of Month:</label>
-        <div class="col-sm-2 prevNxtSec noPadding" style="width: 11%;">
-          <i class="fa fa-caret-left" style="color: white;font-size: 15px;text-decoration: none;/* border: 1px solid red; */padding-left: 10px;padding-top: 5px;border-radius: 5px 0 0 5px;padding-bottom: 4px;float: left;/* height: 25px; */background: #29689f;padding-right: 10px;margin-top: 0;height: 25px;margin-right:3px;"
-            id="previous" ng-click="orderBook.monthPrev()" ng-disabled="!cxoVm.asOfDate || cxoVm.sameResponseDate || rrpVm.monthPrevDisable"></i>
-          <select class="form-control asofMonth-pickList asofmonth yearSelectBx" ng-change="orderBook.asOfMonthSelected()" ng-model="orderBook.selectedMonth" ng-options="month for month in orderBook.months">
-          </select>
-          <select class="form-control asofMonth-pickList asofYear yearSelectBx" ng-change="orderBook.asOfDateSelected()" ng-model="orderBook.selectedYear" ng-options="year for year in orderBook.years">
-          </select>
-          <i class="fa fa-caret-right" style="color: white;text-decoration: none;font-size: 15px;/* border: 1px solid red; */padding-left: 10px;padding-top: 5px;padding-bottom: 4px;border-radius: 0 4px 4px 0;height: 25px;background: #29689f;padding-right: 10px;margin-top: 0;"
-            id="next" ng-click="orderBook.monthNext()" ng-disabled="orderBook.monthNextDisable">
-          </i>
-        </div>
-      </div>
-      <div class="row contentSection">
-        <div class="col-sm-12 topContSection">
-          <div class="col-sm-3 noPadding">
-            <div class="col-sm-12 filterTypes view-left">
+      
+      
+      
+      <div class="panel panel-default topContSection">
+        <div class="row contentSection">
+        <div class="col-sm-8 ">
+            <div class="filterTypes view-left">
               <div class="custom-checkbox row checkbox-inline" ng-repeat="filter in orderBook.filterType">
                 <input id="{{filter.name}}-checkbox" name="{{filter.name}}-checkbox" type="checkbox" ng-model="orderBook.filterBy[filter.value]"
                   ng-change="orderBook.onFilterHandler(filter.value);" value="" />
                 <label for="{{filter.name}}-checkbox">{{filter.name}}</label>
               </div>
-            </div>
           </div>
         </div>
+        <div class="col-sm-4 text-right">
+            <label>As of Month:</label>
+            <div class=" prevNxtSec noPadding">
+              <i class="glyphicon glyphicon-triangle-left" 
+                id="previous" ng-click="orderBook.monthPrev()" ng-disabled="!cxoVm.asOfDate || cxoVm.sameResponseDate || rrpVm.monthPrevDisable"></i>
+              <select class="form-control asofMonth-pickList asofmonth yearSelectBx" ng-change="orderBook.asOfMonthSelected()" ng-model="orderBook.selectedMonth" ng-options="month for month in orderBook.months">
+              </select>
+              <select class="form-control asofMonth-pickList asofYear yearSelectBx" ng-change="orderBook.asOfDateSelected()" ng-model="orderBook.selectedYear" ng-options="year for year in orderBook.years">
+              </select>
+              <i class="glyphicon glyphicon-triangle-right" 
+                id="next" ng-click="orderBook.monthNext()" ng-disabled="orderBook.monthNextDisable">
+              </i>
+            </div>
+          </div>
         <div class="col-sm-12">
           <ul class="list-inline list-unstyled">
             <li><button type="button" class="btn btn-primary" data-color="primary">Projects with no agreement</button>
@@ -1616,7 +1632,7 @@
             <li>|</li>
             <li class="crm-inline">Agreement date from <div class="input-group crm-date-picker"> <input class="form-control" id="date" name="student_dob" placeholder="MM/DD/YYYY" type="date">
                 <div class="input-group-addon">
-                    <span class="glyphicon glyphicon-calendar aria-hidden=" true""=""></span>
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                   </div>
                 </div>
                 
@@ -1628,6 +1644,21 @@
             
             </ul>
         </div>
+       
+      </div>
+      
+    </div>
+      <div class="row">
+      <div class="col-lg-3">
+          <button type="button" class="btn btn-lg crm-btn-white" data-toggle="modal" data-target="#filter-popup">Select Column <span class="glyphicon glyphicon-th"></span></button>
+      </div>
+      <div class="col-lg-6 text-center">
+          <h3 class="text-uppercase crm-head-title">Book of Business as of march 2018</h3>
+      </div>
+      <div class="col-lg-3 text-right crm-green-icons">
+         <span class="glyphicon glyphicon-refresh"></span> <span class="glyphicon glyphicon-wrench glyphicon-size"></span> <span class="glyphicon glyphicon-save"></span> <span class="glyphicon glyphicon-info-sign"></span>
+      </div>
+    </div>
         <div class="col-sm-12 tableContainer no-padding" ng-show="!rrpVm.spinningLoader" style=""></div>
         <div class="col-sm-12 tableContainer no-padding">
           <div class="col-sm-12 noPadding tableContSection" id="overAllTable">
