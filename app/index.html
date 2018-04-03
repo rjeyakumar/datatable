@@ -1383,7 +1383,7 @@
       vertical-align: middle;
       text-align: center;
       white-space: normal;
-      font-size: 11px;
+      font-size: 9px;
       padding: 3px 5px;
       color: #000;
       border: 1px solid #c4d6ef8f;
@@ -1728,7 +1728,7 @@
           isVisible: true
         }
       ];
-      
+
       /** @description Function to remove column based on selected columns
        * @param {config} array - contains the table configuration
        * @param {columns} array - contains the selected columns
@@ -1886,17 +1886,18 @@
       }
 
       orderBook.calculateTotal = function (array, key) {
-        let total = 0;
+        var total = 0;
         array.forEach(data => {
           if (data && data[key]) {
-            total += parseFloat(data[key].substr(1));
+            total += parseFloat(data[key].substr(1).replace(',',''));
           }
         });
         return $filter('currency')(total);
       }
 
       orderBook.dataMapping = function (data) {
-        return data.mainAccList.map(list => {
+        var grandTotalList = [];
+        var mainAccList = data.mainAccList.map(list => {
           let obj = {};
           let headerObj = {};
           headerObj.accountName = list.Name;
@@ -1974,16 +1975,30 @@
             }
           });
           let mergeDataObj = agreementList.concat(upsideList);
+          grandTotalList = grandTotalList.concat(mergeDataObj);
           headerObj.signed = orderBook.calculateTotal(mergeDataObj, 'signed');
           headerObj.unSigned = orderBook.calculateTotal(mergeDataObj, 'unSigned');
           headerObj.renewal = orderBook.calculateTotal(mergeDataObj, 'renewal');
           headerObj.upSide = orderBook.calculateTotal(mergeDataObj, 'upSide');
+          headerObj.totalAgreement = orderBook.calculateTotal(mergeDataObj, 'totalAgreement');
           obj.agreement = agreementList;
           obj.upside = upsideList;
           obj.account = headerObj;
           obj.oppty = opptyList;
           return obj;
         });
+        let grandTotal = {
+          accountName: 'Grand Total',
+          signed: orderBook.calculateTotal(grandTotalList, 'signed'),
+          unSigned: orderBook.calculateTotal(grandTotalList, 'unSigned'),
+          renewal: orderBook.calculateTotal(grandTotalList, 'renewal'),
+          upSide: orderBook.calculateTotal(grandTotalList, 'upSide'),
+          totalAgreement: orderBook.calculateTotal(grandTotalList, 'totalAgreement'),
+        };
+        return {
+          grandTotal,
+          mainAccList,
+        }
       }
 
       orderBook.init = function () {
@@ -1992,6 +2007,7 @@
         orderBookApi.getOrderBookData().then(function (response) {
           if (response.responseCode === 200) {
             orderBook.data = orderBook.dataMapping(response.responseObject);
+            console.log(orderBook.data);
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
           }
