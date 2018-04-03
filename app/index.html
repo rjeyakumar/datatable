@@ -1570,6 +1570,18 @@
       <div order-by-popup=""></div>
       <!-- Trigger the modal with a button -->
       <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#filter-popup">Open Modal</button>
+      <div>
+        <label>As of Month:</label>
+        <div class="col-sm-2 prevNxtSec noPadding" style="width: 11%;">
+            <i class="fa fa-caret-left" style="color: white;font-size: 15px;text-decoration: none;/* border: 1px solid red; */padding-left: 10px;padding-top: 5px;border-radius: 5px 0 0 5px;padding-bottom: 4px;float: left;/* height: 25px; */background: #29689f;padding-right: 10px;margin-top: 0;height: 25px;margin-right:3px;" id="previous" ng-click="orderBook.monthPrev()" ng-disabled="!cxoVm.asOfDate || cxoVm.sameResponseDate || rrpVm.monthPrevDisable"></i>
+            <select class="form-control asofMonth-pickList asofmonth yearSelectBx"  ng-change="orderBook.asOfDateSelected()" value="" ng-model="orderBook.selectedMonth" ng-options="month for month in orderBook.months" >
+              </select>
+            <select class="form-control asofMonth-pickList asofYear yearSelectBx"  ng-change="orderBook.asOfDateSelected()" ng-model="orderBook.selectedYear" ng-options="year for year in orderBook.years" >
+            </select>
+            <i class="fa fa-caret-right" style="color: white;text-decoration: none;font-size: 15px;/* border: 1px solid red; */padding-left: 10px;padding-top: 5px;padding-bottom: 4px;border-radius: 0 4px 4px 0;height: 25px;background: #29689f;padding-right: 10px;margin-top: 0;" id="next" ng-click="orderBook.monthNext()" ng-disabled="orderBook.monthNextDisable">
+              </i>
+        </div>
+      </div>
       <div class="row contentSection">
         <div class="col-sm-12 topContSection">
           <div class="col-sm-3 noPadding">
@@ -1612,6 +1624,40 @@
       orderBook.mergedColumns = [];
       orderBook.selectedMonth = 'March';
       orderBook.filterType = [{ name: 'All', value: 'all' }, { name: 'Signed', value: 'signed' }, { name: 'Unsigned', value: 'unSigned' }, { name: 'Renewal', value: 'renewal' }, { name: 'Upside', value: 'upSide' }];
+      orderBook.years =[];
+        var asofyear =moment().subtract(1,'year').format('YYYY');
+        orderBook.selectedYear = asofyear;
+        for(var i=0; i<6; i++){
+          orderBook.years.push(moment(asofyear).year()+i);
+        }
+      orderBook.months =["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+        var asofmonth = moment().subtract(1,'month').format('MMMM');
+        for(var j=0; j<12; j++){
+          orderBook.selectedMonth = asofmonth;
+        }
+        console.log(orderBook.months);
+        console.log(asofmonth);
+        orderBook.monthPrev = function() {
+        var index = orderBook.years.indexOf(orderBook.selectedYear);
+        var prevIndex = index - 1;
+        if (index == 0) {
+          orderBook.monthPrevDisable = true;
+            return false;
+        }
+        if (orderBook.years[prevIndex]) {
+          orderBook.selectedYear = orderBook.years[prevIndex];
+           // initRecords();
+        }
+        //cxoVm.monthPrevDisable = true;
+        return false;
+        /** /
+             var nextElement = $('#monthdrop > option:selected').prev('option');
+              if (nextElement.length > 0) {
+                $('#monthdrop > option:selected').removeAttr('selected').prev('option').attr('selected', 'selected');
+              }
+              console.log('cxoVm.selectedMonth',cxoVm.selectedMonth)
+              /**/
+    }
       orderBook.filterBy = {
         all: true,
         signed: false,
