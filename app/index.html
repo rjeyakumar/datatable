@@ -1343,7 +1343,7 @@
 
     .tableContainer .table-cxo thead tr th {
       max-width: 120px;
-      min-width: 120px;      
+      min-width: 120px;
       background: #019089;
       color: #fff;
     }
@@ -1582,11 +1582,9 @@
         <div class="col-sm-2 prevNxtSec noPadding" style="width: 11%;">
           <i class="fa fa-caret-left" style="color: white;font-size: 15px;text-decoration: none;/* border: 1px solid red; */padding-left: 10px;padding-top: 5px;border-radius: 5px 0 0 5px;padding-bottom: 4px;float: left;/* height: 25px; */background: #29689f;padding-right: 10px;margin-top: 0;height: 25px;margin-right:3px;"
             id="previous" ng-click="orderBook.monthPrev()" ng-disabled="!cxoVm.asOfDate || cxoVm.sameResponseDate || rrpVm.monthPrevDisable"></i>
-          <select class="form-control asofMonth-pickList asofmonth yearSelectBx" ng-change="orderBook.asOfDateSelected()" value=""
-            ng-model="orderBook.selectedMonth" ng-options="month for month in orderBook.months">
+          <select class="form-control asofMonth-pickList asofmonth yearSelectBx" ng-change="orderBook.asOfMonthSelected()" ng-model="orderBook.selectedMonth" ng-options="month for month in orderBook.months">
           </select>
-          <select class="form-control asofMonth-pickList asofYear yearSelectBx" ng-change="orderBook.asOfDateSelected()" ng-model="orderBook.selectedYear"
-            ng-options="year for year in orderBook.years">
+          <select class="form-control asofMonth-pickList asofYear yearSelectBx" ng-change="orderBook.asOfDateSelected()" ng-model="orderBook.selectedYear" ng-options="year for year in orderBook.years">
           </select>
           <i class="fa fa-caret-right" style="color: white;text-decoration: none;font-size: 15px;/* border: 1px solid red; */padding-left: 10px;padding-top: 5px;padding-bottom: 4px;border-radius: 0 4px 4px 0;height: 25px;background: #29689f;padding-right: 10px;margin-top: 0;"
             id="next" ng-click="orderBook.monthNext()" ng-disabled="orderBook.monthNextDisable">
@@ -1644,19 +1642,22 @@
       orderBook.mergedColumns = [];
       orderBook.selectedMonth = 'March';
       orderBook.filterType = [{ name: 'All', value: 'all' }, { name: 'Signed', value: 'signed' }, { name: 'Unsigned', value: 'unsigned' }, { name: 'Renewal', value: 'renewal' }, { name: 'Upside', value: 'upside' }];
+      orderBook.currentYear = moment().format('YYYY');
       orderBook.years = [];
       var asofyear = moment().subtract(1, 'year').format('YYYY');
-      orderBook.selectedYear = asofyear;
+      orderBook.selectedYear =Number(asofyear);
       for (var i = 0; i < 6; i++) {
         orderBook.years.push(moment(asofyear).year() + i);
       }
-      orderBook.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      orderBook.currentMonth = moment().format('MMM');
+      orderBook.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var asofmonth = moment().subtract(1, 'month').format('MMMM');
       for (var j = 0; j < 12; j++) {
         orderBook.selectedMonth = asofmonth;
       }
-      console.log(orderBook.months);
-      console.log(asofmonth);
+      orderBook.asOfMonthSelected= function(){
+          console.log(value);
+      };
       orderBook.monthPrev = function () {
         var index = orderBook.years.indexOf(orderBook.selectedYear);
         var prevIndex = index - 1;
@@ -1670,13 +1671,19 @@
         }
         //cxoVm.monthPrevDisable = true;
         return false;
-        /** /
-             var nextElement = $('#monthdrop > option:selected').prev('option');
-              if (nextElement.length > 0) {
-                $('#monthdrop > option:selected').removeAttr('selected').prev('option').attr('selected', 'selected');
-              }
-              console.log('cxoVm.selectedMonth',cxoVm.selectedMonth)
-              /**/
+      }
+      orderBook.monthNext = function () {
+        var index = orderBook.years.indexOf(orderBook.selectedYear);
+        var nextIndex = index + 1;
+        if (index == orderBook.years.length - 1) {
+          orderBook.monthNextDisable = true;
+          return false;
+        }
+        if (orderBook.years[nextIndex]) {
+          orderBook.selectedYear = orderBook.years[nextIndex];
+          //initRecords();
+        }
+        return false;
       }
       orderBook.filterBy = {
         all: true,
@@ -2101,8 +2108,8 @@
         controller: 'orderBookController',
         controllerAs: 'orderBook',
         bindToController: true,
-        // template: '<table class="table table-cxo"><thead><tr><th>#</th><th ng-repeat="headerCol in orderBook.columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th></tr><tr ng-if="orderBook.subColumns.length > 0"><th></th><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in orderBook.subColumns">{{subHeaderCol.name}}</th></tr></thead><tbody ng-if="orderBook.type !== \'fixed\' && (!orderBook.data || orderBook.data.mainAccList.length === 0)"><tr><td>No results found</td></tr></tbody><tbody ng-if="orderBook.data && orderBook.data.mainAccList.length > 0"><tr><td></td><td ng-if="col.key" ng-repeat="col in orderBook.rows"> {{orderBook.data.grandTotal[col.key]}}</td></tr><tr ng-repeat-start="account in orderBook.data.mainAccList"><td>{{$index + 1}}</td><td ng-if="col.key" ng-repeat="col in orderBook.rows"> {{account.account[col.key]}}</td></tr><tr ng-repeat="agreement in account.agreement"><td></td><td ng-if="col.key" ng-repeat="col in orderBook.rows"> <span>{{agreement[col.key]}}</span></td></tr><tr ng-repeat="oppty in account.oppty"><td></td><td ng-if="col.key" ng-class="{red: col.name == \'Agreement Name\'}" ng-repeat="col in orderBook.rows"> {{oppty[col.key]}}</td></tr><tr ng-repeat-end ng-repeat="upside in account.upside"><td></td><td ng-if="col.key" ng-repeat="col in orderBook.rows"> <span ng-hide="$parent.$parent.$parent.$index == orderBook.selectedInputField[0] && $parent.$parent.$index == orderBook.selectedInputField[1] && $index == orderBook.selectedInputField[2]"> {{upside[col.key]}} <a id="{{$parent.$parent.$parent.$index}}-{{$parent.$parent.$index}}-{{$index}}" href="glyphicon glyphicon-pencil" ng-click="orderBook.editHandler($event, $parent.$parent.$parent.$index, $parent.$parent.$index, $index)">edit</a> </span> <input ng-if="$parent.$parent.$parent.$index == orderBook.selectedInputField[0] && $parent.$parent.$index == orderBook.selectedInputField[1] && $index == orderBook.selectedInputField[2]" type="text" value="{{upside[col.key]}}" /></td></tr></tbody></table>',
-        templateUrl: 'template.html'
+         // template: '<table class="table table-cxo"><thead><tr><th>#</th><th ng-repeat="headerCol in orderBook.columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th></tr><tr ng-if="orderBook.subColumns.length > 0"><th></th><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in orderBook.subColumns">{{subHeaderCol.name}}</th></tr></thead><tbody ng-if="orderBook.type !== \'fixed\' && (!orderBook.data || orderBook.data.mainAccList.length === 0)"><tr><td>No results found</td></tr></tbody><tbody ng-if="orderBook.data && orderBook.data.mainAccList.length > 0"><tr><td></td><td ng-if="col.key" ng-repeat="col in orderBook.rows"> {{orderBook.data.grandTotal[col.key]}}</td></tr><tr ng-repeat-start="account in orderBook.data.mainAccList"><td>{{$index + 1}}</td><td ng-if="col.key" ng-repeat="col in orderBook.rows"> {{account.account[col.key]}}</td></tr><tr ng-repeat="agreement in account.agreement"><td></td><td ng-if="col.key" ng-repeat="col in orderBook.rows"> <span>{{agreement[col.key]}}</span></td></tr><tr ng-repeat="oppty in account.oppty"><td></td><td ng-if="col.key" ng-class="{red: col.name == \'Agreement Name\'}" ng-repeat="col in orderBook.rows"> {{oppty[col.key]}}</td></tr><tr ng-repeat-end ng-repeat="upside in account.upside"><td></td><td ng-if="col.key" ng-repeat="col in orderBook.rows"> <span ng-hide="$parent.$parent.$parent.$index == orderBook.selectedInputField[0] && $parent.$parent.$index == orderBook.selectedInputField[1] && $index == orderBook.selectedInputField[2]"> {{upside[col.key]}} <a id="{{$parent.$parent.$parent.$index}}-{{$parent.$parent.$index}}-{{$index}}" href="glyphicon glyphicon-pencil" ng-click="orderBook.editHandler($event, $parent.$parent.$parent.$index, $parent.$parent.$index, $index)">edit</a> </span> <input ng-if="$parent.$parent.$parent.$index == orderBook.selectedInputField[0] && $parent.$parent.$index == orderBook.selectedInputField[1] && $index == orderBook.selectedInputField[2]" type="text" value="{{upside[col.key]}}" /></td></tr></tbody></table>',
+         templateUrl: 'template.html'
       };
     });
 
@@ -2129,13 +2136,13 @@
 
       orderBookFactory.getOrderBookData = function () {
         var deferred = $q.defer();
-       // Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', function (result, event) {
+        //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', function (result, event) {
         try {
           deferred.resolve(result);
         } catch (err) {
           deferred.reject(result);
         }
-       // });
+        //});
         return deferred.promise;
       }
       return orderBookFactory;
