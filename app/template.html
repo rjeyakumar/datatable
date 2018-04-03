@@ -15,13 +15,13 @@
     </tr>
   </tbody>
   <tbody ng-if="orderBook.data && orderBook.data.mainAccList.length > 0">
-    <tr>
+    <tr class="table-crm-grand-bg">
       <td></td>
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         {{orderBook.data.grandTotal[col.key]}}
       </td>
     </tr>
-    <tr ng-repeat-start="account in orderBook.data.mainAccList">
+    <tr class="table-crm-bg" ng-repeat-start="account in orderBook.data.mainAccList">
       <td>{{$index + 1}}</td>
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         {{account.account[col.key]}}
