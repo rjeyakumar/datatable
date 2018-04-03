@@ -1541,6 +1541,8 @@
 
     .table-crm-bg{background: #8ED6AD}
     .table-crm-grand-bg{ background: #77BC93}
+
+    .crm-date-picker{width: 140px}
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
         width: 70%;
@@ -1605,11 +1607,23 @@
         </div>
         <div class="col-sm-12">
           <ul class="list-inline list-unstyled">
-            <li>Projects with no agreement</li>
+            <li><button type="button" class="btn btn-primary" data-color="primary">Projects with no agreement</button>
+              <input type="checkbox" class="hidden" /></li>
             <li>|</li>
-            <li>Live contracts</li>
+            <li><button type="button" class="btn" data-color="primary">Live contracts</button>
+              <input type="checkbox" class="hidden" /></li>
             <li>|</li>
-            <li>Agreement date from <input class="datepicker" type="date" /> to <input class="datepicker" type="date"></li>
+            <li>Agreement date from <div class="input-group crm-date-picker"> <input class="form-control" id="date" name="student_dob" placeholder="MM/DD/YYYY" type="date">
+                <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar aria-hidden=" true""=""></span>
+                  </div>
+                </div>
+                
+                to <div class="input-group crm-date-picker"> <input class="form-control" id="date" name="student_dob" placeholder="MM/DD/YYYY" type="date">
+                  <div class="input-group-addon">
+                      <span class="glyphicon glyphicon-calendar aria-hidden=" true""=""></span>
+                    </div>
+                  </div></li>
             
             </ul>
         </div>
