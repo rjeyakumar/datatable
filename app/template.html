@@ -8,7 +8,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat-start="account in orderBook.data">
+    <tr class="table-crm-bg" ng-repeat-start="account in orderBook.data">
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         {{account.account[col.key]}}
       </td>
