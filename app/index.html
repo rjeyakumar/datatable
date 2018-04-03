@@ -1568,6 +1568,7 @@
   <body ng-app="orderBookApp">
     <div class="container-fluid" ng-controller="orderBookController as orderBook" ng-cloak="cloak">
       <div order-by-popup=""></div>
+      <show-error-message error-msg="orderBook.errorMessage"></show-error-message>
       <!-- Trigger the modal with a button -->
       <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#filter-popup">Open Modal</button>
       <div class="row contentSection">
@@ -1727,29 +1728,7 @@
           isVisible: true
         }
       ];
-      orderBook.clonedConfig = $.extend(true, [], orderBook.config);
-      // orderBook.data = [{
-      //   accountName: 'Alliance Data',
-      //   agreementCategory: 'signed',
-      //   agreementNumber: '1234',
-      //   agreementName: 'Alliance Data TM',
-      //   agreementStartDate: 1522331646141,
-      //   agreementEndDate: 1522331646141,
-      //   signed: 1500,
-      //   unSigned: 1500,
-      //   renewal: 1500,
-      //   upSide: 1500,
-      //   totalAgreement: 1500000,
-      //   projectId: 11111,
-      //   projectDescription: 'description',
-      //   projectStartDate: 1522331646141,
-      //   projectEndDate: 1522331646141,
-      //   march: 1500,
-      //   totalBurn: 1200,
-      //   balance: 1200
-      // }
-      // ];
-
+      
       /** @description Function to remove column based on selected columns
        * @param {config} array - contains the table configuration
        * @param {columns} array - contains the selected columns
@@ -1892,27 +1871,18 @@
       /** @description callback function for save button
        */
       orderBook.saveHandler = function () {
-        let config = $.extend(true, [], orderBook.clonedConfig);
-        orderBook.getColumns(config);
+        orderBook.getColumns(orderBook.clonedConfig);
         $('#filter-popup').modal('hide');
       }
 
       /** @description callback function for add row button
        **/
       orderBook.addRowHandler = function () {
-        // orderBook.data.push({
-        //   isEditable: true,
-        // });
-        orderBook.filterColumns(['Signed', 'Unsinged', 'Renewal', 'Upside']);
       }
 
       orderBook.editHandler = function (event, parentIndex, index, childIndex) {
         event.preventDefault();
-        console.log(event.target.id);
         orderBook.selectedInputField = event.target.id.split('-');
-        // orderBook.editFieldChildIndex = childIndex;
-        // orderBook.editFieldIndex = index;
-        // orderBook.isEditable = true;
       }
 
       orderBook.calculateTotal = function (array, key) {
@@ -1957,6 +1927,28 @@
               }
             }
           });
+          let opptyList = data.agmtOpptyMap[headerObj.id].map(opptyData => {
+            let obj = {};
+            obj.accountName = '';
+            obj.agreementCategory = '';
+            obj.agreementNumber = '';
+            obj.agreementName = 'Agreement not available';
+            obj.agreementStartDate = '';
+            obj.agreementEndDate = ''
+            obj.signed = '';
+            obj.unSigned = '';
+            obj.renewal = ''
+            obj.upSide = ''
+            obj.totalAgreement = '';
+            obj.projectId = opptyData.Project_ID__c;
+            obj.projectDescription = opptyData.Project__r ? opptyData.Project__r.Project_Name__c : '';
+            obj.projectStartDate = $filter('date')(opptyData.Project_Start_Date__c, "dd-MMM-yy");
+            obj.projectEndDate = $filter('date')(opptyData.Project_End_Date__c, "dd-MMM-yy");
+            obj.march = '';
+            obj.totalBurn = '';
+            obj.balance = '';
+            return obj;
+          });
           let upsideList = data.orderBookUpsideList.map(upside => {
             if (headerObj.id === upside.AccountId__c) {
               let obj = {};
@@ -1989,18 +1981,22 @@
           obj.agreement = agreementList;
           obj.upside = upsideList;
           obj.account = headerObj;
+          obj.oppty = opptyList;
           return obj;
         });
       }
 
       orderBook.init = function () {
+        orderBook.clonedConfig = $.extend(true, [], orderBook.config);
         orderBook.getColumns(orderBook.clonedConfig);
         orderBookApi.getOrderBookData().then(function (response) {
-          orderBook.data = orderBook.dataMapping(response.responseObject);
-          console.log(orderBook.data);
+          if (response.responseCode === 200) {
+            orderBook.data = orderBook.dataMapping(response.responseObject);
+          } else {
+            orderBook.errorMessage = response.errorObject.ResponseMsg__c;
+          }
         });
       }
-
       orderBook.init();
     });
 
@@ -2038,6 +2034,15 @@
         template: '<div id="filter-popup" class="modal fade" role="dialog"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button> <h4 class="modal-title">Modal Header</h4> </div><div class="modal-body"> <div class="col-sm-4 noPadding"> <select multiple ng-model="orderBook.availableColumns" ng-options="col.name disable when col.isFixed for col in orderBook.config"> </select> </div><div class="col-sm-2 noPadding"> <button ng-disabled="(!orderBook.selectedColumns || orderBook.selectedColumns.length==0)" ng-click="orderBook.removeColumnHandler()">left</button> <button ng-disabled="(!orderBook.availableColumns || orderBook.availableColumns.length==0)" ng-click="orderBook.addColumnHandler()">right</button> </div><div class="col-sm-4 noPadding"> <select multiple ng-model="orderBook.selectedColumns" ng-options="col.name disable when col.isFixed for col in orderBook.clonedConfig"> </select> </div><div class="col-sm-2 noPadding"> <button ng-data="{{orderBook.selectedColumns}}" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'up\')">up</button> <button ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'down\')">down</button> </div></div><div class="modal-footer"> <button type="button" class="btn btn-default" ng-click="orderBook.saveHandler()">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div></div></div></div>',
       };
     });
+    app.directive('showErrorMessage', function () {
+      return {
+        restrict: 'E',
+        scope: {
+          errorMsg: '=',
+        },
+        template: '<div class="myModal-error modal fade" role="dialog"><div class="modal-dialog"><div class="modal-content"><h1 class="text-center"><i class=" text-danger glyphicon glyphicon-alert"></i></h1><hr></hr><p class="text-center hide">Please contact Salesforce Team </p><p class="text-center" id="errormessageDB"> {{errorMsg}}</p><hr></hr><div class="text-center"><input class="submit-btn pull-right" type="button" data-dismiss="modal" value="Close"></input></div></div></div></div>'
+      }
+    });
     app.factory('orderBookApi', function ($q) {
       var orderBookFactory = {};
 
@@ -2045,7 +2050,7 @@
         var deferred = $q.defer();
         // Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', function (result, event) {
         try {
-          deferred.resolve(result[0].result);
+          deferred.resolve(result);
         } catch (err) {
           deferred.reject(result);
         }

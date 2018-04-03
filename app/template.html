@@ -7,7 +7,12 @@
       <th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in orderBook.subColumns">{{subHeaderCol.name}}</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody ng-if="orderBook.type !== 'fixed' && (!orderBook.data || orderBook.data.length === 0)">
+    <tr>
+      <td>No results found</td>
+    </tr>
+  </tbody>
+  <tbody ng-if="orderBook.data && orderBook.data.length > 0">
     <tr ng-repeat-start="account in orderBook.data">
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         {{account.account[col.key]}}
@@ -16,6 +21,11 @@
     <tr ng-repeat="agreement in account.agreement">
       <td ng-if="col.key" ng-repeat="col in orderBook.rows">
         <span>{{agreement[col.key]}}</span>
+      </td>
+    </tr>
+    <tr ng-repeat="oppty in account.oppty">
+      <td ng-if="col.key" ng-repeat="col in orderBook.rows">
+        {{oppty[col.key]}}
       </td>
     </tr>
     <tr ng-repeat-end ng-repeat="upside in account.upside">
