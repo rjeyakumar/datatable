@@ -21,7 +21,7 @@
         {{orderBook.data.grandTotal[col.key]}}
       </td>
     </tr>
-    <tr class="table-crm-bg" ng-if="account" ng-repeat-start="account in orderBook.data.mainAccList">
+    <tr class="table-crm-bg" ng-if="account" ng-repeat-start="account in orderBook.data.mainAccList track by $index">
       <td ng-if="orderBook.type === 'fixed'">{{$index + 1}}</td>
       <td ng-if="col.key" ng-repeat="col in orderBook.rows track by $index">
         {{account.account[col.key]}}
@@ -41,20 +41,36 @@
     </tr>
     <tr ng-if="!orderBook.noAgreement && upside" ng-repeat="upside in account.upside track by $index">
       <td ng-if="orderBook.type === 'fixed'"></td>
-      <td ng-if="col.key" ng-repeat="col in orderBook.rows track by $index">
+      <td ng-repeat-start="col in orderBook.rows" ng-if="col.key === 'accountName'">
+        <a class="glyphicon glyphicon-remove" ng-click="orderBook.deleteHandler($parent.$parent.$parent.$parent.$index, $parent.$parent.$parent.$index, 'upside')"></a>
+      </td>
+      <td ng-if="col.key && col.key !== 'accountName'" ng-repeat-end>
         <div ng-switch="col.key">
-          <select ng-switch-when="agreementCategory">
-            <option ng-repeat="category in upside[col.key]" value="{{category.value}}">{{category.label}}</option>
+          <select ng-switch-when="agreementCategory" ng-model="upside[col.key].value">
+            <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option>
           </select>
-          <div ng-switch-default value="upside[col.key]" key="col.key" editable></div>
+          <div ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside['agreementCategory'].value"></div>
+        </div>
+      </td>
+    </tr>
+    <tr ng-if="!orderBook.noAgreement && newRow" ng-repeat="newRow in account.newRows track by $index">
+      <td ng-if="orderBook.type === 'fixed'"></td>
+      <td ng-repeat-start="col in orderBook.rows" ng-if="col.key === 'accountName'">
+        <a class="glyphicon glyphicon-remove" ng-click="orderBook.deleteHandler($parent.$parent.$parent.$parent.$index, $parent.$parent.$parent.$index, 'newRows')"></a>
+      </td>
+      <td ng-if="col.key && col.key !== 'accountName'" ng-repeat-end>
+        <div ng-switch="col.key">
+          <select ng-switch-when="agreementCategory" ng-model="newRow[col.key].value">
+            <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option>
+          </select>
+          <div ng-switch-default value="newRow[col.key]" key="col.key" editable="true" category="newRow['agreementCategory'].value"></div>
         </div>
       </td>
     </tr>
     <tr ng-repeat-end ng-if="!orderBook.noAgreement">
       <td ng-if="orderBook.type === 'fixed'"></td>
       <td ng-if="col.key" ng-repeat="col in orderBook.rows track by $index">
-        <a ng-if="col.key === 'accountName'" class="glyphicon glyphicon-plus-sign" ng-click="orderBook.filterHandler({index: $parent.$parent.$parent.$index})"></a>
-        <span ng-if="col.key === 'agreementCategory'">Add Row</span>
+        <a ng-if="col.key === 'accountName'" class="glyphicon glyphicon-plus-sign" ng-click="orderBook.filterHandler({index: $parent.$parent.$parent.$index})">Add Row</a>
       </td>
     </tr>
   </tbody>
