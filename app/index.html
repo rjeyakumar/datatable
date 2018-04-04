@@ -1689,7 +1689,7 @@
               <li>|</li>
               <li class="crm-inline">Agreement date from
                 <div class="input-group crm-date-picker">
-                    <input date-picker  type="text" ng-model="value"/>
+                    <input date-picker  type="text" ng-model="orderBook.fromDate" />
                   <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                   </div>
@@ -1697,7 +1697,7 @@
 
                 to
                 <div class="input-group crm-date-picker">
-                    <input date-picker  type="text" ng-model="value"/>
+                    <input date-picker  type="text" ng-change="agreementDateChangeHandler(orderBook.fromDate,orderBook.toDate)" ng-model="orderBook.toDate" />
                   <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                   </div>
@@ -1819,6 +1819,10 @@
         } else {
           orderBook.init();
         }
+      }
+
+      orderBook.agreementDateChangeHandler = function(){
+        orderBook.init('Agreement date', moment(orderBook.fromDate).format('YYYY-MM-DD'), moment(orderBook.toDate).format('YYYY-MM-DD'));
       }
 
       orderBook.exportToExcel = function (tableId) {
@@ -2509,24 +2513,24 @@
       var orderBookFactory = {};
       orderBookFactory.getOrderBookData = function (filterType, startDate, endDate) {
         var deferred = $q.defer();
-         Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
+         //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
         try {
           deferred.resolve(result);
         } catch (err) {
           deferred.reject(result);
         }
-         });
+         //});
         return deferred.promise;
       }
       orderBookFactory.getTotalBurn = function (month, year) {
         var deferred = $q.defer();
-         Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
+         //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
         try {
           deferred.resolve(result1);
         } catch (err) {
           deferred.reject(result);
         }
-         });
+         //});
         return deferred.promise;
       }
       return orderBookFactory;
