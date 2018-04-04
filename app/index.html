@@ -1643,7 +1643,7 @@
 
   <body ng-app="orderBookApp">
     <div class="container-fluid" ng-controller="orderBookController as orderBook" ng-cloak="cloak">
-      <div order-by-popup=""></div>
+      <order-by-popup></order-by-popup>
       <show-error-message error-msg="orderBook.errorMessage"></show-error-message>
       <!-- Trigger the modal with a button -->
 
@@ -1717,12 +1717,12 @@
           </button>
         </div>
         <div class="col-lg-6 text-center">
-          <h3 class="text-uppercase crm-head-title">Book of Business as of march 2018</h3>
+          <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
         </div>
         <div class="col-lg-3 text-right crm-green-icons">
-          <span class="glyphicon glyphicon-refresh"></span>
+          <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
           <span class="glyphicon glyphicon-wrench glyphicon-size"></span>
-          <span class="glyphicon glyphicon-save"></span>
+          <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel('overAllTable')"></span>
           <span class="glyphicon glyphicon-info-sign"></span>
         </div>
       </div>
@@ -1730,12 +1730,14 @@
       <div class="col-sm-12 tableContainer no-padding">
         <div class="col-sm-12 noPadding tableContSection" id="overAllTable">
           <div class="col-sm-3 noPadding lefttableContSection" ng-if="orderBook.fixedColumns.length > 0">
-            <div grid="fixed" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement" columns="orderBook.fixedColumns"
-              sub-columns="orderBook.fixedSubColumns" rows="orderBook.mergedFixedColumns" grid-data="orderBook.data"></div>
+            <div id="fixedTable" grid="fixed" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
+              columns="orderBook.fixedColumns" sub-columns="orderBook.fixedSubColumns" rows="orderBook.mergedFixedColumns"
+              grid-data="orderBook.data"></div>
           </div>
           <div class="col-sm-9 noPadding righttableContSection fixed-scrollbar" ng-if="orderBook.scrollableColumns.length > 0">
-            <div grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement" columns="orderBook.scrollableColumns"
-              sub-columns="orderBook.scrollableSubColumns" rows="orderBook.mergedScrollableColumns" grid-data="orderBook.data"></div>
+            <div id="scrollableTable" grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
+              columns="orderBook.scrollableColumns" sub-columns="orderBook.scrollableSubColumns" rows="orderBook.mergedScrollableColumns"
+              grid-data="orderBook.data"></div>
           </div>
         </div>
       </div>
@@ -1745,7 +1747,7 @@
   </html>
   <script type="text/javascript">
     var app = angular.module("orderBookApp", ['ngSanitize']);
-    app.controller("orderBookController", function ($filter, $sce, $scope, $timeout, orderBookApi) {
+    app.controller("orderBookController", function ($filter, $sce, $scope, $timeout, orderBookApi, Excel) {
       var orderBook = this;
       orderBook.currentDate = moment().format('YYYY-MM-DD');
       orderBook.fixedColumns = [];
@@ -1817,6 +1819,16 @@
         } else {
           orderBook.init();
         }
+      }
+
+      orderBook.exportToExcel = function (tableId) {
+        $timeout(function () {
+          var exportHref = Excel.tableToExcel(tableId, 'Order book');
+          var a = document.createElement('a');
+          a.href = exportHref;
+          a.download = 'Order Boook';
+          a.click();
+        }, 100);
       }
 
       orderBook.updateConfiguration = function () {
@@ -2391,9 +2403,37 @@
       };
     });
 
-    app.directive('orderByPopup', function ($compile, $timeout) {
+    app.directive('numberOnly', function ($filter) {
       return {
         restrict: 'A',
+        require: 'ngModel',
+        link: function postLink(scope, elem, attrs, modelCtrl) {
+          if (modelCtrl) {
+            var lastModelValueMoment;
+            modelCtrl.$formatters.push(function (modelValue) {
+              return modelValue;
+            });
+            modelCtrl.$parsers.push(function (newViewValue) {
+              var newModelValue = newViewValue.toString().replace(/[^0-9._-]/g, '');
+              modelCtrl.$viewValue = newModelValue;
+              elem.val('$' + modelCtrl.$viewValue);
+              return '$' + newModelValue;
+            });
+            elem.on('blur', function (evt) {
+              if (!evt.target.value) {
+                elem.val('$' + modelCtrl.$viewValue);
+                modelCtrl.$setViewValue('$0.00');
+                modelCtrl.$render();
+              }
+            })
+          }
+        }
+      };
+    });
+
+    app.directive('orderByPopup', function ($compile, $timeout) {
+      return {
+        restrict: 'E',
         controller: 'orderBookController',
         controllerAs: 'orderBook',
         bindToController: true,
@@ -2418,10 +2458,6 @@
             momentFormat = 'DD-MMM-YY',
             datepicker,
             elPicker;
-          var dateTobeEnd = moment().subtract(1, 'days');
-          var currentDay = (new Date).getDate() - 1;
-          var currentYear = (new Date).getFullYear();
-          var currentMonth = (new Date).getMonth();
           datepicker = element.datepicker({
             autoclose: true,
             keyboardNavigation: false,
@@ -2433,9 +2469,6 @@
             changeMonth: false,
             changeYear: false,
             stepMonths: false,
-            minDate: new Date(currentYear, currentMonth, currentDay),
-            maxDate: new Date(currentYear, currentMonth, currentDay),
-            endDate: new Date(currentYear, currentMonth, currentDay)
           });
           elPicker = datepicker.data('datepicker').picker;
           if (ngModelController) {
@@ -2457,6 +2490,20 @@
           }
         }
       }
+    });
+    app.factory('Excel', function ($window) {
+      var uri = 'data:application/vnd.ms-excel;base64,',
+        template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>',
+        base64 = function (s) { return $window.btoa(unescape(encodeURIComponent(s))); },
+        format = function (s, c) { return s.replace(/{(\w+)}/g, function (m, p) { return c[p]; }) };
+      return {
+        tableToExcel: function (tableId, worksheetName) {
+          var table = $('#' + tableId),
+            ctx = { worksheet: worksheetName, table: table.html() },
+            href = uri + base64(format(template, ctx));
+          return href;
+        }
+      };
     });
     app.factory('orderBookApi', function ($q) {
       var orderBookFactory = {};
