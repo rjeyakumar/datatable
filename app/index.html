@@ -2129,7 +2129,7 @@
           obj.totalBurn = '';
           obj.balance = '';
           obj.requestData = {
-            accountId: orderBook.data.mainAccList[index].account.id
+            accountId: orderBook.data.mainAccList[index].account.id,
           };
           if (orderBook.data.mainAccList[index].newRows) {
             orderBook.data.mainAccList[index].newRows.push(obj);
@@ -2263,8 +2263,8 @@
       }
 
       orderBook.dataMapping = function (data) {
-        var filledProject = [];
         var grandTotalList = [];
+        var filledProject = [];
         var mainAccList = data.mainAccList.map(list => {
           let obj = {};
           let headerObj = {};
@@ -2273,25 +2273,24 @@
           let agreementList = data.agreementList.map(agreement => {
             if (headerObj.id === agreement.Apttus__Account__c) {
               let obj = {};
-              let signed = {};
-              if (filledProject.indexOf(agreement.Apttus__Agreement_Number__c) === -1) {
-                filledProject.push(agreement.Apttus__Agreement_Number__c);
+              let signed = {}
+              if (filledProject.indexOf(agreement.Apttus__Agreement_Number__c) > -1) {
                 signed = (agreement.Signature_Other_Party__c) ? obj.signed = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c) : obj.unSigned = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
-                obj.agreementCategory = agreement.Signature_Other_Party__c ? 'Signed' : 'Unsigned';
-                obj.agreementName = agreement.Name;
+                obj.agreementCategory = agreement.Apttus__Status_Category__c;
                 obj.agreementNumber = agreement.Apttus__Agreement_Number__c;
+                obj.agreementName = agreement.Name;
                 obj.agreementStartDate = $filter('date')(agreement.Apttus__Contract_Start_Date__c, "dd-MMM-yy");
                 obj.agreementEndDate = $filter('date')(agreement.Apttus__Contract_End_Date__c, "dd-MMM-yy");
                 obj.totalAgreement = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
               } else {
+                obj.signed = '';
+                obj.unSigned = '';
                 obj.agreementCategory = '';
-                obj.agreementName = '';
                 obj.agreementNumber = '';
+                obj.agreementName = '';
                 obj.agreementStartDate = '';
                 obj.agreementEndDate = '';
                 obj.totalAgreement = '';
-                obj.signed = '';
-                obj.unSigned = '';
               }
               obj.accountName = '';
               obj.renewal = ''
@@ -2418,7 +2417,6 @@
                 obj.AccountId__c = newRow.requestData.accountId;
                 obj.AgreementCategory__c = newRow.agreementCategory.value;
                 obj.Agreement_Name__c = newRow.agreementName;
-                obj.Id = '';
                 obj.Agreement_Renewal__c = common.currencyToNumber(newRow.renewal);
                 obj.Agreement_signed__c = common.currencyToNumber(newRow.signed);
                 obj.Agreement_unsigned__c = common.currencyToNumber(newRow.unSigned);
@@ -2430,13 +2428,11 @@
             });
           }
         });
-        orderBook.isShowLoading = true;
         orderBookApi.saveData(requestData, true).then((response) => {
           if (response.responseCode === 200) {
             orderBook.init();
           }
           else {
-            orderBook.isShowLoading = false;
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
           }
         });
@@ -2523,12 +2519,12 @@
           this.init();
         },
         controllerAs: 'edit',
-        // template: '<span ng-if="!edit.isEditable && !editable">{{value}}<a id="edit" ng-if="isShowField && edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil" ng-click="edit.editHandler(key)"></a></span><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value"/><input class="date_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(edit.isEditable || editable) && (key===\'agreementEndDate\' || key===\'agreementStartDate\')" type="text" ng-model="edit.value"/>'
-        templateUrl: 'template1.html'
+        template: '<span ng-if="!edit.isEditable && !editable">{{value}}<a id="edit" ng-if="isShowField && edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil" ng-click="edit.editHandler(key)"></a></span><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value"/><input class="date_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(edit.isEditable || editable) && (key===\'agreementEndDate\' || key===\'agreementStartDate\')" type="text" ng-model="edit.value"/>'
+        //templateUrl: 'template1.html'
       };
     });
 
-    app.directive('numberOnly', function ($filter, common) {
+    app.directive('numberOnly', function ($filter) {
       return {
         restrict: 'A',
         require: 'ngModel',
@@ -2536,7 +2532,7 @@
           if (modelCtrl) {
             var lastModelValueMoment;
             modelCtrl.$formatters.push(function (modelValue) {
-              return '$' + modelValue.toString().replace(/[^0-9._-]/g, '');
+              return modelValue;
             });
             modelCtrl.$parsers.push(function (newViewValue) {
               var newModelValue = newViewValue.toString().replace(/[^0-9._-]/g, '');
@@ -2545,9 +2541,8 @@
               return '$' + newModelValue;
             });
             elem.on('blur', function (evt) {
-              console.log(common.currencyToNumber(evt.target.value));
-              if (common.currencyToNumber(evt.target.value) === 0) {
-                elem.val('$0.00');
+              if (!evt.target.value) {
+                elem.val('$' + modelCtrl.$viewValue);
                 modelCtrl.$setViewValue('$0.00');
                 modelCtrl.$render();
               }
@@ -2635,8 +2630,7 @@
       return {
         currencyToNumber: function (value) {
           if (value) {
-            value = value[0] === '$' ? value.substr(1).replace(',', '') || 0 : value.replace(',', '') || 0;
-            return value != 0 ? value : 0;
+            return value[0] === '$' ? value.substr(1).replace(',', '') || 0 : value.replace(',', '') || 0;
           }
           return 0;
         },
@@ -2652,35 +2646,35 @@
       var orderBookFactory = {};
       orderBookFactory.getOrderBookData = function (filterType, startDate, endDate) {
         var deferred = $q.defer();
-        //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
-        try {
-          deferred.resolve(result);
-        } catch (err) {
-          deferred.reject(result);
-        }
-        //});
+        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
+          try {
+            deferred.resolve(result);
+          } catch (err) {
+            deferred.reject(result);
+          }
+        });
         return deferred.promise;
       }
       orderBookFactory.getTotalBurn = function (month, year) {
         var deferred = $q.defer();
-        // Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
-        try {
-          deferred.resolve(result1);
-        } catch (err) {
-          deferred.reject(result);
-        }
-        //});
+        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
+          try {
+            deferred.resolve(result);
+          } catch (err) {
+            deferred.reject(result);
+          }
+        });
         return deferred.promise;
       }
       orderBookFactory.saveData = function (data, isDelete) {
         var deferred = $q.defer();
-        //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.saveOrderBookUpside', data, isDelete, function (result, event) {
-        try {
-          deferred.resolve(result);
-        } catch (err) {
-          deferred.reject(result);
-        }
-        // });
+        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.saveOrderBookUpside', data, isDelete, function (result, event) {
+          try {
+            deferred.resolve(result);
+          } catch (err) {
+            deferred.reject(result);
+          }
+        });
         return deferred.promise;
       }
       return orderBookFactory;
