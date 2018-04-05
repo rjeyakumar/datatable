@@ -1689,7 +1689,7 @@
               <li>|</li>
               <li class="crm-inline">Agreement date from
                 <div class="input-group crm-date-picker">
-                    <input date-picker  type="text" ng-model="orderBook.fromDate" />
+                    <input class="date-picker"  type="text" ng-model="orderBook.fromDate" />
                   <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                   </div>
@@ -1697,7 +1697,7 @@
 
                 to
                 <div class="input-group crm-date-picker">
-                    <input date-picker  type="text" ng-change="agreementDateChangeHandler(orderBook.fromDate,orderBook.toDate)" ng-model="orderBook.toDate" />
+                    <input class="date-picker" type="text" ng-change="orderBook.agreementDateChangeHandler()" ng-model="orderBook.toDate" />
                   <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                   </div>
@@ -2455,7 +2455,7 @@
     });
     app.directive('datePicker', function () {
       return {
-        restrict: 'A',
+        restrict: 'AC',
         require: 'ngModel',
         link: function (scope, element, attr, ngModelController) {
           var datepickerFormat = 'dd-M-yy',
@@ -2519,18 +2519,18 @@
         } catch (err) {
           deferred.reject(result);
         }
-         //});
+        // });
         return deferred.promise;
       }
       orderBookFactory.getTotalBurn = function (month, year) {
         var deferred = $q.defer();
-         //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
+        // Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
         try {
-          deferred.resolve(result1);
+          deferred.resolve(result);
         } catch (err) {
           deferred.reject(result);
         }
-         //});
+        // });
         return deferred.promise;
       }
       return orderBookFactory;
