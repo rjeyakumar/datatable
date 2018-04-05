@@ -1593,7 +1593,8 @@
       color: white;
       font-size: 15px;
       background: #019089;
-      padding: 10px
+      padding: 9px;
+      top: 2px;
     }
 
     .prevNxtSec .glyphicon-triangle-left {
@@ -1610,7 +1611,12 @@
       padding: 6px;
       margin-left: 10px
     }
-
+    .crm-align-date {
+      display: inline-block;
+    }
+    .tableContainer .table tbody tr td.crm-text-error{
+      color: #f00;
+    }
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
         width: 70%;
@@ -1664,10 +1670,11 @@
             </div>
           </div>
           <div class="col-sm-4 text-right">
+            <div  class="crm-align-date" ng-class="{'invisible' : orderBook.showDatePicker}">
             <label>As of Month:</label>
             <div class=" prevNxtSec noPadding">
               <i class="glyphicon glyphicon-triangle-left" id="previous" ng-click="orderBook.prevYearHandler()" ng-disabled="!cxoVm.asOfDate || cxoVm.sameResponseDate || rrpVm.monthPrevDisable"></i>
-              <select class="form-control asofMonth-pickList asofmonth yearSelectBx" ng-change="orderBook.selectMonthYearHandler('month')"
+              <select class="form-control asofMonth-pickList asofmonth asofYear yearSelectBx" ng-change="orderBook.selectMonthYearHandler('month')"
                 ng-model="orderBook.selectedMonth">
                 <option ng-data="{{orderBook.currentYear}}" ng-disabled="(orderBook.currentMonth <= $index && orderBook.currentYear == orderBook.selectedYear) || orderBook.currentYear < orderBook.selectedYear"
                   ng-repeat="month in orderBook.months track by $index">{{month}}</option>
@@ -1677,8 +1684,10 @@
               </select>
               <i class="glyphicon glyphicon-triangle-right" id="next" ng-click="orderBook.nextYearHandler()" ng-disabled="orderBook.monthNextDisable">
               </i>
+
             </div>
-            <span class="crm-collapse-btn glyphicon glyphicon-triangle-top"></span>
+          </div>
+            <span class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
           </div>
           <div class="col-sm-12">
             <ul class="list-inline list-unstyled">
@@ -1702,8 +1711,7 @@
 
                 to
                 <div class="input-group crm-date-picker">
-                  <input class="date-picker" type="text" ng-change="agreementDateChangeHandler(orderBook.fromDate,orderBook.toDate)" ng-model="orderBook.toDate"
-                  />
+                    <input class="date-picker" type="text" ng-change="orderBook.agreementDateChangeHandler()" ng-model="orderBook.toDate" />
                   <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                   </div>
@@ -1834,7 +1842,10 @@
       orderBook.agreementDateChangeHandler = function () {
         orderBook.init('Agreement date', moment(orderBook.fromDate).format('YYYY-MM-DD'), moment(orderBook.toDate).format('YYYY-MM-DD'));
       }
-
+      orderBook.showDatePicker = false;
+      orderBook.datepickerShowHandler = function(){
+        orderBook.showDatePicker = !orderBook.showDatePicker;
+      }
       orderBook.exportToExcel = function (tableId) {
         $timeout(function () {
           var exportHref = excel.tableToExcel(tableId, 'Order book');
@@ -2276,7 +2287,7 @@
               let signed = {}
               if (filledProject.indexOf(agreement.Apttus__Agreement_Number__c) > -1) {
                 signed = (agreement.Signature_Other_Party__c) ? obj.signed = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c) : obj.unSigned = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
-                obj.agreementCategory = agreement.Apttus__Status_Category__c;
+                obj.agreementCategory = agreement.Signature_Other_Party__c ? 'Signed' : 'Unsigned';
                 obj.agreementNumber = agreement.Apttus__Agreement_Number__c;
                 obj.agreementName = agreement.Name;
                 obj.agreementStartDate = $filter('date')(agreement.Apttus__Contract_Start_Date__c, "dd-MMM-yy");
@@ -2646,35 +2657,35 @@
       var orderBookFactory = {};
       orderBookFactory.getOrderBookData = function (filterType, startDate, endDate) {
         var deferred = $q.defer();
-        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
-          try {
-            deferred.resolve(result);
-          } catch (err) {
-            deferred.reject(result);
-          }
-        });
+         //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
+        try {
+          deferred.resolve(result);
+        } catch (err) {
+          deferred.reject(result);
+        }
+        // });
         return deferred.promise;
       }
       orderBookFactory.getTotalBurn = function (month, year) {
         var deferred = $q.defer();
-        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
+       // Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
           try {
-            deferred.resolve(result);
+            deferred.resolve(result1);
           } catch (err) {
             deferred.reject(result);
           }
-        });
+       // });
         return deferred.promise;
       }
       orderBookFactory.saveData = function (data, isDelete) {
         var deferred = $q.defer();
-        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.saveOrderBookUpside', data, isDelete, function (result, event) {
+       // Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.saveOrderBookUpside', data, isDelete, function (result, event) {
           try {
             deferred.resolve(result);
           } catch (err) {
             deferred.reject(result);
           }
-        });
+       // });
         return deferred.promise;
       }
       return orderBookFactory;

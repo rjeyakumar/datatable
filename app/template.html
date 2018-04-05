@@ -23,7 +23,7 @@
     </tr>
     <tr class="table-crm-bg" ng-if="account" ng-repeat-start="account in data.mainAccList track by $index">
       <td ng-if="type === 'fixed'">{{$index + 1}}</td>
-      <td ng-if="col.key" ng-class="{'crm-text-error' : col.key === 'balance' && (account.account[col.key] && account.account[col.key].substr(1) === '(')}" ng-repeat="col in rows track by $index">
+      <td ng-if="col.key" ng-class="{'crm-text-error' : col.key === 'balance' && (account.account[col.key] && account.account[col.key][0] === '(')}" ng-repeat="col in rows track by $index">
         {{account.account[col.key]}}
       </td>
     </tr>
