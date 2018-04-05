@@ -8,7 +8,7 @@
     </meta>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     </meta>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />  
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.js"></script>
@@ -1694,7 +1694,7 @@
               <li>|</li>
               <li class="crm-inline">Agreement date from
                 <div class="input-group crm-date-picker">
-                    <input class="date-picker"  type="text" ng-model="orderBook.fromDate" />
+                  <input class="date-picker" type="text" ng-model="orderBook.fromDate" />
                   <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                   </div>
@@ -1702,7 +1702,8 @@
 
                 to
                 <div class="input-group crm-date-picker">
-                    <input class="date-picker" type="text" ng-change="agreementDateChangeHandler(orderBook.fromDate,orderBook.toDate)" ng-model="orderBook.toDate" />
+                  <input class="date-picker" type="text" ng-change="agreementDateChangeHandler(orderBook.fromDate,orderBook.toDate)" ng-model="orderBook.toDate"
+                  />
                   <div class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                   </div>
@@ -1731,14 +1732,14 @@
       <div class="col-sm-12 tableContainer no-padding" ng-if="!orderBook.isShowLoading">
         <div class="col-sm-12 noPadding tableContSection" id="overAllTable">
           <div class="col-sm-3 noPadding lefttableContSection" ng-if="orderBook.fixedColumns.length > 0">
-            <div id="fixedTable" grid="fixed" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
+            <div grid="fixed" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement" delete-handler="orderBook.deleteHandler(index, subIndex, type)"
               columns="orderBook.fixedColumns" sub-columns="orderBook.fixedSubColumns" rows="orderBook.mergedFixedColumns"
-              grid-data="orderBook.data"></div>
+              show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
           </div>
           <div class="col-sm-9 noPadding righttableContSection fixed-scrollbar" ng-if="orderBook.scrollableColumns.length > 0">
-            <div id="scrollableTable" grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
+            <div grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement" delete-handler="orderBook.deleteHandler(index, subIndex, type)"
               columns="orderBook.scrollableColumns" sub-columns="orderBook.scrollableSubColumns" rows="orderBook.mergedScrollableColumns"
-              grid-data="orderBook.data"></div>
+              show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
           </div>
         </div>
       </div>
@@ -1808,6 +1809,10 @@
 
       orderBook.noAgreementHandler = function () {
         orderBook.projectwithNoAgreement = !orderBook.projectwithNoAgreement;
+        if (orderBook.data.mainAccList) {
+          let emptyOpptList = orderBook.data.mainAccList.filter(account => !account.oppty || account.oppty.length === 0);
+          orderBook.showNoResults = orderBook.projectwithNoAgreement && emptyOpptList.length === orderBook.data.mainAccList.length;
+        }
       }
 
       orderBook.selectMonthYearHandler = function (type) {
@@ -1826,7 +1831,7 @@
         }
       }
 
-      orderBook.agreementDateChangeHandler = function(){
+      orderBook.agreementDateChangeHandler = function () {
         orderBook.init('Agreement date', moment(orderBook.fromDate).format('YYYY-MM-DD'), moment(orderBook.toDate).format('YYYY-MM-DD'));
       }
 
@@ -2123,6 +2128,9 @@
           obj.march = '';
           obj.totalBurn = '';
           obj.balance = '';
+          obj.requestData = {
+            accountId: orderBook.data.mainAccList[index].account.id
+          };
           if (orderBook.data.mainAccList[index].newRows) {
             orderBook.data.mainAccList[index].newRows.push(obj);
           } else {
@@ -2131,12 +2139,6 @@
         }
       }
 
-      orderBook.formatAmount = function (value) {
-        if (!value) {
-          value = 0;
-        }
-        return value >= 0 ? $filter('currency')(value) : '(' + $filter('currency')(value).substr(1) + ')';
-      }
       orderBook.calculateTotal = function (array, key) {
         var total = 0;
         array.forEach(data => {
@@ -2150,13 +2152,13 @@
             total += parseFloat(value);
           }
         });
-        return orderBook.formatAmount(total);
+        return common.formatAmount(total);
       }
 
       orderBook.calculateBalance = function (totalAgreement, totalBurn) {
         let balance = 0;
         balance = common.currencyToNumber(totalAgreement) - common.currencyToNumber(totalBurn);
-        return orderBook.formatAmount(balance);
+        return common.formatAmount(balance);
       }
 
       orderBook.deleteHandler = function (index, subIndex, type) {
@@ -2261,6 +2263,7 @@
       }
 
       orderBook.dataMapping = function (data) {
+        var filledProject = [];
         var grandTotalList = [];
         var mainAccList = data.mainAccList.map(list => {
           let obj = {};
@@ -2270,16 +2273,29 @@
           let agreementList = data.agreementList.map(agreement => {
             if (headerObj.id === agreement.Apttus__Account__c) {
               let obj = {};
-              let signed = (agreement.Signature_Other_Party__c) ? obj.signed = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c) : obj.unSigned = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
+              let signed = {};
+              if (filledProject.indexOf(agreement.Apttus__Agreement_Number__c) === -1) {
+                filledProject.push(agreement.Apttus__Agreement_Number__c);
+                signed = (agreement.Signature_Other_Party__c) ? obj.signed = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c) : obj.unSigned = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
+                obj.agreementCategory = agreement.Signature_Other_Party__c ? 'Signed' : 'Unsigned';
+                obj.agreementName = agreement.Name;
+                obj.agreementNumber = agreement.Apttus__Agreement_Number__c;
+                obj.agreementStartDate = $filter('date')(agreement.Apttus__Contract_Start_Date__c, "dd-MMM-yy");
+                obj.agreementEndDate = $filter('date')(agreement.Apttus__Contract_End_Date__c, "dd-MMM-yy");
+                obj.totalAgreement = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
+              } else {
+                obj.agreementCategory = '';
+                obj.agreementName = '';
+                obj.agreementNumber = '';
+                obj.agreementStartDate = '';
+                obj.agreementEndDate = '';
+                obj.totalAgreement = '';
+                obj.signed = '';
+                obj.unSigned = '';
+              }
               obj.accountName = '';
-              obj.agreementCategory = agreement.Apttus__Status_Category__c;
-              obj.agreementNumber = agreement.Apttus__Agreement_Number__c;
-              obj.agreementName = agreement.Name;
-              obj.agreementStartDate = $filter('date')(agreement.Apttus__Contract_Start_Date__c, "dd-MMM-yy");
-              obj.agreementEndDate = $filter('date')(agreement.Apttus__Contract_End_Date__c, "dd-MMM-yy");
               obj.renewal = ''
               obj.upSide = ''
-              obj.totalAgreement = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
               obj.projectId = agreement.Project_Id__c;
               obj.projectDescription = agreement.Project_Name__c;
               obj.projectStartDate = $filter('date')(agreement.Project_Start_Date__c, "dd-MMM-yy");
@@ -2389,18 +2405,38 @@
                 obj.Agreement_signed__c = common.currencyToNumber(upside.signed);
                 obj.Agreement_unsigned__c = common.currencyToNumber(upside.unSigned);
                 obj.Agreement_Upside__c = common.currencyToNumber(upside.upSide);
-                obj.End_Date__c = moment(upside.agreementStartDate).format('x');
-                obj.Start_Date__c = moment(upside.agreementEndDate).format('x');
+                obj.End_Date__c = upside.agreementStartDate ? moment(upside.agreementStartDate).format('x') : moment().format('x');
+                obj.Start_Date__c = upside.agreementEndDate ? moment(upside.agreementEndDate).format('x') : moment().format('x');
+                requestData.push(obj);
+              }
+            });
+          }
+          if (list.newRows && list.newRows.length > 0) {
+            list.newRows.forEach(newRow => {
+              if (newRow) {
+                let obj = {};
+                obj.AccountId__c = newRow.requestData.accountId;
+                obj.AgreementCategory__c = newRow.agreementCategory.value;
+                obj.Agreement_Name__c = newRow.agreementName;
+                obj.Id = '';
+                obj.Agreement_Renewal__c = common.currencyToNumber(newRow.renewal);
+                obj.Agreement_signed__c = common.currencyToNumber(newRow.signed);
+                obj.Agreement_unsigned__c = common.currencyToNumber(newRow.unSigned);
+                obj.Agreement_Upside__c = common.currencyToNumber(newRow.upSide);
+                obj.End_Date__c = newRow.agreementStartDate ? moment(newRow.agreementStartDate).format('x') : moment().format('x');
+                obj.Start_Date__c = newRow.agreementEndDate ? moment(newRow.agreementEndDate).format('x') : moment().format('x');
                 requestData.push(obj);
               }
             });
           }
         });
+        orderBook.isShowLoading = true;
         orderBookApi.saveData(requestData, true).then((response) => {
           if (response.responseCode === 200) {
             orderBook.init();
           }
           else {
+            orderBook.isShowLoading = false;
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
           }
         });
@@ -2418,7 +2454,9 @@
           orderBook.isShowLoading = false;
         });
       }
+      console.log('enter');
       orderBook.init();
+
     });
 
     /** @description - directive for render grid based on type and data
@@ -2436,14 +2474,13 @@
           subColumns: '=',
           rows: '=',
           data: '=gridData',
+          showNoResults: '=',
           noAgreement: '=',
           filterHandler: '&',
+          deleteHandler: '&',
         },
-        controller: 'orderBookController',
-        controllerAs: 'orderBook',
-        bindToController: true,
-        template: '<table class="table table-cxo"> <thead> <tr> <th ng-if="orderBook.type===\'fixed\'">#</th> <th ng-repeat="headerCol in orderBook.columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="orderBook.subColumns.length > 0"> <th ng-if="orderBook.type===\'fixed\'"></th> <th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in orderBook.subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody ng-if="orderBook.type !==\'fixed\' && (!orderBook.data || orderBook.data.mainAccList.length===0)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="orderBook.data && orderBook.data.mainAccList.length > 0"> <tr class="table-crm-grand-bg"> <td ng-if="orderBook.type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in orderBook.rows track by $index">{{orderBook.data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account" ng-repeat-start="account in orderBook.data.mainAccList track by $index"> <td ng-if="orderBook.type===\'fixed\'">{{$index + 1}}</td><td ng-if="col.key" ng-repeat="col in orderBook.rows track by $index">{{account.account[col.key]}}</td></tr><tr ng-if="!orderBook.noAgreement && agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-if="orderBook.type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in orderBook.rows track by $index"> <span>{{agreement[col.key]}}</span> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="orderBook.type===\'fixed\'"></td><td ng-if="col.key" ng-class="{red: col.name==\'Agreement Name\'}" ng-repeat="col in orderBook.rows">{{oppty[col.key]}}</td></tr><tr ng-if="!orderBook.noAgreement && upside" ng-repeat="upside in account.upside track by $index"> <td ng-if="orderBook.type===\'fixed\'"></td><td ng-repeat-start="col in orderBook.rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove" ng-click="orderBook.deleteHandler($parent.$parent.$parent.$parent.$index, $parent.$parent.$parent.$index, \'upside\')"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="!orderBook.noAgreement && newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-if="orderBook.type===\'fixed\'"></td><td ng-repeat-start="col in orderBook.rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove" ng-click="orderBook.deleteHandler($parent.$parent.$parent.$parent.$index, $parent.$parent.$parent.$index, \'newRows\')"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!orderBook.noAgreement"> <td ng-if="orderBook.type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in orderBook.rows track by $index"> <a ng-if="col.key===\'accountName\'" class="glyphicon glyphicon-plus-sign" ng-click="orderBook.filterHandler({index: $parent.$parent.$parent.$index})">Add Row</a> </td></tr></tbody></table>'
-        //templateUrl: 'template.html'
+        template: '<table class="table table-cxo"> <thead> <tr> <th ng-if="type===\'fixed\'">#</th> <th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="subColumns.length > 0"> <th ng-if="type===\'fixed\'"></th> <th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="!showNoResults && (data && data.mainAccList.length > 0)"> <tr class="table-crm-grand-bg"> <td ng-if="type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in rows track by $index">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account" ng-repeat-start="account in data.mainAccList track by $index"> <td ng-if="type===\'fixed\'">{{$index + 1}}</td><td ng-if="col.key" ng-repeat="col in rows track by $index">{{account.account[col.key]}}</td></tr><tr ng-if="!noAgreement && agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-if="type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in rows track by $index"> <span>{{agreement[col.key]}}</span> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="type===\'fixed\'"></td><td ng-if="col.key" ng-class="{red: col.name==\'Agreement Name\'}" ng-repeat="col in rows">{{oppty[col.key]}}</td></tr><tr ng-if="!noAgreement && upside" ng-repeat="upside in account.upside track by $index"> <td ng-if="type===\'fixed\'"></td><td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="!noAgreement && newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-if="type===\'fixed\'"></td><td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!noAgreement"> <td ng-if="type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="glyphicon glyphicon-plus-sign" ng-click="filterHandler({index: $parent.$parent.$parent.$index})">Add Row</a> </td></tr></tbody></table>'
+        // templateUrl: 'template.html'
       };
     });
 
@@ -2486,12 +2523,12 @@
           this.init();
         },
         controllerAs: 'edit',
-        template: '<span ng-if="!edit.isEditable && !editable">{{value}}<a id="edit" ng-if="isShowField && edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil" ng-click="edit.editHandler(key)"></a></span><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value"/><input class="date_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(edit.isEditable || editable) && (key===\'agreementEndDate\' || key===\'agreementStartDate\')" type="text" ng-model="edit.value"/>'
-        // templateUrl: 'template1.html'
+        // template: '<span ng-if="!edit.isEditable && !editable">{{value}}<a id="edit" ng-if="isShowField && edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil" ng-click="edit.editHandler(key)"></a></span><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value"/><input class="date_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(edit.isEditable || editable) && (key===\'agreementEndDate\' || key===\'agreementStartDate\')" type="text" ng-model="edit.value"/>'
+        templateUrl: 'template1.html'
       };
     });
 
-    app.directive('numberOnly', function ($filter) {
+    app.directive('numberOnly', function ($filter, common) {
       return {
         restrict: 'A',
         require: 'ngModel',
@@ -2499,7 +2536,7 @@
           if (modelCtrl) {
             var lastModelValueMoment;
             modelCtrl.$formatters.push(function (modelValue) {
-              return modelValue;
+              return '$' + modelValue.toString().replace(/[^0-9._-]/g, '');
             });
             modelCtrl.$parsers.push(function (newViewValue) {
               var newModelValue = newViewValue.toString().replace(/[^0-9._-]/g, '');
@@ -2508,8 +2545,9 @@
               return '$' + newModelValue;
             });
             elem.on('blur', function (evt) {
-              if (!evt.target.value) {
-                elem.val('$' + modelCtrl.$viewValue);
+              console.log(common.currencyToNumber(evt.target.value));
+              if (common.currencyToNumber(evt.target.value) === 0) {
+                elem.val('$0.00');
                 modelCtrl.$setViewValue('$0.00');
                 modelCtrl.$render();
               }
@@ -2522,7 +2560,7 @@
     app.directive('orderByPopup', function ($compile, $timeout) {
       return {
         restrict: 'E',
-        controller: 'orderBookController',
+        // controller: 'orderBookController',
         controllerAs: 'orderBook',
         bindToController: true,
         template: '<div id="filter-popup" class="modal fade" role="dialog"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button> <h4 class="modal-title">Modal Header</h4> </div><div class="modal-body"> <div class="col-sm-4 noPadding"> <select multiple ng-model="orderBook.availableColumns" ng-options="col.name disable when col.isFixed for col in orderBook.config"> </select> </div><div class="col-sm-2 noPadding"> <button ng-disabled="(!orderBook.selectedColumns || orderBook.selectedColumns.length==0)" ng-click="orderBook.removeColumnHandler()">left</button> <button ng-disabled="(!orderBook.availableColumns || orderBook.availableColumns.length==0)" ng-click="orderBook.addColumnHandler()">right</button> </div><div class="col-sm-4 noPadding"> <select multiple ng-model="orderBook.selectedColumns" ng-options="col.name disable when col.isFixed for col in orderBook.clonedConfig"> </select> </div><div class="col-sm-2 noPadding"> <button ng-data="{{orderBook.selectedColumns}}" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'up\')">up</button> <button ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'down\')">down</button> </div></div><div class="modal-footer"> <button type="button" class="btn btn-default" ng-click="orderBook.saveHandler()">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div></div></div></div>',
@@ -2593,13 +2631,20 @@
         }
       };
     });
-    app.factory('common', function ($window) {
+    app.factory('common', function ($filter) {
       return {
         currencyToNumber: function (value) {
           if (value) {
-            return value[0] === '$' ? value.substr(1).replace(',', '') || 0 : value.replace(',', '') || 0;
+            value = value[0] === '$' ? value.substr(1).replace(',', '') || 0 : value.replace(',', '') || 0;
+            return value != 0 ? value : 0;
           }
           return 0;
+        },
+        formatAmount: function (value) {
+          if (!value) {
+            value = 0;
+          }
+          return value >= 0 ? $filter('currency')(value) : '(' + $filter('currency')(value).substr(1) + ')';
         }
       };
     });
@@ -2607,35 +2652,35 @@
       var orderBookFactory = {};
       orderBookFactory.getOrderBookData = function (filterType, startDate, endDate) {
         var deferred = $q.defer();
-        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
-          try {
-            deferred.resolve(result);
-          } catch (err) {
-            deferred.reject(result);
-          }
-        });
+        //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
+        try {
+          deferred.resolve(result);
+        } catch (err) {
+          deferred.reject(result);
+        }
+        //});
         return deferred.promise;
       }
       orderBookFactory.getTotalBurn = function (month, year) {
         var deferred = $q.defer();
-        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
-          try {
-            deferred.resolve(result);
-          } catch (err) {
-            deferred.reject(result);
-          }
-        });
+        // Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
+        try {
+          deferred.resolve(result1);
+        } catch (err) {
+          deferred.reject(result);
+        }
+        //});
         return deferred.promise;
       }
       orderBookFactory.saveData = function (data, isDelete) {
         var deferred = $q.defer();
-        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.saveOrderBookUpside', data, isDelete, function (result, event) {
-          try {
-            deferred.resolve(result);
-          } catch (err) {
-            deferred.reject(result);
-          }
-        });
+        //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.saveOrderBookUpside', data, isDelete, function (result, event) {
+        try {
+          deferred.resolve(result);
+        } catch (err) {
+          deferred.reject(result);
+        }
+        // });
         return deferred.promise;
       }
       return orderBookFactory;
