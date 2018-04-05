@@ -1670,7 +1670,7 @@
             </div>
           </div>
           <div class="col-sm-4 text-right">
-            <div  class="crm-align-date" ng-class="{'invisible' : orderBook.showDatePicker}">
+            <div  class="crm-align-date" >
             <label>As of Month:</label>
             <div class=" prevNxtSec noPadding">
               <i class="glyphicon glyphicon-triangle-left" id="previous" ng-click="orderBook.prevYearHandler()" ng-disabled="!cxoVm.asOfDate || cxoVm.sameResponseDate || rrpVm.monthPrevDisable"></i>
@@ -1687,9 +1687,10 @@
 
             </div>
           </div>
-            <span class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
+            <span  ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-class="{'glyphicon-triangle-top' :orderBook.showDatePicker,'glyphicon-triangle-bottom':!orderBook.showDatePicker" ng-click="orderBook.datepickerShowHandler()"></span>
+            <span  ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-class="{'glyphicon-triangle-top' :orderBook.showDatePicker,'glyphicon-triangle-bottom':!orderBook.showDatePicker" ng-click="orderBook.datepickerShowHandler()"></span>
           </div>
-          <div class="col-sm-12">
+          <div class="col-sm-12" ng-class="{'hide' : orderBook.showDatePicker}">
             <ul class="list-inline list-unstyled">
               <li>
                 <button type="button" class="btn btn-primary" data-color="primary" ng-click="orderBook.noAgreementHandler()">Projects with no agreement</button>
