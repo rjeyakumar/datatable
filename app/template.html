@@ -23,7 +23,7 @@
     </tr>
     <tr class="table-crm-bg" ng-if="account" ng-repeat-start="account in data.mainAccList track by $index">
       <td ng-if="type === 'fixed'">{{$index + 1}}</td>
-      <td ng-if="col.key" ng-repeat="col in rows track by $index">
+      <td ng-if="col.key" ng-class="{'crm-text-error' : col.key === 'balance' && (account.account[col.key] && account.account[col.key].substr(1) === '(')}" ng-repeat="col in rows track by $index">
         {{account.account[col.key]}}
       </td>
     </tr>
@@ -35,7 +35,7 @@
     </tr>
     <tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index">
       <td ng-if="type === 'fixed'"></td>
-      <td ng-if="col.key" ng-class="{red: col.name == 'Agreement Name'}" ng-repeat="col in rows">
+      <td ng-if="col.key" ng-class="{'crm-text-error': col.key === 'agreementName' || (col.key === 'balance' && oppty[col.key] && oppty[col.key][0] === '(')}" ng-repeat="col in rows">
         {{oppty[col.key]}}
       </td>
     </tr>
