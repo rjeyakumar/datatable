@@ -1617,6 +1617,39 @@
     .tableContainer .table tbody tr td.crm-text-error{
       color: #f00;
     }
+    button.close.crm-modal-popup-close {
+    top: -13px;
+    right: -10px;
+    background: black;
+    opacity: 1 !important;
+    border-radius: 50%;
+    color: white;
+    font-size: 25px;
+    position: absolute;
+    border: 2px solid #000 !important;
+    }
+    button.close.crm-modal-popup-close .glyphicon{top: 0;}
+    .crm-add-remove-btn, .crm-up-down-btn {
+    padding: 8px;
+    background: transparent;
+    border: 1px solid #dadada;
+    color: darkslategray;
+    font-size: 10px;
+    margin-top: 10px;
+    margin-bottom: 22px;
+    }
+
+    .modal-footer.crm-modal-footer {
+      text-align: center;
+    }
+    select[multiple].form-control.crm-form-control{height: 300px;padding: 0}
+    select[multiple].form-control.crm-form-control option{padding: 5px 10px}
+    .modal-footer.crm-modal-footer button {width: 100px;}
+
+    .crm-modal-add-remove-btn{margin-top: 115px;}
+
+    .crm-up-down-btn { margin: 0 auto 5px auto;display: block}
+    .crm-up-down-btn:last-child{margin-bottom: 12px}
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
         width: 70%;
@@ -2537,7 +2570,7 @@
         controller: 'orderBookController',
         controllerAs: 'orderBook',
         bindToController: true,
-        template: '<div id="filter-popup" class="modal fade" role="dialog"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-header"> <button type="button" class="close" data-dismiss="modal">&times;</button> <h4 class="modal-title">Modal Header</h4> </div><div class="modal-body"> <div class="col-sm-4 noPadding"> <select multiple ng-model="orderBook.availableColumns" ng-options="col.name disable when col.isFixed for col in orderBook.config"> </select> </div><div class="col-sm-2 noPadding"> <button ng-disabled="(!orderBook.selectedColumns || orderBook.selectedColumns.length==0)" ng-click="orderBook.removeColumnHandler()">left</button> <button ng-disabled="(!orderBook.availableColumns || orderBook.availableColumns.length==0)" ng-click="orderBook.addColumnHandler()">right</button> </div><div class="col-sm-4 noPadding"> <select multiple ng-model="orderBook.selectedColumns" ng-options="col.name disable when col.isFixed for col in orderBook.clonedConfig"> </select> </div><div class="col-sm-2 noPadding"> <button ng-data="{{orderBook.selectedColumns}}" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'up\')">up</button> <button ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'down\')">down</button> </div></div><div class="modal-footer"> <button type="button" class="btn btn-default" ng-click="orderBook.saveHandler()">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> </div></div></div></div>',
+        template: '<div id="filter-popup" class="modal fade" role="dialog"> <div class="modal-dialog"> <div class="modal-content"> <div class="modal-body"><button type="button" class="close crm-modal-popup-close" data-dismiss="modal"><span class="glyphicon glyphicon-remove-circle"></button> <div class="row"><div class="col-sm-4"><h4>Available Columns</h4><select class="form-control crm-form-control" multiple ng-model="orderBook.availableColumns" ng-options="col.name disable when col.isFixed for col in orderBook.config"> </select> </div><div class="col-sm-2 crm-modal-add-remove-btn noPadding text-center"> <p><strong>Add</strong></p><button class="crm-add-remove-btn" ng-disabled="(!orderBook.selectedColumns || orderBook.selectedColumns.length==0)" ng-click="orderBook.removeColumnHandler()"><span class="glyphicon glyphicon-triangle-left"></span></button> <button class="crm-add-remove-btn" ng-disabled="(!orderBook.availableColumns || orderBook.availableColumns.length==0)" ng-click="orderBook.addColumnHandler()"><span class="glyphicon glyphicon-triangle-right"></span></button><p><strong>Remove</strong></p> </div><div class="col-sm-4"><h4>Selected Columns</h4> <select  class="form-control crm-form-control" multiple ng-model="orderBook.selectedColumns" ng-options="col.name disable when col.isFixed for col in orderBook.clonedConfig"> </select> </div><div class="col-sm-2 text-center crm-modal-add-remove-btn noPadding"> <p><strong>Up</strong></p><button class="crm-up-down-btn" ng-data="{{orderBook.selectedColumns}}" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'up\')"><span class="glyphicon glyphicon-triangle-top"></span></button> <button class="crm-up-down-btn" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'down\')"><span class="glyphicon glyphicon-triangle-bottom"></span></button><p><strong>Add</strong></p> </div></div></div><div class="modal-footer crm-modal-footer"> <button type="button" class="btn btn-default" ng-click="orderBook.saveHandler()">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> </div></div></div></div>',
       };
     });
     app.directive('showErrorMessage', function () {
