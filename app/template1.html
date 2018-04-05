@@ -2,8 +2,9 @@
   {{value}}
   <a id="edit" ng-if="isShowField && edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil" ng-click="edit.editHandler(key)"></a>
 </span>
-<input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="isShowField && (edit.isEditable || editable)"
+<input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !== 'agreementName' && isShowField && (edit.isEditable || editable)"
   type="text" ng-model="edit.value" />
-<!-- <input number-only class="edit_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="(edit.isEditable || editable) && (edit.editableFields.indexOf(key) > -1 && key !== 'agreementName' && key !== 'agreementEndDate' && key !== 'agreementStartDate')" type="text" ng-model="edit.value" /> -->
+<input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key === 'agreementName' && isShowField && (edit.isEditable || editable)"
+  type="text" ng-model="edit.value" />
 <input class="date_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(edit.isEditable || editable) && (key === 'agreementEndDate' || key === 'agreementStartDate')"
   type="text" ng-model="edit.value" />
