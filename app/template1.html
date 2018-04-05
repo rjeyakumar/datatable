@@ -1,6 +1,6 @@
 <span ng-if="!edit.isEditable && !editable">
   {{value}}
-  <a id="edit" ng-if="isShowField && edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil" ng-click="edit.editHandler(key)"></a>
+  <a id="edit" ng-if="isShowField && edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler(key)"></a>
 </span>
 <input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !== 'agreementName' && isShowField && (edit.isEditable || editable)"
   type="text" ng-model="edit.value" />
