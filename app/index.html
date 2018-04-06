@@ -1414,7 +1414,7 @@
 
 
     .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child span {
-      float: right;
+      /* float: right; */
       font-weight: 700;
       font-size: 12px;
       margin-top: -1px;
@@ -1881,10 +1881,9 @@
           <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
         </div>
         <div class="col-lg-3 text-right crm-green-icons">
+          <span>As on {{orderBook.currentDateTime}}</span>
           <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
-          <span class="glyphicon glyphicon-wrench glyphicon-size"></span>
           <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel('overAllTable')"></span>
-          <span class="glyphicon glyphicon-info-sign"></span>
         </div>
       </div>
       <div class="col-sm-12 tableContainer no-padding" ng-if="!orderBook.isShowLoading">
@@ -1910,6 +1909,7 @@
     app.controller("orderBookController", function ($filter, $sce, $scope, $timeout, orderBookApi, excel, common) {
       var orderBook = this;
       orderBook.currentDate = moment().format('YYYY-MM-DD');
+      orderBook.currentDateTime = moment().format("dddd, MMM Do YYYY, h:mm:ss a");
       orderBook.isShowLoading = false;
       orderBook.fixedColumns = [];
       orderBook.fixedSubColumns = [];
@@ -1972,18 +1972,26 @@
         }
       }
 
+      orderBook.filterNoAgreement = function () {
+        orderBook.data.mainAccList = orderBook.data.mainAccList.map(list => {
+          list.agreement = [];
+          list.upside = [];
+          return list;
+        });
+      }
+
       /** @description Callback function Project with no agreement button
        */
       orderBook.noAgreementHandler = function () {
         orderBook.projectwithNoAgreement = !orderBook.projectwithNoAgreement;
         orderBook.data = $.extend(true, [], orderBook.clonedData);
+        if (orderBook.liveContract) {
+          orderBook.liveContract = false;
+          orderBook.init();
+          return;
+        }
         if (orderBook.projectwithNoAgreement) {
-          let config = [];
-          orderBook.data.mainAccList = orderBook.data.mainAccList.map(list => {
-            list.agreement = [];
-            list.upside = [];
-            return list;
-          });
+          orderBook.filterNoAgreement();
         }
         orderBook.findNoResults();
       }
@@ -1996,6 +2004,7 @@
       };
 
       orderBook.liveContractHandler = function () {
+        orderBook.projectwithNoAgreement = false;
         orderBook.liveContract = !orderBook.liveContract
         if (orderBook.liveContract) {
           orderBook.init('Live Contracts', orderBook.currentDate, orderBook.currentDate);
@@ -2234,7 +2243,8 @@
        */
       orderBook.onFilterHandler = function (value) {
         let filterArr = [];
-        if (value === 'all') {
+        if (value === 'all'
+          || (orderBook.filterBy.signed && orderBook.filterBy.unsigned && orderBook.filterBy.renewal && orderBook.filterBy.upside)) {
           orderBook.filterBy = {
             all: true,
             signed: false,
@@ -2644,7 +2654,11 @@
           if (response.responseCode === 200) {
             orderBook.data = orderBook.dataMapping(response.responseObject);
             orderBook.clonedData = $.extend(true, [], orderBook.data);
-            orderBook.updateConfiguration();
+            if (orderBook.projectwithNoAgreement) {
+              orderBook.filterNoAgreement();
+            } else {
+              orderBook.updateConfiguration();
+            }
             orderBook.findNoResults();
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
@@ -2676,7 +2690,7 @@
           filterHandler: '&',
           deleteHandler: '&',
         },
-        template: '<table class="table table-cxo"> <thead> <tr> <th ng-if="type===\'fixed\'">#</th> <th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="subColumns.length > 0"> <th ng-if="type===\'fixed\'"></th> <th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"> <td ng-if="type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in rows track by $index">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-data="{{account.agreement}}" ng-repeat-start="account in data.mainAccList track by $index"> <td ng-if="type===\'fixed\'">{{$index + 1}}</td><td ng-if="col.key" ng-class="{\'crm-text-error\' :col.key===\'agreementName\' || col.key===\'balance\' && (account.account[col.key] && account.account[col.key][0]===\'(\')}" ng-repeat="col in rows track by $index">{{account.account[col.key]}}</td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-if="type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in rows track by $index"> <span>{{agreement[col.key]}}</span> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="type===\'fixed\'"></td><td ng-if="col.key" ng-class="{\'crm-text-error\': col.key===\'agreementName\' || (col.key===\'balance\' && oppty[col.key] && oppty[col.key][0]===\'(\')}" ng-repeat="col in rows">{{oppty[col.key]}}</td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-if="type===\'fixed\'"></td><td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-if="type===\'fixed\'"></td><td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="type===\'fixed\'"></td><td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
+        template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-data="{{account.agreement}}" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-text-error\' :col.key===\'agreementName\' || col.key===\'balance\' && (account.account[col.key] && account.account[col.key][0]===\'(\')}" ng-repeat="col in rows track by $index">{{account.account[col.key]}}</td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <span>{{agreement[col.key]}}</span> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-text-error\': col.key===\'agreementName\' || (col.key===\'balance\' && oppty[col.key] && oppty[col.key][0]===\'(\')}" ng-repeat="col in rows">{{oppty[col.key]}}</td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
         //templateUrl: 'template.html'
       };
     });
@@ -2723,7 +2737,7 @@
           this.init();
         },
         controllerAs: 'edit',
-        template: '<span ng-if="!edit.isEditable && !editable">{{value}}<a id="edit" ng-if="(key === \'agreementEndDate\' || key === \'agreementStartDate\') || (isShowField && edit.editableFields.indexOf(key) > -1)" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a></span><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(edit.isEditable || editable) && (key===\'agreementEndDate\' || key===\'agreementStartDate\')" type="text" ng-model="edit.value"/>'
+        template: '<span ng-if="!edit.isEditable && !editable && (key !== \'agreementEndDate\' && key !== \'agreementStartDate\')">{{value}}<a id="edit" ng-if="(isShowField && edit.editableFields.indexOf(key) > -1)" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a></span><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(key===\'agreementEndDate\' || key===\'agreementStartDate\')" type="text" ng-model="edit.value" readonly/>'
         //templateUrl: 'template1.html'
       };
     });
