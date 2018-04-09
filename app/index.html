@@ -1060,9 +1060,7 @@
     .glyphicon-size {
       font-size: 16px;
     }
-
-    .
-    /*tooltip.left .tooltip-arrow {
+    /*.tooltip.left .tooltip-arrow {
       border-left-color: #E8E8E8;
     }
     .tooltip.top .tooltip-arrow {
@@ -1832,8 +1830,9 @@
 
               </div>
             </div>
-            <span ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-click="orderBook.datepickerShowHandler()"></span>
-            <span ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
+          </div>
+            <span  ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-click="orderBook.datepickerShowHandler()"></span>
+            <span  ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
           </div>
           <div class="col-sm-12" ng-class="{'hide' : orderBook.showDatePicker}">
             <ul class="list-inline list-unstyled">
