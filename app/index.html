@@ -1060,6 +1060,7 @@
     .glyphicon-size {
       font-size: 16px;
     }
+
     /*.tooltip.left .tooltip-arrow {
       border-left-color: #E8E8E8;
     }
@@ -1553,15 +1554,31 @@
 
     .crm-date-picker {
       width: 140px;
+      margin: 5px 15px 5px 5px;
+    }
+
+ .crm-date-picker .date-picker {height: 25px;}
+    .crm-date-picker .input-group-addon {
+      right: 16px;
+      position: relative;
+      z-index: 9;
+      pointer-events: none;
+      padding: 0 5px 0 0;
+    }
+
+    .crm-table-date-picker {
+      width: 140px;
       margin-left: 5px;
       margin-right: 5px;
     }
 
-    .crm-date-picker .input-group-addon {
-      right: 39px;
+    .crm-table-date-picker .input-group-addon {
+      right: 19px;
       position: relative;
       z-index: 9;
-      pointer-events: none
+      pointer-events: none;
+      padding: 3px;
+
     }
 
     .crm-green-icons .glyphicon {
@@ -1583,7 +1600,7 @@
     }
 
     .crm-head-title {
-      font-size: 18px;
+      font-size: 14px;
       margin: 5px 0 15px;
       font-weight: 700;
     }
@@ -1624,7 +1641,9 @@
     .tableContainer .table tbody tr td.crm-text-error {
       color: #f00;
     }
-
+    .crm-text-error {
+      color: #f00;
+    }
     button.close.crm-modal-popup-close {
       top: -13px;
       right: -10px;
@@ -1706,15 +1725,27 @@
     .crm-up-down-btn:last-child {
       margin-bottom: 12px
     }
-
+    .crm-btn-cancel-save-align{
+      float:right;
+      display: inline-block;
+    }
     .crm-btn-success {
       background: #019089;
       text-transform: uppercase;
       color: #FFF;
-      padding: 5px 15px;
-      font-size: 14px;
+      padding: 2px 15px;
+      font-size: 12px;
     }
-
+    .crm-btn-cancel {
+      border: 1px solid #019089;
+      text-transform: uppercase;
+      color: #019089;
+      padding: 2px 15px;
+      font-size: 12px;
+    }
+    .crm-time-stamp{
+      font-size: 12px;
+    }
     .crm-btn-primary,
     .crm-btn-primary-active {
       padding: 5px 10px;
@@ -1730,7 +1761,6 @@
 
     .crm-glyphicon-align {
       padding: 0;
-      color: #000;
     }
 
     .glyphicon-pencil.crm-glyphicon-align {
@@ -1757,6 +1787,7 @@
 
     .crm-add-row {
       cursor: pointer;
+      color: #000;
     }
 
     .crm-add-row:hover {
@@ -1827,12 +1858,10 @@
                 </select>
                 <i class="glyphicon glyphicon-triangle-right" id="next" ng-click="orderBook.nextYearHandler()" ng-disabled="orderBook.monthNextDisable">
                 </i>
-
               </div>
+              <span ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-click="orderBook.datepickerShowHandler()"></span>
+              <span ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
             </div>
-          </div>
-            <span  ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-click="orderBook.datepickerShowHandler()"></span>
-            <span  ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
           </div>
           <div class="col-sm-12" ng-class="{'hide' : orderBook.showDatePicker}">
             <ul class="list-inline list-unstyled">
@@ -1864,9 +1893,6 @@
                   </div>
                 </div>
               </li>
-              <li>
-                <button class="crm-btn-success" ng-click="orderBook.saveAllData()">save</button>
-              </li>
             </ul>
           </div>
         </div>
@@ -1879,9 +1905,13 @@
         </div>
         <div class="col-lg-6 text-center">
           <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
+          <div class="crm-btn-cancel-save-align">
+            <button class="crm-btn-cancel" ng-click="orderBook.saveAllData()">Cancel</button>
+          <button class="crm-btn-success" ng-click="orderBook.saveAllData()">Save</button>          
+        </div>
         </div>
         <div class="col-lg-3 text-right crm-green-icons">
-          <span>As on {{orderBook.currentDateTime}}</span>
+          <span class="crm-time-stamp">As on {{orderBook.currentDateTime}}</span>
           <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
           <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel('overAllTable')"></span>
         </div>
@@ -2741,7 +2771,7 @@
           filterHandler: '&',
           deleteHandler: '&',
         },
-        template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-data="{{account.agreement}}" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-text-error\' :col.key===\'agreementName\' || col.key===\'balance\' && (account.account[col.key] && account.account[col.key][0]===\'(\')}" ng-repeat="col in rows track by $index">{{account.account[col.key]}}</td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <span>{{agreement[col.key]}}</span> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-text-error\': col.key===\'agreementName\' || (col.key===\'balance\' && oppty[col.key] && oppty[col.key][0]===\'(\')}" ng-repeat="col in rows">{{oppty[col.key]}}</td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
+        template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-data="{{account.agreement}}" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-text-error\' :col.key===\'agreementName\' || col.key===\'balance\' && (account.account[col.key] && account.account[col.key][0]===\'(\')}" ng-repeat="col in rows track by $index">{{account.account[col.key]}}</td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <span>{{agreement[col.key]}}</span> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-text-error\': col.key===\'agreementName\' || (col.key===\'balance\' && oppty[col.key] && oppty[col.key][0]===\'(\')}" ng-repeat="col in rows">{{oppty[col.key]}}</td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
         //templateUrl: 'template.html'
       };
     });
@@ -2788,11 +2818,10 @@
           this.init();
         },
         controllerAs: 'edit',
-        template: '<span ng-if="!edit.isEditable && !editable && (key !== \'agreementEndDate\' && key !== \'agreementStartDate\')">{{value}}<a id="edit" ng-if="(isShowField && edit.editableFields.indexOf(key) > -1)" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a></span><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(key===\'agreementEndDate\' || key===\'agreementStartDate\')" type="text" ng-model="edit.value" readonly/>'
+        template: '<span ng-if="!edit.isEditable && !editable && (key !== \'agreementEndDate\' && key !== \'agreementStartDate\')">{{value}}<a id="edit" ng-if="(isShowField && edit.editableFields.indexOf(key) > -1)" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a></span><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /> <div class="input-group crm-table-date-picker" ng-if="(key===\'agreementEndDate\' || key===\'agreementStartDate\')"><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" type="text" ng-model="edit.value" readonly/><div class="input-group-addon"><span aria-hidden="true" class="glyphicon glyphicon-calendar"></span></div></div>'
         //templateUrl: 'template1.html'
       };
     });
-
     app.directive('numberOnly', function ($filter) {
       return {
         restrict: 'A',
