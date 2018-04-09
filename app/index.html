@@ -2608,8 +2608,8 @@
                 obj.Agreement_signed__c = common.currencyToNumber(upside.signed);
                 obj.Agreement_unsigned__c = common.currencyToNumber(upside.unSigned);
                 obj.Agreement_Upside__c = common.currencyToNumber(upside.upSide);
-                obj.End_Date__c = upside.agreementStartDate ? moment(upside.agreementStartDate).format('x') : moment().format('x');
-                obj.Start_Date__c = upside.agreementEndDate ? moment(upside.agreementEndDate).format('x') : moment().format('x');
+                obj.End_Date__c = upside.agreementEndDate ? moment(upside.agreementEndDate).format('x') : moment().format('x');
+                obj.Start_Date__c = upside.agreementStartDate ? moment(upside.agreementStartDate).format('x') : moment().format('x');
                 requestData.push(obj);
               }
             });
@@ -2625,8 +2625,8 @@
                 obj.Agreement_signed__c = common.currencyToNumber(newRow.signed);
                 obj.Agreement_unsigned__c = common.currencyToNumber(newRow.unSigned);
                 obj.Agreement_Upside__c = common.currencyToNumber(newRow.upSide);
-                obj.End_Date__c = newRow.agreementStartDate ? moment(newRow.agreementStartDate).format('x') : moment().format('x');
-                obj.Start_Date__c = newRow.agreementEndDate ? moment(newRow.agreementEndDate).format('x') : moment().format('x');
+                obj.End_Date__c = newRow.agreementEndDate ? moment(newRow.agreementEndDate).format('x') : moment().format('x');
+                obj.Start_Date__c = newRow.agreementStartDate ? moment(newRow.agreementStartDate).format('x') : moment().format('x');
                 requestData.push(obj);
               }
             });
