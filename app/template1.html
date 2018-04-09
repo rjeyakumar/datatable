@@ -1,10 +1,10 @@
-<span ng-if="!edit.isEditable && !editable">
-  {{value}}
-  <a id="edit" ng-if="isShowField && edit.editableFields.indexOf(key) > -1" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler(key)"></a>
+<span ng-if="!edit.isEditable && !editable">{{value}}
+  <a id="edit" ng-if="(key !== \'agreementEndDate\' || key !== \'agreementStartDate\') || (isShowField && edit.editableFields.indexOf(key) > -1)"
+    class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a>
 </span>
-<input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !== 'agreementName' && isShowField && (edit.isEditable || editable)"
-  type="text" ng-model="edit.value" />
-<input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key === 'agreementName' && isShowField && (edit.isEditable || editable)"
-  type="text" ng-model="edit.value" />
-<input class="date_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(edit.isEditable || editable) && (key === 'agreementEndDate' || key === 'agreementStartDate')"
+<input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)"
+  type="text" ng-model="edit.value" maxlength="15" />
+<input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)"
+  type="text" ng-model="edit.value" maxlength="20" />
+<input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="editable && (key===\'agreementEndDate\' || key===\'agreementStartDate\')"
   type="text" ng-model="edit.value" />
