@@ -1979,13 +1979,13 @@
           list.upside = [];
           return list;
         });
+        orderBook.getTotal();
       }
 
       /** @description Callback function Project with no agreement button
        */
       orderBook.noAgreementHandler = function () {
         orderBook.projectwithNoAgreement = !orderBook.projectwithNoAgreement;
-        orderBook.data = $.extend(true, [], orderBook.clonedData);
         if (orderBook.liveContract) {
           orderBook.liveContract = false;
           orderBook.init();
@@ -1993,6 +1993,8 @@
         }
         if (orderBook.projectwithNoAgreement) {
           orderBook.filterNoAgreement();
+        } else {
+          orderBook.data = $.extend(true, [], orderBook.clonedData);
         }
         orderBook.findNoResults();
       }
@@ -2038,39 +2040,39 @@
             name: 'Account Name',
             key: 'accountName',
             isFixed: true,
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Agreement Category',
             key: 'agreementCategory',
             isFixed: true,
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Agreement Number',
             key: 'agreementNumber',
             isFixed: true,
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Agreement Name',
             key: 'agreementName',
             isFixed: true,
-            isVisible: true
+            isVisible: false
           },
           {
-            name: 'Agreement State Date',
+            name: 'Agreement Start Date',
             key: 'agreementStartDate',
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Agreement End Date',
             key: 'agreementEndDate',
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Agreement',
-            isVisible: true,
+            isVisible: false,
             subColumns: [
               {
                 name: 'Signed',
@@ -2097,31 +2099,31 @@
           {
             name: 'Total Agreement',
             key: 'totalAgreement',
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Project ID',
             key: 'projectId',
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Project Description',
             key: 'projectDescription',
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Project Start Date',
             key: 'projectStartDate',
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Project End Date',
             key: 'projectEndDate',
-            isVisible: true
+            isVisible: false
           },
           {
             name: 'Revenue Recognized',
-            isVisible: true,
+            isVisible: false,
             subColumns: [
               {
                 name: orderBook.selectedMonth,
@@ -2138,7 +2140,7 @@
           {
             name: 'Balance',
             key: 'balance',
-            isVisible: true
+            isVisible: false
           }
         ];
         orderBook.clonedConfig = $.extend(true, [], orderBook.config);
@@ -2154,6 +2156,18 @@
       orderBook.removeColumn = function (config, columns, isRemove) {
         let index = [];
         let clonedColumns = $.extend(true, [], columns);
+        orderBook.config = orderBook.config.map(col => {
+          clonedColumns.forEach((column, i) => {
+            if (col.name === column.name && !col.isFixed) {
+              if (isRemove) {
+                col.isVisible = true;
+              } else {
+                col.isVisible = false;
+              }
+            }
+          });
+          return col;
+        });
         clonedColumns.forEach((column, j) => {
           config.forEach((col, i) => {
             if (col.name === column.name && !col.isFixed) {
@@ -2202,7 +2216,6 @@
        **/
       orderBook.removeColumnHandler = function () {
         if (orderBook.selectedColumns && orderBook.selectedColumns.length > 0) {
-          console.log(orderBook.selectedColumns);
           let config = $.extend(true, [], orderBook.clonedConfig);
           orderBook.removeColumn(config, orderBook.selectedColumns, true);
           orderBook.clonedConfig = config;
@@ -2293,6 +2306,7 @@
             list.oppty = [];
             return list;
           });
+          orderBook.getTotal();
         }
         orderBook.findNoResults();
       }
@@ -2459,11 +2473,52 @@
             orderBook.data.grandTotal.march = orderBook.calculateTotal(grandTotalList, 'march');
             orderBook.data.grandTotal.totalBurn = orderBook.calculateTotal(grandTotalList, 'totalBurn');
             orderBook.data.grandTotal.balance = orderBook.calculateTotal(grandTotalList, 'balance');
+            orderBook.clonedData = $.extend(true, [], orderBook.data);
+            if (orderBook.projectwithNoAgreement) {
+              orderBook.filterNoAgreement();
+            }
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
           }
           orderBook.isShowLoading = false;
         });
+      }
+
+      orderBook.getTotal = function () {
+        let grandTotalList = [];
+        let headerObj = {};
+        let mainAccList = orderBook.data.mainAccList.map(list => {
+          let mergeDataObj = list.agreement.concat(list.upside).concat(list.oppty);
+          grandTotalList = grandTotalList.concat(mergeDataObj);
+          list.account = {
+            ...list.account,
+            signed: orderBook.calculateTotal(mergeDataObj, 'signed'),
+            unSigned: orderBook.calculateTotal(mergeDataObj, 'unSigned'),
+            renewal: orderBook.calculateTotal(mergeDataObj, 'renewal'),
+            upSide: orderBook.calculateTotal(mergeDataObj, 'upSide'),
+            totalAgreement: orderBook.calculateTotal(mergeDataObj, 'totalAgreement'),
+            march: orderBook.calculateTotal(mergeDataObj, 'march'),
+            totalBurn: orderBook.calculateTotal(mergeDataObj, 'totalBurn'),
+            balance: orderBook.calculateTotal(mergeDataObj, 'balance'),
+          }
+          return list;
+        });
+        let grandTotal = {
+          ...orderBook.data.grandTotal,
+          signed: orderBook.calculateTotal(grandTotalList, 'signed'),
+          unSigned: orderBook.calculateTotal(grandTotalList, 'unSigned'),
+          renewal: orderBook.calculateTotal(grandTotalList, 'renewal'),
+          upSide: orderBook.calculateTotal(grandTotalList, 'upSide'),
+          totalAgreement: orderBook.calculateTotal(grandTotalList, 'totalAgreement'),
+          march: orderBook.calculateTotal(grandTotalList, 'march'),
+          totalBurn: orderBook.calculateTotal(grandTotalList, 'totalBurn'),
+          balance: orderBook.calculateTotal(grandTotalList, 'balance'),
+        };
+        orderBook.data = {
+          ...orderBook.data,
+          grandTotal,
+          mainAccList,
+        }
       }
 
       orderBook.dataMapping = function (data) {
@@ -2642,6 +2697,7 @@
           }
         });
       }
+
       orderBook.findNoResults = function () {
         let agreementList = orderBook.data.mainAccList.filter(account => !account.agreement || account.agreement.length === 0);
         let upsideList = orderBook.data.mainAccList.filter(account => !account.upside || account.upside.length === 0);
@@ -2654,12 +2710,7 @@
         orderBookApi.getOrderBookData(filterType, startDate, endDate).then(function (response) {
           if (response.responseCode === 200) {
             orderBook.data = orderBook.dataMapping(response.responseObject);
-            orderBook.clonedData = $.extend(true, [], orderBook.data);
-            if (orderBook.projectwithNoAgreement) {
-              orderBook.filterNoAgreement();
-            } else {
-              orderBook.updateConfiguration();
-            }
+            orderBook.updateConfiguration();
             orderBook.findNoResults();
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
@@ -2777,7 +2828,7 @@
         // controller: 'orderBookController',
         controllerAs: 'orderBook',
         bindToController: true,
-        template: '<div id="filter-popup" class="modal fade" role="dialog"> <div class="modal-dialog crm-modal-dialog"> <div class="modal-content"> <div class="modal-body"><button type="button" class="close crm-modal-popup-close" data-dismiss="modal"><span class="crm-close-icon">+</span></button> <div class="row"><div class="col-sm-4"><h4>Available Columns</h4><select class="form-control crm-form-control" multiple ng-model="orderBook.availableColumns" ng-options="col.name disable when col.isFixed for col in orderBook.config"> </select> </div><div class="col-sm-2 crm-modal-add-remove-btn noPadding text-center"> <p><strong>Add</strong></p><button class="crm-add-remove-btn" ng-disabled="(!orderBook.selectedColumns || orderBook.selectedColumns.length==0)" ng-click="orderBook.removeColumnHandler()"><span class="glyphicon glyphicon-triangle-left"></span></button> <button class="crm-add-remove-btn" ng-disabled="(!orderBook.availableColumns || orderBook.availableColumns.length==0)" ng-click="orderBook.addColumnHandler()"><span class="glyphicon glyphicon-triangle-right"></span></button><p><strong>Remove</strong></p> </div><div class="col-sm-4"><h4>Selected Columns</h4> <select  class="form-control crm-form-control" multiple ng-model="orderBook.selectedColumns" ng-options="col.name disable when col.isFixed for col in orderBook.clonedConfig"> </select> </div><div class="col-sm-2 text-center crm-modal-add-remove-btn noPadding"> <p><strong>Up</strong></p><button class="crm-up-down-btn" ng-data="{{orderBook.selectedColumns}}" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'up\')"><span class="glyphicon glyphicon-triangle-top"></span></button> <button class="crm-up-down-btn" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'down\')"><span class="glyphicon glyphicon-triangle-bottom"></span></button><p><strong>Add</strong></p> </div></div></div><div class="modal-footer crm-modal-footer"> <button type="button" class="btn btn-default" ng-click="orderBook.saveHandler()">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> </div></div></div></div>',
+        template: '<div id="filter-popup" class="modal fade" role="dialog"> <div class="modal-dialog crm-modal-dialog"> <div class="modal-content"> <div class="modal-body"><button type="button" class="close crm-modal-popup-close" data-dismiss="modal"><span class="crm-close-icon">+</span></button> <div class="row"><div class="col-sm-4"><h4>Available Columns</h4><select class="form-control crm-form-control" multiple ng-model="orderBook.availableColumns" ng-options="col.name disable when col.isFixed for col in orderBook.config | visibleColumns"> </select> </div><div class="col-sm-2 crm-modal-add-remove-btn noPadding text-center"> <p><strong>Add</strong></p><button class="crm-add-remove-btn" ng-disabled="(!orderBook.selectedColumns || orderBook.selectedColumns.length==0)" ng-click="orderBook.removeColumnHandler()"><span class="glyphicon glyphicon-triangle-left"></span></button> <button class="crm-add-remove-btn" ng-disabled="(!orderBook.availableColumns || orderBook.availableColumns.length==0)" ng-click="orderBook.addColumnHandler()"><span class="glyphicon glyphicon-triangle-right"></span></button><p><strong>Remove</strong></p> </div><div class="col-sm-4"><h4>Selected Columns</h4> <select  class="form-control crm-form-control" multiple ng-model="orderBook.selectedColumns" ng-options="col.name disable when col.isFixed for col in orderBook.clonedConfig"> </select> </div><div class="col-sm-2 text-center crm-modal-add-remove-btn noPadding"> <p><strong>Up</strong></p><button class="crm-up-down-btn" ng-data="{{orderBook.selectedColumns}}" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'up\')"><span class="glyphicon glyphicon-triangle-top"></span></button> <button class="crm-up-down-btn" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'down\')"><span class="glyphicon glyphicon-triangle-bottom"></span></button><p><strong>Add</strong></p> </div></div></div><div class="modal-footer crm-modal-footer"> <button type="button" class="btn btn-default" ng-click="orderBook.saveHandler()">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> </div></div></div></div>',
       };
     });
     app.directive('showErrorMessage', function () {
@@ -2789,6 +2840,16 @@
         template: '<div class="myModal-error modal fade" role="dialog"><div class="modal-dialog"><div class="modal-content"><h1 class="text-center"><i class=" text-danger glyphicon glyphicon-alert"></i></h1><hr></hr><p class="text-center hide">Please contact Salesforce Team </p><p class="text-center" id="errormessageDB"> {{errorMsg}}</p><hr></hr><div class="text-center"><input class="submit-btn pull-right" type="button" data-dismiss="modal" value="Close"></input></div></div></div></div>'
       }
     });
+    app.filter('visibleColumns', [function () {
+      return function (object) {
+        var array = [];
+        angular.forEach(object, function (column) {
+          if (column.isVisible && !column.isFixed)
+            array.push(column);
+        });
+        return array;
+      };
+    }]);
     app.directive('fixedHeader', function () {
       return {
         restrict: 'A',
