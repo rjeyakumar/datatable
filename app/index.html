@@ -2600,12 +2600,12 @@
       }
       orderBook.getTotalBurn = function () {
         orderBook.isShowLoading = true;
-        var filledProject = [];
         var grandTotalList = [];
         orderBookApi.getTotalBurn(orderBook.selectedMonth, orderBook.selectedYear).then(function (response) {
           if (response.responseCode === 200) {
             let res = response.responseObject.burnedRevenueMap;
             orderBook.data.mainAccList = orderBook.data.mainAccList.map(list => {
+              let filledProject = [];
               list.agreement = list.agreement.map(agreement => {
                 if (agreement) {
                   let projectId = agreement.projectId ? agreement.projectId.toString() : '';
@@ -2723,11 +2723,15 @@
         var mainAccList = data.mainAccList.map(list => {
           let obj = {};
           let headerObj = {};
+          let filledProjectId = [];
           headerObj.accountName = list.Name;
           headerObj.id = list.Id;
           let agreementList = data.agreementList.filter(agreement => headerObj.id === agreement.Apttus__Account__c).map(agreement => {
             let obj = {};
             let signed = {};
+            if (filledProjectId.indexOf(agreement.Project_Id__c) === -1) {
+              filledProjectId.push(agreement.Project_Id__c);
+            }
             if (filledAgreementProject.indexOf(agreement.Apttus__Agreement_Number__c) === -1) {
               signed = (agreement.Signature_Other_Party__c) ? obj.signed = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c) : obj.unSigned = $filter('currency')(agreement.Phtn_SOW_Contract_Value__c);
               obj.agreementCategory = agreement.Signature_Other_Party__c ? 'Signed' : 'Unsigned';
@@ -2767,21 +2771,21 @@
               ...signed,
             }
           });
-          let opptyList = (data.agmtOpptyMap && data.agmtOpptyMap[headerObj.id]) ? data.agmtOpptyMap[headerObj.id].map(opptyData => {
+          let opptyList = (data.accERPMap && data.accERPMap[headerObj.id]) ? data.accERPMap[headerObj.id].filter(opptyData => filledProjectId.indexOf(opptyData.Project_Id__c) === -1).map(opptyData => {
             let obj = {};
             obj.accountName = '';
             obj.agreementCategory = '';
             obj.agreementNumber = '';
             obj.agreementName = 'Agreement not available';
             obj.agreementStartDate = '';
-            obj.agreementEndDate = ''
+            obj.agreementEndDate = '';
             obj.signed = '';
             obj.unSigned = '';
             obj.renewal = ''
             obj.upSide = ''
             obj.totalAgreement = '';
-            obj.projectId = opptyData.Project__r ? opptyData.Project__r.P_Id__c : '';
-            obj.projectDescription = opptyData.Project__r ? opptyData.Project__r.Project_Name__c : '';
+            obj.projectId = opptyData.Project_Id__c;
+            obj.projectDescription = opptyData.Project_Name__c;
             obj.projectStartDate = $filter('date')(opptyData.Project_Start_Date__c, "dd-MMM-yy");
             obj.projectEndDate = $filter('date')(opptyData.Project_End_Date__c, "dd-MMM-yy");
             obj.march = '';
@@ -2911,6 +2915,7 @@
         orderBook.isEdited = false;
         orderBookApi.getOrderBookData(filterType, startDate, endDate).then(function (response) {
           if (response.responseCode === 200) {
+            console.log(response.responseObject);
             orderBook.data = orderBook.dataMapping(response.responseObject);
             orderBook.updateConfiguration();
           } else {
@@ -3068,6 +3073,7 @@
         restrict: 'A',
         link: function (scope, element, attr) {
           var scrollbar = $('<div id="scrollbar"><div></div></div>').appendTo(element);
+          var parentEle = $('.fixed-scrollbar');
           scrollbar.css({
             overflowX: 'auto',
             position: 'fixed',
@@ -3084,7 +3090,7 @@
           function updateScrollPos() {
             element.scrollLeft(scrollbar.scrollLeft());
           }
-          function scrollPosition() {
+          function scrollPosition(evt) {
             if (bottom(element) > bottom(scrollbar)) {
               scrollbar.show();
               scrollbar.find('div').width(element.get(0).scrollWidth);
