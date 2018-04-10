@@ -1958,100 +1958,111 @@
       <div class="loder-div" ng-if="orderBook.isShowLoading">
         <div class="loader">Loading...</div>
       </div>
-      <div class="col-sm-5 text-right">
-        <div class="crm-align-date">
-          <label>As of Month:</label>
-          <div class=" prevNxtSec noPadding">
-            <i class="glyphicon glyphicon-triangle-left" id="previous" ng-click="orderBook.prevMonthHandler()" ng-disabled="orderBook.YearPrevDisable"></i>
-            <select class="form-control asofMonth-pickList asofmonth asofYear yearSelectBx" ng-change="orderBook.selectMonthYearHandler('month')"
-              ng-model="orderBook.selectedMonth">
-              <option ng-data="{{orderBook.currentYear}}" ng-disabled="(orderBook.currentMonth <= $index && orderBook.currentYear == orderBook.selectedYear) || orderBook.currentYear < orderBook.selectedYear"
-                ng-repeat="month in orderBook.months track by $index">{{month}}</option>
-            </select>
-            <select class="form-control asofMonth-pickList asofYear yearSelectBx" ng-change="orderBook.selectMonthYearHandler('year')"
-              ng-model="orderBook.selectedYear" ng-options="year for year in orderBook.years">
-            </select>
-            <i class="glyphicon glyphicon-triangle-right" id="next" ng-click="orderBook.nextMonthHandler()" ng-disabled="orderBook.yearNextDisable">
-            </i>
+      <div class="panel panel-default topContSection">
+        <div class="row contentSection">
+          <div class="col-sm-7">
+            <div class="filterTypes view-left">
+              <div class="custom-checkbox row checkbox-inline" ng-repeat="filter in orderBook.filterType">
+                <input id="{{filter.name}}-checkbox" name="{{filter.name}}-checkbox" type="checkbox" ng-model="orderBook.filterBy[filter.value]"
+                  ng-change="orderBook.onFilterHandler(filter.value);" value="" />
+                <label for="{{filter.name}}-checkbox">{{filter.name}}</label>
+              </div>
+            </div>
           </div>
-          <span ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-click="orderBook.datepickerShowHandler()"></span>
-          <span ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
-        </div>
-      </div>
-      <div class="col-sm-12" ng-class="{'hide' : orderBook.showDatePicker}">
-        <ul class="list-inline list-unstyled">
-          <li>
-            <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.liveContracts}" class="crm-btn-primary"
-              data-color="primary" ng-click="orderBook.agreementFilterHandler('liveContracts')">Live contracts</button>
-            <input type="checkbox" class="hidden" />
-          </li>
-          <li>|</li>
-          <li>
-            <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.all}" class="crm-btn-primary" data-color="primary"
-              ng-click="orderBook.agreementFilterHandler('all')">All Agreements</button>
-            <input type="checkbox" class="hidden" />
-          </li>
-          <li>|</li>
-          <li>
-            <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.noAgreement}" class="crm-btn-primary"
-              data-color="primary" ng-click="orderBook.agreementFilterHandler('noAgreement')">Projects with no agreement</button>
-            <input type="checkbox" class="hidden" />
-          </li>
-          <li>|</li>
-          <li class="crm-inline">Agreement date from
-            <div class="input-group crm-date-picker">
-              <input class="date-picker" type="text" ng-model="orderBook.fromDate" readonly="true" />
-              <div class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+          <div class="col-sm-5 text-right">
+            <div class="crm-align-date">
+              <label>As of Month:</label>
+              <div class=" prevNxtSec noPadding">
+                <i class="glyphicon glyphicon-triangle-left" id="previous" ng-click="orderBook.prevMonthHandler()" ng-disabled="orderBook.YearPrevDisable"></i>
+                <select class="form-control asofMonth-pickList asofmonth asofYear yearSelectBx" ng-change="orderBook.selectMonthYearHandler('month')"
+                  ng-model="orderBook.selectedMonth">
+                  <option ng-data="{{orderBook.currentYear}}" ng-disabled="(orderBook.currentMonth <= $index && orderBook.currentYear == orderBook.selectedYear) || orderBook.currentYear < orderBook.selectedYear"
+                    ng-repeat="month in orderBook.months track by $index">{{month}}</option>
+                </select>
+                <select class="form-control asofMonth-pickList asofYear yearSelectBx" ng-change="orderBook.selectMonthYearHandler('year')"
+                  ng-model="orderBook.selectedYear" ng-options="year for year in orderBook.years">
+                </select>
+                <i class="glyphicon glyphicon-triangle-right" id="next" ng-click="orderBook.nextMonthHandler()" ng-disabled="orderBook.yearNextDisable">
+                </i>
               </div>
+              <span ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-click="orderBook.datepickerShowHandler()"></span>
+              <span ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
             </div>
+          </div>
+          <div class="col-sm-12" ng-class="{'hide' : orderBook.showDatePicker}">
+            <ul class="list-inline list-unstyled">
+              <li>
+                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.liveContracts}" class="crm-btn-primary"
+                  data-color="primary" ng-click="orderBook.agreementFilterHandler('liveContracts')">Live contracts</button>
+                <input type="checkbox" class="hidden" />
+              </li>
+              <li>|</li>
+              <li>
+                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.all}" class="crm-btn-primary" data-color="primary"
+                  ng-click="orderBook.agreementFilterHandler('all')">All Agreements</button>
+                <input type="checkbox" class="hidden" />
+              </li>
+              <li>|</li>
+              <li>
+                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.noAgreement}" class="crm-btn-primary"
+                  data-color="primary" ng-click="orderBook.agreementFilterHandler('noAgreement')">Projects with no agreement</button>
+                <input type="checkbox" class="hidden" />
+              </li>
+              <li>|</li>
+              <li class="crm-inline">Agreement date from
+                <div class="input-group crm-date-picker">
+                  <input class="date-picker" type="text" ng-model="orderBook.fromDate" readonly="true" />
+                  <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                  </div>
+                </div>
 
-            to
-            <div class="input-group crm-date-picker">
-              <input class="date-picker" type="text" ng-change="orderBook.agreementFilterHandler('date')" ng-model="orderBook.toDate" readonly="true"
-              />
-              <div class="input-group-addon">
-                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-3 col-md-3">
-        <button type="button" class="crm-btn-white" data-toggle="modal" data-target="#filter-popup">Select Column
-          <span class="glyphicon glyphicon-th"></span>
-        </button>
-      </div>
-      <div class="col-lg-6 col-md-6 text-center">
-        <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
-        <div class="crm-btn-cancel-save-align" ng-if="orderBook.isEdited">
-          <button class="crm-btn-cancel" data-toggle="modal" data-target="#cancel-popup">Cancel</button>
-          <button class="crm-btn-success" ng-click="orderBook.saveAllData()">Save</button>
+                to
+                <div class="input-group crm-date-picker">
+                  <input class="date-picker" type="text" ng-change="orderBook.agreementFilterHandler('date')" ng-model="orderBook.toDate" readonly="true"
+                  />
+                  <div class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-3 text-right crm-green-icons">
-        <span class="crm-time-stamp">As on {{orderBook.currentDateTime}}</span>
-        <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
-        <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel('overAllTable')"></span>
-      </div>
-    </div>
-    <div class="col-sm-12 tableContainer no-padding" ng-if="!orderBook.isShowLoading">
-      <div class="col-sm-12 noPadding tableContSection" id="overAllTable">
-        <div class="col-sm-3 noPadding lefttableContSection" ng-if="orderBook.fixedColumns.length > 0">
-          <div fixed-header="true" grid="fixed" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
-            delete-handler="orderBook.deleteHandler(index, subIndex, type)" columns="orderBook.fixedColumns" sub-columns="orderBook.fixedSubColumns"
-            rows="orderBook.mergedFixedColumns" show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
+      <div class="row">
+        <div class="col-lg-3 col-md-3">
+          <button type="button" class="crm-btn-white" data-toggle="modal" data-target="#filter-popup">Select Column
+            <span class="glyphicon glyphicon-th"></span>
+          </button>
         </div>
-        <div class="col-sm-9 noPadding righttableContSection fixed-scrollbar" fixed-scroll="true" ng-if="orderBook.scrollableColumns.length > 0">
-          <div fixed-header="true" grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
-            delete-handler="orderBook.deleteHandler(index, subIndex, type)" columns="orderBook.scrollableColumns" sub-columns="orderBook.scrollableSubColumns"
-            rows="orderBook.mergedScrollableColumns" show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
+        <div class="col-lg-6 col-md-6 text-center">
+          <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
+          <div class="crm-btn-cancel-save-align" ng-if="orderBook.isEdited">
+            <button class="crm-btn-cancel" data-toggle="modal" data-target="#cancel-popup">Cancel</button>
+            <button class="crm-btn-success" ng-click="orderBook.saveAllData()">Save</button>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 text-right crm-green-icons">
+          <span class="crm-time-stamp">As on {{orderBook.currentDateTime}}</span>
+          <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
+          <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel('overAllTable')"></span>
         </div>
       </div>
-    </div>
+      <div class="col-sm-12 tableContainer no-padding" ng-if="!orderBook.isShowLoading">
+        <div class="col-sm-12 noPadding tableContSection" id="overAllTable">
+          <div class="col-sm-3 noPadding lefttableContSection" ng-if="orderBook.fixedColumns.length > 0">
+            <div fixed-header="true" grid="fixed" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
+              delete-handler="orderBook.deleteHandler(index, subIndex, type)" columns="orderBook.fixedColumns" sub-columns="orderBook.fixedSubColumns"
+              rows="orderBook.mergedFixedColumns" show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
+          </div>
+          <div class="col-sm-9 noPadding righttableContSection fixed-scrollbar" fixed-scroll="true" ng-if="orderBook.scrollableColumns.length > 0">
+            <div fixed-header="true" grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
+              delete-handler="orderBook.deleteHandler(index, subIndex, type)" columns="orderBook.scrollableColumns" sub-columns="orderBook.scrollableSubColumns"
+              rows="orderBook.mergedScrollableColumns" show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 
