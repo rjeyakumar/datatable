@@ -39,11 +39,9 @@
         body {
           background-color: transparent;
         }
-    
         *:focus {
           outline: none;
         }
-    
         *,
         body,
         td,
@@ -55,28 +53,23 @@
         textarea {
           font-family: "Salesforce Sans", Arial, sans-serif;
         }
-    
         html,
         body {
           font-family: 'Salesforce Sans', Arial, sans-serif !important;
         }
-    
         .table-cxo {
           font-size: 12px;
           color: rgb(84, 105, 141);
           border: 1px solid #eee;
         }
-    
         .table-cxo tbody tr td,
         .table-cxo thead tr th {
           border: 1px solid #c4d6ef8f;
           color: rgb(84, 105, 141);
         }
-    
         .glyphicon-pencil {
           cursor: pointer;
         }
-    
         .table-cxo thead tr th {
           text-transform: uppercase;
           vertical-align: middle;
@@ -87,7 +80,9 @@
           padding: 3px 5px;
           height: 24px;
         }
-    
+        .table-cxo thead tr th.header {
+          height: 49px;
+        }
         .table-cxo tbody tr td {
           text-transform: uppercase;
           vertical-align: middle;
@@ -97,57 +92,46 @@
           font-size: 14px;
           padding: 5px;
         }
-    
         .table-cxo>tbody>tr>td.align-top {
           vertical-align: top;
         }
-    
         .table-cxo>tbody>tr>td.align-bottom {
           vertical-align: middle;
         }
-    
         .table-cxo>tbody>tr>td>span.icon-down {
           color: red;
           font-size: 10px;
         }
-    
         .table-cxo .popover-content textarea {
           border: none;
         }
-    
         .table-cxo>tbody>tr>td>span i {
           padding-top: 4px;
         }
-    
         .table-cxo>tbody>tr>td>span.icon-up {
           color: green;
           font-size: 10px;
         }
-    
         .table-cxo thead tr th.accnt-det {
           width: 9%;
           text-align: left;
         }
-    
         .table-cxo thead tr th.accnt-name {
           width: 13%;
           text-align: left;
         }
-    
         td div.txt-ellipsis {
-          width: 80%;
+          width: 100px;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           position: relative;
           float: left;
         }
-    
         td div.txt-ellipsis a {
           padding-bottom: 0px;
           padding-top: 0px;
         }
-    
         td div.auth-left {
           width: calc( 100% - 15px);
           white-space: nowrap;
@@ -155,32 +139,25 @@
           text-overflow: ellipsis;
           position: relative;
         }
-    
         .icon-middle {
           color: #ffc266;
           font-size: 10px;
         }
-    
         .bg-pink {
           background-color: #fff6f9;
         }
-    
         .bg-gray {
           background-color: #f6f7fb;
         }
-    
         .bg-orange {
           background-color: #fff8f0;
         }
-    
         .bg-darkyellow {
           background-color: #fdfbef;
         }
-    
         .glyphicon.glyphicon-menu-right {
           margin-left: -3px;
         }
-    
         .glyphicon.pull-right {
           /* float: right!important;
                         position: absolute;
@@ -189,36 +166,28 @@
                         height: 22px;*/
           margin-top: -22px;
         }
-    
         table>tbody>tr>td.text-danger {
           color: #dc110f !important;
           font-weight: bold;
         }
-    
         table>tbody>tr>td.text-success {
           color: #009002 !important;
           font-weight: bold;
         }
-    
         .bgLightBlue {
           /*background: rgba(168, 209, 255, 0.52);*/
           background: rgb(237, 246, 249);
         }
-    
-    
         table.table-cxo>tbody>tr.subtotal>td {
           background: #dceefd;
         }
-    
         .custom-row {
           padding: 10px 0 0 0;
           margin-right: -15px;
         }
-    
         .modal-submitsec {
           padding-left: 60px;
         }
-    
         .date-picker-cxo {
           width: 125px;
           height: 28px;
@@ -231,17 +200,14 @@
           text-align: center;
           margin-top: 1px;
         }
-    
         .modal-contentsec textarea {
           width: 100%;
         }
-    
         .modal-contentsec {
           padding: 12px 12px 15px 12px;
           background: #fff;
           margin-top: 25%;
         }
-    
         .submit-btn {
           padding: 6px 10px;
           font-size: 12px;
@@ -256,7 +222,6 @@
           width: 75px;
           height: 30px;
         }
-    
         .include-btn {
           color: rgb(0, 112, 210);
           border-radius: 0;
@@ -271,7 +236,6 @@
           height: 25px;
           margin-left: 0;
         }
-    
         button.save-btn {
           padding: 3px 8px;
           font-size: 12px;
@@ -286,19 +250,15 @@
           border-radius: 6px; //padding-top: 2px;
           height: auto;
         }
-    
         .cancel-btn {
           padding-top: 2px;
           padding-bottom: 3px;
           padding-left: 7px;
           padding-right: 7px;
-    
         }
-    
         .cancel-option {
           padding: 6px 10px !important;
         }
-    
         button.cancel-btn,
         input.cancel-btn {
           padding: 3px 8px;
@@ -311,7 +271,6 @@
           border: 1px solid rgb(216, 221, 230);
           border-radius: 7px;
         }
-    
         .custom-input {
           max-width: 100%;
           padding: 0 2px;
@@ -320,7 +279,6 @@
           height: 18px;
           color: rgb(84, 105, 141) !important;
         }
-    
         .Account-pickList {
           width: 200px;
           margin-right: 25px;
@@ -331,20 +289,16 @@
           height: 25px;
           visibility: hidden;
         }
-    
         table.table-cxo.table {
           margin-left: 0;
           /*table-layout: fixed;*/
         }
-    
         .table {
           width: 100% !important;
         }
-    
         input.custom-input.amount-field {
           text-align: left;
         }
-    
         .loder-div {
           background: rgb(244, 246, 249);
           position: fixed;
@@ -355,7 +309,6 @@
           opacity: 0.9;
           z-index: 555;
         }
-    
         .loader {
           color: rgba(0, 112, 210, 0.7);
           font-size: 10px;
@@ -374,7 +327,6 @@
           left: 47%;
           z-index: 999;
         }
-    
         @-webkit-keyframes load4 {
           0%,
           100% {
@@ -402,7 +354,6 @@
             box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
           }
         }
-    
         @keyframes load4 {
           0%,
           100% {
@@ -430,26 +381,21 @@
             box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
           }
         }
-    
         /* Modal popup Error */
-    
         .myModal-error .modal-content,
         .myModal-chart .modal-content {
           margin-top: 30%;
           padding: 5% 4% 10% 4%;
         }
-    
         .myModal-error h1,
         .myModal-chart h1 {
           font-size: 2.2em;
           font-weight: 100;
         }
-    
         .myModal-error .cancel-btn,
         .myModal-chart .cancel-btn {
           margin-right: 12px;
         }
-    
         .myModal-error .modal-content,
         .myModal-chart .modal-content {
           margin-top: 30%;
@@ -458,76 +404,61 @@
           margin-left: auto;
           margin-right: auto;
         }
-    
         .myModal-error .modal-content p,
         .myModal-chart .modal-content p {
           padding: 10px 0;
         }
-    
         .blue-color {
           color: #89A9DC !important;
           line-height: 22px;
         }
-    
         .grey-color {
           line-height: 22px;
           color: gainsboro;
         }
-    
         .pop-display,
         .tierfild {
           cursor: pointer;
         }
-    
         .myModal-cancel .modal-content {
           margin-top: 30%;
           padding: 5% 4% 10% 4%;
         }
-    
         .myModal-cancel h1 {
           font-size: 2.2em;
           font-weight: 100;
         }
-    
         .myModal-cancel .cancel-btn {
           margin-right: 12px;
           width: 75px;
         }
-    
         .form-group {
           margin-bottom: 0px;
         }
-    
         .slds *::selection {
           background: rgb(216, 237, 255);
         }
-    
         td.account-space {
           text-indent: 12px;
         }
-    
         .tierfild span {
           display: inline-block;
           width: 10px;
         }
-    
         .thousand-message {
           font-size: 12px;
           color: rgb(84, 105, 141);
         }
-    
         .cancelEdit {
           /*margin-left: 6px;*/
           padding: 2px 8px !important;
           margin-right: 4px;
           margin-top: 0;
         }
-    
         .saveEdit {
           margin-top: 0;
           padding: 1px 8px !important;
         }
-    
         .custom-row .cancel-btn,
         .custom-row .save-btn {
           width: 70px;
@@ -535,7 +466,6 @@
           margin-left: 2px;
           height: 25px;
         }
-    
         .view-active {
           background-color: rgb(255, 255, 255);
           border-radius: 2px;
@@ -544,7 +474,6 @@
           margin-bottom: 10px;
           height: 49px;
         }
-    
         .cxo-view {
           float: left;
           height: 28px;
@@ -553,17 +482,14 @@
           width: 72px;
           visibility: hidden;
         }
-    
         .disabledCursor {
           cursor: not-allowed !important;
           background-color: #d3d3d3;
         }
-    
         .disabledCursor .hover {
           cursor: not-allowed !important;
           background-color: #e5e5e5;
         }
-    
         .cxo-cal-next {
           color: #fff;
           background: rgb(0, 112, 210);
@@ -575,7 +501,6 @@
           width: 110px;
           font-weight: normal;
         }
-    
         .cxo-cal-pre {
           color: #fff;
           background: rgb(0, 112, 210);
@@ -588,110 +513,87 @@
           width: 125px;
           font-weight: normal;
         }
-    
         .custom-row-cal {
           padding: 10px 0;
           margin-left: 30px;
         }
-    
         .refresh-cxo {
           margin-bottom: 12px;
           height: 23px;
         }
-    
         .refresh-cxo-icon {
           color: rgb(0, 112, 210);
           font-size: 14px;
         }
-    
         .popover-content {
           padding: 4px !important;
         }
-    
         .mr10 {
           margin-right: 10px;
         }
-    
         .pd0 {
           padding: 0;
         }
-    
         .mr-25 {
           margin-right: -25px;
         }
-    
         .ml-11 {
           margin-left: -11px;
         }
-    
         .current-time {
           font-size: 12px;
         }
-    
         .nextprev {
           padding: 8px 0 0 0;
         }
-    
         .bg-gray-dark {
           background-color: rgb(112, 174, 228) !important;
           color: #fff !important;
         }
-    
         .contact-icon-place {
           right: 23px;
           top: 5px;
           color: #89A9DC !important;
         }
-    
         .position-pencil {
           top: 27px;
           cursor: pointer;
           color: #D7D4D4;
         }
-    
         .position-pencil:hover {
           color: black;
         }
-    
         tr.grand-total td {
           font-weight: bold;
         }
-    
         .cust-tooltip {
           margin-left: 8px;
           font-family: "Salesforce Sans", Arial, sans-serif;
           text-indent: 0 !important;
         }
-    
         /* .popover.right>.arrow {
           top: 30px !important;
         } */
-    
         textarea {
           resize: none;
           font-size: 12px !important;
         }
-    
         .textColor {
           text-align: left;
           color: rgb(112, 110, 107);
         }
-    
         .tooltip-size {
           font-size: 10px !important;
           font-family: "Salesforce Sans", Arial, sans-serif;
           text-indent: 0 !important;
         }
-    
         .cust-tooltip-family {
           font-family: "Salesforce Sans", Arial, sans-serif;
           text-indent: 0 !important;
         }
-    
         .tier-space {
           width: 80% !important;
         }
-    
         .chart-icon {
           float: right;
           font-size: 12px;
@@ -699,25 +601,20 @@
           margin-top: 4px;
           color: #89A9DC !important;
         }
-    
         .thousand-message2 {
           margin-right: 60px;
           font-size: 12px;
         }
-    
         .chart-tr-center tr th,
         .chart-tr-center tr td {
           text-align: center;
         }
-    
         .grand-total td span.chart-icon {
           margin-right: 1px;
         }
-    
         .table-cxo .popover-content textarea.form-control:focus {
           box-shadow: none;
         }
-    
         .asofMonth-pickList {
           width: 100px;
           display: inline-block;
@@ -725,15 +622,12 @@
           height: 25px;
           margin-top: 0;
         }
-    
         select option {
           font-size: 12px !important;
         }
-    
         .btn-default {
           margin-left: 5px;
         }
-    
         .prev-button,
         .next-button {
           color: rgb(0, 112, 210);
@@ -745,11 +639,8 @@
           /*background-color: transparent;*/
           box-shadow: none;
         }
-    
         /* CSS used here will be applied after bootstrap.css */
-    
         /* custom checkboxes */
-    
         .custom-checkbox>[type="checkbox"],
         .custom-checkbox>label {
           float: right;
@@ -761,20 +652,17 @@
           -ms-user-select: none;
           user-select: none;
         }
-    
         .custom-checkbox>[type="checkbox"]:not(:checked),
         .custom-checkbox>[type="checkbox"]:checked {
           position: absolute;
           left: -9999px;
         }
-    
         .custom-checkbox>[type="checkbox"]:not(:checked)+label,
         .custom-checkbox>[type="checkbox"]:checked+label {
           position: relative;
           padding-left: 22px;
           cursor: pointer;
         }
-    
         .custom-checkbox>[type="checkbox"]:not(:checked)+label:before,
         .custom-checkbox>[type="checkbox"]:checked+label:before {
           content: '';
@@ -788,7 +676,6 @@
           background: #ffffff;
           border-radius: 2px;
         }
-    
         .custom-checkbox>[type="checkbox"]:not(:checked)+label:after,
         .custom-checkbox>[type="checkbox"]:checked+label:after {
           font: normal normal normal 12px/1 'Glyphicons Halflings';
@@ -800,17 +687,14 @@
           color: #29689f;
           xtransition: all .2s;
         }
-    
         .custom-checkbox>[type="checkbox"]:not(:checked)+label:after {
           opacity: 0;
           transform: scale(0);
         }
-    
         .custom-checkbox>[type="checkbox"]:checked+label:after {
           opacity: 1;
           transform: scale(1);
         }
-    
         .custom-checkbox>[type="checkbox"]:disabled:not(:checked)+label:before,
         .custom-checkbox>[type="checkbox"]:disabled:checked+label:before {
           box-shadow: none;
@@ -820,72 +704,58 @@
           opacity: 1;
           color: #dadada;
         }
-    
         .custom-checkbox {
           font-size: 12px !important;
           font-weight: normal !important;
         }
-    
         .custom-checkbox label {
           font-weight: normal !important;
         }
-    
         .custom-checkbox>[type="checkbox"]:disabled:checked+label:after {
           color: #dadada;
           cursor: not-allowed;
         }
-    
         .custom-checkbox>[type="checkbox"]:disabled+label {
           color: #aaa;
           cursor: not-allowed;
         }
-    
         .custom-checkbox>[type="checkbox"]:checked:focus+label:before,
         .custom-checkbox>[type="checkbox"]:not(:checked):focus+label:before {
           border: 1px solid #66afe9;
           box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
         }
-    
         .custom-checkbox>label:hover:before {
           border: 1px solid #88D2FF !important;
         }
-    
         .custom-checkbox>[type="checkbox"]:disabled:not(:checked)+label:hover:before,
         .custom-checkbox>[type="checkbox"]:disabled:checked+label:hover:before {
           border: 1px solid #E4E4E4 !important;
         }
-    
         .table-header {
           background-color: #29689f !important;
           color: #ffffff !important;
         }
-    
         label[for=asOfChecbox] {
           margin-top: 10px;
         }
-    
         a {
           text-decoration: none;
           display: inline-block;
           padding: 6px 10px;
         }
-    
         a:hover {
           background-color: #ddd;
           color: black;
         }
-    
         .previous {
           background-color: #29689f;
           color: black;
         }
-    
         .prev,
         .next {
           background-color: #019089;
           color: white;
         }
-    
         .datepicker .disabled,
         .disable {
           cursor: not-allowed;
@@ -893,24 +763,18 @@
           border-radius: 5px 0 0 5px;
           opacity: .6;
         }
-    
         .asoffield {
           margin-top: 4px;
           margin-left: -6px;
           font-size: 12px;
           float: left;
         }
-    
         .asoffield2 {
           margin-left: 0px;
         }
-    
         .table-header-singleCol {
           width: 81px !important;
         }
-    
-    
-    
         .asofYear {
           background: #019089;
           color: #fff;
@@ -921,7 +785,6 @@
           font-size: 12px;
           width: auto;
         }
-    
         .checkbox-inline {
           margin-left: -9px;
           float: left;
@@ -930,7 +793,6 @@
           padding-bottom: 0px;
           padding-top: 0px;
         }
-    
         .asofMonth {
           margin-right: 1px;
           background: #019089;
@@ -939,15 +801,12 @@
           height: auto;
           border-radius: 0
         }
-    
         .view-left {
           padding-top: 5px;
         }
-    
         .target {
           text-align: center !important;
         }
-    
         .asoffield .asofMonth-pickList {
           margin-top: -7px;
           background-color: #019089;
@@ -955,7 +814,6 @@
           padding-bottom: 0;
           color: #fff;
         }
-    
         .asoffield .cxodatepicker {
           padding-top: 2px;
           border-bottom-width: 0px;
@@ -969,7 +827,6 @@
           border-left: 1px solid white;
           border-right: 1px solid;
         }
-    
         .asoffield .btn {
           color: #fff !important;
           position: absolute;
@@ -982,66 +839,53 @@
           font-weight: bold;
           font-size: .9em;
         }
-    
         .date-picker-align {
           float: left;
           margin-top: -4px;
           margin-left: 4px;
         }
-    
         .asoflabel {
           margin-right: 5px;
           float: left;
         }
-    
         .asoflabel1 {
           margin-left: 4px;
         }
-    
         .asoflabelDate {
           margin-right: 0;
         }
-    
         .custom-asofrow,
         .custom-row {
           color: rgb(84, 105, 141);
         }
-    
         .custom-asofrow {
           padding: 10px 0 0 0;
         }
-    
         .custom-asofrow label {
           font-weight: 500;
         }
-    
         .thousand-message1 {
           font-size: 12px;
           color: red;
         }
-    
         .ProjectionMsg {
           text-transform: uppercase;
           color: #8A433F;
           text-align: center;
           font-weight: bold;
         }
-    
         .glyphicon-wrench {
           cursor: pointer;
           color: #29689f;
           margin-left: 50px;
         }
-    
         .glyphicon-refresh {
           cursor: pointer;
           color: #29689f;
           margin-left: 6px;
           font-size: 16px;
           top: 3px;
-    
         }
-    
         .glyphicon-save {
           top: 2px;
           cursor: pointer;
@@ -1050,80 +894,63 @@
           margin-right: 10px;
           font-size: 16px;
         }
-    
         .glyphicon-info-sign {
           color: #29689f;
           font-size: 16px;
         }
-    
-    
         .glyphicon-size {
           font-size: 16px;
         }
-    
-        .
-        /*tooltip.left .tooltip-arrow {
+        /*.tooltip.left .tooltip-arrow {
           border-left-color: #E8E8E8;
         }
         .tooltip.top .tooltip-arrow {
           border-left-color: #E8E8E8;
         }*/
-    
         .custom_tooltip {
           text-align: left !important;
         }
-    
         #dailyProjection_table tbody tr td.commentsCol {
           max-width: 150px;
           min-width: 350px;
           /* overflow: hidden; */
         }
-    
         .tooltip-inner {
           max-width: 200px;
           text-align: left;
           white-space: pre-wrap;
           word-wrap: break-word;
         }
-    
         .right-container {
           margin-right: 17px;
         }
-    
         .first-col {
           width: 251px;
         }
-    
         .last-col {
           border-top-right-radius: 10px;
           width: 328px;
         }
-    
         #dailyProjection_table tbody tr td {
           /*min-width:92px;  */
         }
-    
         @media (min-width: 1600px) {
           .custom-asofrow.col-lg-5 {
             width: 32% !important;
           }
         }
-    
         .commentBox {
           display: none;
         }
-    
         #commentBoxIcon:hover>.commentBox {
           display: block;
         }
-    
         #commentBoxIcon {
           display: inline-block;
           float: right;
           position: relative;
           height: 0px;
         }
-    
         .tip {
           width: 0px;
           height: 0px;
@@ -1131,7 +958,6 @@
           background: transparent;
           border: 10px solid #ccc;
         }
-    
         .tip-down {
           bottom: -25px;
           left: 10px;
@@ -1139,7 +965,6 @@
           border-left-color: transparent;
           border-bottom-color: transparent;
         }
-    
         .dialogbox .dialogboxBody {
           left: -18px;
           position: absolute;
@@ -1154,7 +979,6 @@
           bottom: 5px;
           width: 150px;
         }
-    
         .commentBoxInside {
           height: 71px;
           width: 135px;
@@ -1163,63 +987,52 @@
           display: inherit;
           border: none;
         }
-    
         .cxo-accountNameSearch {
           height: 25px;
           width: 200px;
           font-size: 12px;
           display: inline-block;
         }
-    
         .cxo-search-btn {
           display: inline-block;
           height: 25px;
           padding: 4px 10px;
           font-size: 12px;
         }
-    
         .cxo-refresh-btn {
           height: 25px;
           padding: 4px 10px;
           font-size: 12px;
         }
-    
         .excelHeader {
           display: none;
         }
-    
         .edit-nowrapdiv {
           display: block;
           position: relative;
           padding-right: 15px;
         }
-    
         .edit-nowrapdiv .account-proj-data {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           display: block;
         }
-    
         .edit-nowrapdiv .glyphicon {
           position: absolute;
           right: 1px;
           margin: 0;
           top: 5px;
         }
-    
         .asoffield .asofMonth-pickList {
           width: auto;
         }
-    
         .buttons {
           margin-right: 50px;
         }
-    
         /*.text-center {
           text-align:left;
          }*/
-    
         .asoffield .asofMonth-pickList.monthSelectBx {
           margin-top: -7px;
           background-color: #29689f;
@@ -1227,13 +1040,11 @@
           /* padding-bottom: 0;*/
           color: #fff;
         }
-    
         .asofMonth-pickList.monthSelectBx {
           padding: 0 0;
           font-size: 12px;
           padding-top: 0;
         }
-    
         .form-control.asofMonth-pickList.monthSelectBx {
           border-radius: 0;
           border-color: #29689f;
@@ -1243,7 +1054,6 @@
           margin-right: 2px;
           float: left;
         }
-    
         .asoffield .asofMonth-pickList.yearSelectBx {
           margin-left: 2px;
           border-radius: 0;
@@ -1257,23 +1067,19 @@
           border-color: #29689f;
           margin-top: 0;
         }
-    
         .asoffield .asofMonth-pickList.yearSelectBx {
           margin-right: 2px;
         }
-    
         .as-of-today-editdiv {
           position: relative;
           padding-right: 14px;
           white-space: nowrap;
           text-overflow: ellipsis;
         }
-    
         .as-of-today-edit input.custom-input.amount-field {
           width: 80%;
           margin: 2px auto;
         }
-    
         .as-of-today-editdiv .glyphicon-pencil {
           margin: 0;
           position: absolute;
@@ -1281,24 +1087,17 @@
           right: 1px;
           float: none;
         }
-    
         .table-cxo tbody tr td.target-td {
           padding-right: 14px;
         }
-    
         .table>tbody+tbody.tierList {
           border-top: 0;
         }
-    
-    
-    
         /***************************/
-    
         .noPadding {
           padding-left: 0;
           padding-right: 0;
         }
-    
         .header-tittle h3 {
           display: inherit;
           color: #16325b;
@@ -1306,25 +1105,22 @@
           margin-top: 0;
           font-size: 18px;
         }
-    
         .filterResurce label {
           color: #374f73;
           font-weight: normal;
           line-height: 28px;
           padding-right: 10px;
         }
-    
         .topContSection {
           padding: 10px;
           font-size: 12px;
           box-shadow: inset 0px 1px 4px 0px #ccdaf3;
           margin-top: 0;
+          margin-bottom: 10px;
         }
-    
         .topContSection h5 {
           font-size: 12px;
         }
-    
         .topContSection .glyphicon-refresh {
           cursor: pointer;
           color: #29689f;
@@ -1336,51 +1132,42 @@
           border: 1px solid #9db1d4;
           border-radius: 3px;
         }
-    
         .notesSection {
           color: #ee8771;
           margin-top: 3px;
           padding: 0;
         }
-    
         .tableContainer .table-cxo thead tr th {
           max-width: 120px;
           min-width: 120px;
           background: #019089;
           color: #fff;
         }
-    
         .righttableContSection {
           overflow-x: auto;
           border-right: 1px solid #c4d6ef8f;
         }
-    
         .tableContainer .table tr.resource-row td {
           background: #1f5c93;
           color: #a8cff1;
           /*font-weight: 700;*/
         }
-    
         .tableContainer .table tr.resource-row td.resourcename {
           background: #49b35c;
           color: #fff;
           /*font-size: 13px;*/
           font-weight: 700;
         }
-    
         .tableContainer .stickHeader.table tr.resource-row.first-child td.resourcename {
           background: #1f5c93;
           font-size: 0;
         }
-    
         .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child {
           max-width: 250px;
         }
-    
         .tableContainer .table-cxo tbody tr.resource-row td {
           text-transform: uppercase;
         }
-    
         .tableContainer .table tbody tr td {
           text-transform: none;
           vertical-align: middle;
@@ -1394,26 +1181,20 @@
           height: 23px;
           min-width: 75px;
         }
-    
         .tableContainer .lefttableContSection .table-cxo tbody tr.supacc-row td:first-child {
           /*font-size: 13px;*/
           color: #000;
         }
-    
         .tableContainer .table-cxo tbody tr.supacc-row td {
           /*background: #dceefd;*/
         }
-    
         .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child span.glyphicon {
           font-weight: normal;
           /* font-size: 11px; */
         }
-    
         .tableContainer .table-cxo>tbody>tr>td>span i {
           padding-top: 0;
         }
-    
-    
         .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child span {
           /* float: right; */
           font-weight: 700;
@@ -1421,48 +1202,40 @@
           margin-top: -1px;
           color: #0572d3;
         }
-    
         .tableContainer .table-cxo tbody tr.subaccount-row td,
         .tableContainer .table-cxo tbody tr.account-row td {
           background: #fff;
         }
-    
         .tableContainer .lefttableContSection .table-cxo tbody tr.account-row td:first-child {
           /*font-size: 12px;*/
           color: #2987d8;
         }
-    
         .tableContainer .lefttableContSection .table-cxo thead tr th {
           /*line-height: 42px;*/
           height: 49px;
           background: #019089;
           color: #fff;
         }
-    
         .filterResurce .dropdown-menu {
           width: 100%;
           padding: 0;
           /* margin: 0; */
         }
-    
         .filterResurce .dropdown-menu li {
           margin-left: 0;
           /* padding: 6px 0; */
           /* display: inline-block; */
           /* width: 100%; */
         }
-    
         .filterResurce .dropdown-menu li a {
           padding: 5px 15px;
         }
-    
         .filterResurce .form-control {
           height: 25px;
           line-height: normal;
           font-size: 11px;
           padding: 5px 12px;
         }
-    
         .righttableContSection table.table-cxo.table {
           margin-left: 0;
           /* table-layout: fixed; */
@@ -1472,43 +1245,34 @@
           border-left: 0;
           border-right: 0;
         }
-    
         .tableContainer .righttableContSection .table tbody tr td:first-child,
         .tableContainer .righttableContSection .table tr th:first-child {
           border-left-color: transparent;
         }
-    
         .tableContainer .table tbody tr.totalRow td {
           background: #dce0e2;
         }
-    
         .accountName label {
           /*font-size: 12px;*/
           margin-bottom: 0;
         }
-    
         .account-row.accountHierarchy .txt-ellipsis {
           padding-left: 15px;
         }
-    
         .subaccount-row.accountHierarchy .txt-ellipsis {
           padding-left: 40px;
         }
-    
         .tableContainer .lefttableContSection .table-cxo tbody tr td:first-child span.collapseIcon {
           float: none;
           font-weight: normal;
         }
-    
         /*.subaccount-row.accountHierarchy .txt-ellipsis::before, .account-row.accountHierarchy .txt-ellipsis::before {
             content: "-";
         }*/
-    
         .collpeseSect {
           float: left;
           padding-right: 5px;
         }
-    
         .CollapseExpandIcon {
           color: #29689F;
           width: 18px;
@@ -1516,62 +1280,72 @@
           margin-top: -5px;
           cursor: pointer;
         }
-    
         .stickHeader.table-cxo th,
         .stickHeader.table-cxo tbody tr.first-child td.sortUser {
           z-index: 1;
         }
-    
         .first-child span.glyphicon {
           float: right;
           font-size: 8px;
         }
-    
         .sortUser .tooltip {
           min-width: 250px;
         }
-    
         .table-cxo tbody tr.first-child td .tooltip .tooltip-inner {
           max-width: 250px;
           min-width: 250px;
         }
-    
         .tableContainer {
           padding: 0;
         }
-    
         .table-crm-bg {
           background: #8ED6AD
         }
-    
         .table-crm-grand-bg {
           background: #77BC93
         }
-    
         .list-inline>li.crm-inline {
           display: inline-flex;
           line-height: 32px;
         }
-    
         .crm-date-picker {
+          width: 140px;
+          margin: 5px 15px 5px 5px;
+        }
+        .crm-date-picker .date-picker {
+          height: 25px;
+        }
+        .crm-date-picker .input-group-addon {
+          right: 16px;
+          position: relative;
+          z-index: 9;
+          pointer-events: none;
+          padding: 0 5px 0 0;
+        }
+        .crm-table-date-picker {
           width: 140px;
           margin-left: 5px;
           margin-right: 5px;
         }
-    
-        .crm-date-picker .input-group-addon {
-          right: 39px;
+        .crm-table-date-picker .input-group-addon {
+          right: 19px;
           position: relative;
           z-index: 9;
-          pointer-events: none
+          pointer-events: none;
+          padding: 3px;
+          font-size: 10px;
+          top: -1px;
+          border: none;
+          background: transparent;
         }
-    
+        .crm-green-icons {
+          padding-top: 5px
+        }
         .crm-green-icons .glyphicon {
           color: #019089;
           margin-right: 5px;
           margin-left: 5px
         }
-    
         .crm-btn-white {
           background: transparent;
           border: 1px solid #dadada;
@@ -1579,21 +1353,19 @@
           font-size: 14px;
           margin-bottom: 15px;
         }
-    
         .crm-btn-white .glyphicon {
           color: #019089;
         }
-    
         .crm-head-title {
-          font-size: 18px;
+          font-size: 14px;
           margin: 5px 0 15px;
           font-weight: 700;
+          top: 10px;
+          position: relative;
         }
-    
         .prevNxtSec {
           display: inline;
         }
-    
         .prevNxtSec .glyphicon-triangle-left,
         .prevNxtSec .glyphicon-triangle-right {
           color: white;
@@ -1602,15 +1374,12 @@
           padding: 7.5px;
           top: 1px;
         }
-    
         .prevNxtSec .glyphicon-triangle-left {
           border-radius: 5px 0 0 5px;
         }
-    
         .prevNxtSec .glyphicon-triangle-right {
           border-radius: 0 5px 5px 0;
         }
-    
         .crm-collapse-btn {
           border: 1px solid gray;
           border-radius: 50%;
@@ -1618,15 +1387,15 @@
           margin-left: 10px;
           cursor: pointer;
         }
-    
         .crm-align-date {
           display: inline-block;
         }
-    
         .tableContainer .table tbody tr td.crm-text-error {
           color: #f00;
         }
-    
+        .crm-text-error {
+          color: #f00;
+        }
         button.close.crm-modal-popup-close {
           top: -13px;
           right: -10px;
@@ -1642,9 +1411,7 @@
           height: 30px;
           width: 30px;
         }
-    
         button.close.crm-modal-popup-close .crm-close-icon {}
-    
         .crm-add-remove-btn,
         .crm-up-down-btn {
           padding: 8px;
@@ -1655,7 +1422,6 @@
           margin-top: 10px;
           margin-bottom: 22px;
         }
-    
         .modal.in .modal-dialog.crm-modal-dialog {
           top: 50%;
           -webkit-transform: translate(0%, -50%);
@@ -1663,60 +1429,62 @@
           -o-transform: translate(0%, -50%);
           transform: translate(0%, -50%);
         }
-    
         .modal.in .modal-dialog.crm-modal-dialog h4 {
           font-size: 16px;
           font-weight: bold;
         }
-    
         .modal-dialog.crm-modal-dialog .modal-body {
           padding: 20px 30px 0 30px
         }
-    
         .modal-dialog.crm-modal-dialog .modal-footer.crm-modal-footer {
           border: none
         }
-    
         .modal-footer.crm-modal-footer {
           text-align: center;
         }
-    
         select[multiple].form-control.crm-form-control {
           height: 300px;
           padding: 0;
           margin-bottom: 10px;
         }
-    
         select[multiple].form-control.crm-form-control option {
           padding: 5px 10px
         }
-    
         .modal-footer.crm-modal-footer button {
           width: 100px;
           padding: 8px 10px;
         }
-    
         .crm-modal-add-remove-btn {
           margin-top: 115px;
         }
-    
         .crm-up-down-btn {
           margin: 0 auto 5px auto;
           display: block
         }
-    
         .crm-up-down-btn:last-child {
           margin-bottom: 12px
         }
-    
+        .crm-btn-cancel-save-align {
+          float: right;
+          display: inline-block;
+        }
         .crm-btn-success {
           background: #019089;
           text-transform: uppercase;
           color: #FFF;
-          padding: 5px 15px;
-          font-size: 14px;
+          padding: 2px 15px;
+          font-size: 12px;
         }
-    
+        .crm-btn-cancel {
+          border: 1px solid #019089;
+          text-transform: uppercase;
+          color: #019089;
+          padding: 2px 15px;
+          font-size: 12px;
+        }
+        .crm-time-stamp {
+          font-size: 11px;
+        }
         .crm-btn-primary,
         .crm-btn-primary-active {
           padding: 5px 10px;
@@ -1724,22 +1492,17 @@
           background: transparent;
           border: none;
         }
-    
         .crm-btn-primary-active {
           background: #8ED6AD;
           border-top: 2px solid #019089
         }
-    
         .crm-glyphicon-align {
           padding: 0;
-          color: #000;
         }
-    
         .glyphicon-pencil.crm-glyphicon-align {
           float: right;
           color: #000
         }
-    
         .crm-select-form-control {
           padding: 1px 2px;
           height: 16px;
@@ -1754,17 +1517,14 @@
           -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
           -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
           transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-    
         }
-    
         .crm-add-row {
           cursor: pointer;
+          color: #000;
         }
-    
         .crm-add-row:hover {
           background: transparent
         }
-    
         @media only screen and (max-width: 1650px) {
           .righttableContSection {
             width: 60%;
@@ -1773,7 +1533,6 @@
             width: 40%;
           }
         }
-    
         @media only screen and (max-width: 1400px) {
           .righttableContSection {
             width: 65%;
@@ -1782,16 +1541,14 @@
             width: 35%;
           }
         }
-    
         @media only screen and (max-width: 1300px) {
           .righttableContSection {
-            width: 64%;
+            width: 59%;
           }
           .lefttableContSection {
-            width: 36%;
+            width: 41%;
           }
         }
-    
         /***************************/
       </style>
     
@@ -1806,7 +1563,7 @@
           </div>
           <div class="panel panel-default topContSection">
             <div class="row contentSection">
-              <div class="col-sm-8 ">
+              <div class="col-sm-7">
                 <div class="filterTypes view-left">
                   <div class="custom-checkbox row checkbox-inline" ng-repeat="filter in orderBook.filterType">
                     <input id="{{filter.name}}-checkbox" name="{{filter.name}}-checkbox" type="checkbox" ng-model="orderBook.filterBy[filter.value]"
@@ -1815,7 +1572,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-sm-4 text-right">
+              <div class="col-sm-5 text-right">
                 <div class="crm-align-date">
                   <label>As of Month:</label>
                   <div class=" prevNxtSec noPadding">
@@ -1830,29 +1587,34 @@
                     </select>
                     <i class="glyphicon glyphicon-triangle-right" id="next" ng-click="orderBook.nextYearHandler()" ng-disabled="orderBook.monthNextDisable">
                     </i>
-    
                   </div>
+                  <span ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-click="orderBook.datepickerShowHandler()"></span>
+                  <span ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
                 </div>
-                <span ng-if="!orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-bottom" ng-click="orderBook.datepickerShowHandler()"></span>
-                <span ng-if="orderBook.showDatePicker" class=" crm-collapse-btn glyphicon glyphicon-triangle-top" ng-click="orderBook.datepickerShowHandler()"></span>
               </div>
               <div class="col-sm-12" ng-class="{'hide' : orderBook.showDatePicker}">
                 <ul class="list-inline list-unstyled">
                   <li>
-                    <button type="button" ng-class="{'crm-btn-primary-active':orderBook.projectwithNoAgreement}" class="crm-btn-primary" data-color="primary"
-                      ng-click="orderBook.noAgreementHandler()">Projects with no agreement</button>
+                    <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.liveContracts}" class="crm-btn-primary"
+                      data-color="primary" ng-click="orderBook.agreementFilterHandler('liveContracts')">Live contracts</button>
                     <input type="checkbox" class="hidden" />
                   </li>
                   <li>|</li>
                   <li>
-                    <button type="button" ng-class="{'crm-btn-primary-active':orderBook.liveContract}" class="crm-btn-primary" data-color="primary"
-                      ng-click="orderBook.liveContractHandler()">Live contracts</button>
+                    <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.all}" class="crm-btn-primary" data-color="primary"
+                      ng-click="orderBook.agreementFilterHandler('all')">All Agreements</button>
+                    <input type="checkbox" class="hidden" />
+                  </li>
+                  <li>|</li>
+                  <li>
+                    <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.noAgreement}" class="crm-btn-primary"
+                      data-color="primary" ng-click="orderBook.agreementFilterHandler('noAgreement')">Projects with no agreement</button>
                     <input type="checkbox" class="hidden" />
                   </li>
                   <li>|</li>
                   <li class="crm-inline">Agreement date from
                     <div class="input-group crm-date-picker">
-                      <input class="date-picker" type="text" ng-model="orderBook.fromDate" />
+                      <input class="date-picker" type="text" ng-model="orderBook.fromDate" readonly="true" />
                       <div class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                       </div>
@@ -1860,34 +1622,32 @@
     
                     to
                     <div class="input-group crm-date-picker">
-                      <input class="date-picker" type="text" ng-change="orderBook.agreementDateChangeHandler()" ng-model="orderBook.toDate" />
+                      <input class="date-picker" type="text" ng-change="orderBook.agreementFilterHandler('date')" ng-model="orderBook.toDate" readonly="true"
+                      />
                       <div class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>
                       </div>
                     </div>
-                  </li>
-                  <li>
-                    <button class="crm-btn-success" ng-click="orderBook.saveAllData()">save</button>
                   </li>
                 </ul>
               </div>
             </div>
           </div>
           <div class="row">
-            <div class="col-lg-3">
+            <div class="col-lg-3 col-md-3">
               <button type="button" class="crm-btn-white" data-toggle="modal" data-target="#filter-popup">Select Column
                 <span class="glyphicon glyphicon-th"></span>
               </button>
             </div>
-            <div class="col-lg-6 text-center">
+            <div class="col-lg-6 col-md-6 text-center">
               <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
+              <div class="crm-btn-cancel-save-align" ng-if="orderBook.isEdited">
+                <button class="crm-btn-cancel" data-toggle="modal" data-target="#cancel-popup">Cancel</button>
+                <button class="crm-btn-success" ng-click="orderBook.saveAllData()">Save</button>
+              </div>
             </div>
-            <div>
-                <button class="crm-btn-success" ng-click="orderBook.saveAllData()">save</button>
-                <button type="button" class="crm-btn-white" data-toggle="modal" data-target="#cancel-popup" ng-click="orderBook.cancelAllData()">cancel</button>
-            </div>
-            <div class="col-lg-3 text-right crm-green-icons">
-              <span>As on {{orderBook.currentDateTime}}</span>
+            <div class="col-lg-3 col-md-3 text-right crm-green-icons">
+              <span class="crm-time-stamp">As on {{orderBook.currentDateTime}}</span>
               <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
               <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel('overAllTable')"></span>
             </div>
@@ -1899,7 +1659,7 @@
                   delete-handler="orderBook.deleteHandler(index, subIndex, type)" columns="orderBook.fixedColumns" sub-columns="orderBook.fixedSubColumns"
                   rows="orderBook.mergedFixedColumns" show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
               </div>
-              <div class="col-sm-9 noPadding righttableContSection fixed-scrollbar" ng-if="orderBook.scrollableColumns.length > 0">
+              <div class="col-sm-9 noPadding righttableContSection fixed-scrollbar" fixed-scroll="true" ng-if="orderBook.scrollableColumns.length > 0">
                 <div fixed-header="true" grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
                   delete-handler="orderBook.deleteHandler(index, subIndex, type)" columns="orderBook.scrollableColumns" sub-columns="orderBook.scrollableSubColumns"
                   rows="orderBook.mergedScrollableColumns" show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
@@ -1912,10 +1672,9 @@
       </html>
       <script type="text/javascript">
         var app = angular.module("orderBookApp", ['ngSanitize']);
-        app.controller("orderBookController", function ($filter, $sce, $scope, $timeout, orderBookApi, excel, common) {
+        app.controller("orderBookController", function ($filter, $sce, $scope, $rootScope, $timeout, orderBookApi, excel, common) {
           var orderBook = this;
           orderBook.currentDate = moment().format('YYYY-MM-DD');
-          orderBook.currentDateTime = moment().format("dddd, MMM Do YYYY, h:mm:ss a");
           orderBook.isShowLoading = false;
           orderBook.fixedColumns = [];
           orderBook.fixedSubColumns = [];
@@ -1927,8 +1686,8 @@
           orderBook.filterType = [{ name: 'All', value: 'all' }, { name: 'Signed', value: 'signed' }, { name: 'Unsigned', value: 'unsigned' }, { name: 'Renewal', value: 'renewal' }, { name: 'Upside', value: 'upside' }];
           orderBook.currentMonth = moment().month() + 1;
           orderBook.months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-          orderBook.selectedMonth = moment().subtract(1, 'month').format('MMMM');
-          orderBook.selectedYear = moment().subtract(1, 'year').format('YYYY');
+          orderBook.selectedMonth = moment().format('MMMM');
+          orderBook.selectedYear = moment().format('YYYY');
           orderBook.filterBy = {
             all: true,
             signed: false,
@@ -1936,7 +1695,15 @@
             renewal: false,
             upside: false,
           };
-    
+          orderBook.agreementFilter = {
+            liveContracts: true,
+            all: false,
+            noAgreement: false,
+            date: false,
+          }
+          $rootScope.$on('isEdited', function (data) {
+            orderBook.isEdited = data;
+          });
           /** @description Function to generate last five year in dynamically
            */
           orderBook.generateYears = function () {
@@ -1947,7 +1714,6 @@
               orderBook.years.push(y.toString());
             }
           }
-    
           /** @description Callback function for prev year button
            */
           orderBook.prevYearHandler = function () {
@@ -1962,7 +1728,6 @@
               orderBook.updateConfiguration();
             }
           }
-    
           /** @description Callback function for next year button
            */
           orderBook.nextYearHandler = function () {
@@ -1977,7 +1742,25 @@
               orderBook.updateConfiguration();
             }
           }
-    
+          orderBook.agreementFilterHandler = function (key) {
+            orderBook.agreementFilter = { liveContracts: false, all: false, noAgreement: false, date: false, };
+            orderBook.agreementFilter[key] = true;
+            switch (key) {
+              case 'liveContracts': {
+                orderBook.init();
+                break;
+              }
+              case 'all':
+              case 'noAgreement': {
+                orderBook.init('All', orderBook.currentDate, orderBook.currentDate);
+                break;
+              }
+              default: {
+                orderBook.init('Agreement date', moment(orderBook.fromDate).format('YYYY-MM-DD'), moment(orderBook.toDate).format('YYYY-MM-DD'))
+                break;
+              }
+            }
+          }
           orderBook.filterNoAgreement = function () {
             orderBook.data.mainAccList = orderBook.data.mainAccList.map(list => {
               list.agreement = [];
@@ -1986,14 +1769,14 @@
             });
             orderBook.getTotal();
           }
-    
           /** @description Callback function Project with no agreement button
            */
           orderBook.noAgreementHandler = function () {
             orderBook.projectwithNoAgreement = !orderBook.projectwithNoAgreement;
-            if (orderBook.liveContract) {
+            if (orderBook.liveContract || orderBook.isDateFilterEnabled) {
               orderBook.liveContract = false;
-              orderBook.init();
+              orderBook.isDateFilterEnabled = false;
+              orderBook.init('All', orderBook.currentDate, orderBook.currentDate);
               return;
             }
             if (orderBook.projectwithNoAgreement) {
@@ -2003,26 +1786,26 @@
             }
             orderBook.findNoResults();
           }
-    
           orderBook.selectMonthYearHandler = function (type) {
             if (type === 'month' && !orderBook.selectedMonth) {
               orderBook.selectedMonth = orderBook.months[0];
             }
             orderBook.updateConfiguration();
           };
-    
           orderBook.liveContractHandler = function () {
             orderBook.projectwithNoAgreement = false;
-            orderBook.liveContract = !orderBook.liveContract
+            orderBook.liveContract = !orderBook.liveContract;
             if (orderBook.liveContract) {
               orderBook.init('Live Contracts', orderBook.currentDate, orderBook.currentDate);
             } else {
               orderBook.init();
             }
           }
-    
           orderBook.agreementDateChangeHandler = function () {
             if (orderBook.fromDate && orderBook.toDate) {
+              orderBook.projectwithNoAgreement = false;
+              orderBook.liveContract = false;
+              orderBook.isDateFilterEnabled = true;
               orderBook.init('Agreement date', moment(orderBook.fromDate).format('YYYY-MM-DD'), moment(orderBook.toDate).format('YYYY-MM-DD'));
             }
           }
@@ -2038,7 +1821,6 @@
               a.click();
             }, 100);
           }
-    
           orderBook.updateConfiguration = function () {
             orderBook.config = [
               {
@@ -2152,7 +1934,6 @@
             orderBook.getColumns(orderBook.clonedConfig);
             orderBook.getTotalBurn();
           }
-    
           /** @description Function to remove column based on selected columns
            * @param {config} array - contains the table configuration
            * @param {columns} array - contains the selected columns
@@ -2186,7 +1967,6 @@
               });
             });
           }
-    
           /** @description callback function for up/down button
            * @param {direction} string - denotes the direction to move
            **/
@@ -2205,7 +1985,6 @@
             orderBook.clonedConfig.splice(prevIndex, 0, orderBook.selectedColumns[0]);
             orderBook.clonedConfig.splice(nextIndex, 1);
           }
-    
           /** @description callback function for add button
            **/
           orderBook.addColumnHandler = function () {
@@ -2216,7 +1995,6 @@
               orderBook.clonedConfig = config;
             }
           }
-    
           /** @description callback function for remove button
            **/
           orderBook.removeColumnHandler = function () {
@@ -2226,7 +2004,6 @@
               orderBook.clonedConfig = config;
             }
           }
-    
           /** @description function to split the fixed column and non-fixed columns
            * for render the two different tables
            * @param {columns} array - contains the table configuration
@@ -2256,7 +2033,6 @@
               }
             });
           }
-    
           /** @description callback function for filter select
            * @param {value} string - filter type
            */
@@ -2277,7 +2053,6 @@
             }
             orderBook.filterColumns(filterArr);
           }
-    
           /** @description  Funtion to remove the unwanted column
             * except mentioned in given array
             * @param {columns} array - contains the table configuration
@@ -2315,18 +2090,16 @@
             }
             orderBook.findNoResults();
           }
-    
           /** @description callback function for save button
            */
           orderBook.saveHandler = function () {
             orderBook.getColumns(orderBook.clonedConfig);
             $('#filter-popup').modal('hide');
           }
-          orderBook.cancelHandler = function (){
-            orderBook.saveData = orderBook.clonedConfig ;
+          orderBook.cancelHandler = function () {
+            orderBook.data = $.extend(true, [], orderBook.clonedData);
             $('#cancel-popup').modal('hide');
           }
-    
           /** @description callback function for add row button
            **/
           orderBook.addRowHandler = function (index) {
@@ -2361,9 +2134,9 @@
               } else {
                 orderBook.data.mainAccList[index].newRows = [obj];
               }
+              orderBook.isEdited = true;
             }
           }
-    
           orderBook.calculateTotal = function (array, key) {
             var total = 0;
             array.forEach(data => {
@@ -2377,17 +2150,17 @@
                   value = common.currencyToNumber(data[key]);
                 }
                 total += parseFloat(value);
+              } else {
+                total += 0;
               }
             });
             return common.formatAmount(total);
           }
-    
           orderBook.calculateBalance = function (totalAgreement, totalBurn) {
             let balance = 0;
             balance = common.currencyToNumber(totalAgreement) - common.currencyToNumber(totalBurn);
             return common.formatAmount(balance);
           }
-    
           orderBook.deleteHandler = function (index, subIndex, type) {
             if (type === 'upside' && orderBook.data.mainAccList[index][type]) {
               let upside = orderBook.data.mainAccList[index][type][subIndex];
@@ -2407,9 +2180,7 @@
             if (orderBook.data.mainAccList[index][type]) {
               orderBook.data.mainAccList[index][type].splice(subIndex, 1);
             }
-    
           }
-    
           orderBook.getTotalBurn = function () {
             orderBook.isShowLoading = true;
             var filledProject = [];
@@ -2483,16 +2254,16 @@
                 orderBook.data.grandTotal.totalBurn = orderBook.calculateTotal(grandTotalList, 'totalBurn');
                 orderBook.data.grandTotal.balance = orderBook.calculateTotal(grandTotalList, 'balance');
                 orderBook.clonedData = $.extend(true, [], orderBook.data);
-                if (orderBook.projectwithNoAgreement) {
+                if (orderBook.agreementFilter.noAgreement) {
                   orderBook.filterNoAgreement();
                 }
+                orderBook.findNoResults();
               } else {
                 orderBook.errorMessage = response.errorObject.ResponseMsg__c;
               }
               orderBook.isShowLoading = false;
             });
           }
-    
           orderBook.getTotal = function () {
             let grandTotalList = [];
             let headerObj = {};
@@ -2529,7 +2300,6 @@
               mainAccList,
             }
           }
-    
           orderBook.dataMapping = function (data) {
             var grandTotalList = [];
             var filledAgreementProject = [];
@@ -2572,7 +2342,8 @@
                 obj.totalBurn = '';
                 obj.balance = '';
                 obj.requestData = {
-                  Signature_Other_Party__c: agreement.Signature_Other_Party__c
+                  Signature_Other_Party__c: agreement.Signature_Other_Party__c,
+                  id: agreement.Id,
                 };
                 return {
                   ...obj,
@@ -2657,7 +2428,6 @@
               agreementCategory: data.obookAgmtpList,
             }
           }
-    
           orderBook.saveAllData = function () {
             let requestData = [];
             orderBook.data.mainAccList.forEach(list => {
@@ -2706,21 +2476,26 @@
               }
             });
           }
-    
           orderBook.findNoResults = function () {
             let agreementList = orderBook.data.mainAccList.filter(account => !account.agreement || account.agreement.length === 0);
             let upsideList = orderBook.data.mainAccList.filter(account => !account.upside || account.upside.length === 0);
             let opptyList = orderBook.data.mainAccList.filter(account => !account.oppty || account.oppty.length === 0);
             orderBook.showNoResults = (agreementList.length === orderBook.data.mainAccList.length) && (upsideList.length === orderBook.data.mainAccList.length) && (opptyList.length === orderBook.data.mainAccList.length);
           }
-    
-          orderBook.init = function (filterType = 'All', startDate = orderBook.currentDate, endDate = orderBook.currentDate) {
+          orderBook.init = function (filterType, startDate, endDate) {
+            if (!filterType) {
+              let startEndDate = common.getMonthDateRange(orderBook.selectedYear, orderBook.months.indexOf(orderBook.selectedMonth));
+              filterType = 'Live Contracts';
+              startDate = moment(startEndDate.start).format('YYYY-MM-DD');
+              endDate = moment(startEndDate.end).format('YYYY-MM-DD');
+            }
+            orderBook.currentDateTime = moment().format("dddd, MMM Do YYYY, h:mm:ss a");
             orderBook.isShowLoading = true;
+            orderBook.isEdited = false;
             orderBookApi.getOrderBookData(filterType, startDate, endDate).then(function (response) {
               if (response.responseCode === 200) {
                 orderBook.data = orderBook.dataMapping(response.responseObject);
                 orderBook.updateConfiguration();
-                orderBook.findNoResults();
               } else {
                 orderBook.errorMessage = response.errorObject.ResponseMsg__c;
               }
@@ -2730,7 +2505,6 @@
           orderBook.init();
           orderBook.generateYears();
         });
-    
         /** @description - directive for render grid based on type and data
          * scope values:
          * type - string - denotes the grid is fixed or not.
@@ -2751,12 +2525,10 @@
               filterHandler: '&',
               deleteHandler: '&',
             },
-            template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-data="{{account.agreement}}" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-text-error\' :col.key===\'agreementName\' || col.key===\'balance\' && (account.account[col.key] && account.account[col.key][0]===\'(\')}" ng-repeat="col in rows track by $index">{{account.account[col.key]}}</td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <span>{{agreement[col.key]}}</span> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-text-error\': col.key===\'agreementName\' || (col.key===\'balance\' && oppty[col.key] && oppty[col.key][0]===\'(\')}" ng-repeat="col in rows">{{oppty[col.key]}}</td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-remove crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
-            //templateUrl: 'template.html'
+            template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" ng-class="{\'header\': !headerCol.subColumns}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name | symbolDecode}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name | symbolDecode}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-data="{{account.agreement}}" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-text-error\' :col.key===\'agreementName\' || col.key===\'balance\' && (account.account[col.key] && account.account[col.key][0]===\'(\')}" ng-repeat="col in rows track by $index">{{account.account[col.key]}}</td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-if="col.key" ng-repeat="col in rows track by $index" tooltip-placement="top-left" uib-tooltip="{{agreement[col.key] | symbolDecode}}" tooltip-class="cust-tooltip-family"> <div class="txt-ellipsis" ng-if="col.key === \'agreementName\'"><a ng-href="/lightning/r/Apttus__APTS_Agreement__c/{{agreement.requestData.id}}/view" target="_blank">{{agreement[col.key] | symbolDecode}}</a></div><div class="txt-ellipsis" ng-if="col.key !== \'agreementName\'">{{agreement[col.key] | symbolDecode}}</div> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-text-error\': col.key===\'agreementName\' || (col.key===\'balance\' && oppty[col.key] && oppty[col.key][0]===\'(\')}" ng-repeat="col in rows">{{oppty[col.key]}}</td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
           };
         });
-    
-        app.directive('editable', function ($compile, $filter, $timeout) {
+        app.directive('editable', function ($compile, $filter, $timeout, $rootScope) {
           return {
             restrict: 'A',
             scope: {
@@ -2765,13 +2537,14 @@
               value: '=',
               category: '='
             },
-            controller: function ($scope, $filter, $timeout) {
+            controller: function ($scope, $filter, $timeout, $rootScope) {
               this.init = () => {
                 this.editableFields = ['agreementCategory', 'agreementName', 'agreementStartDate', 'agreementEndDate', 'signed', 'unSigned', 'renewal', 'upSide'];
                 this.isEditable = false;
                 this.value = $scope.value;
               }
               this.editHandler = ($event, key) => {
+                this.value = $scope.value;
                 this.isEditable = true;
                 let parentNode = $event.target.parentNode.parentNode.id;
                 $timeout(() => {
@@ -2787,6 +2560,7 @@
                 }, 200);
               }
               this.onChangeHandler = function () {
+                $rootScope.$emit('isEdited', true);
                 $scope.value = this.value;
               }
               $scope.$watch('category', function (newVal, oldVal) {
@@ -2798,11 +2572,10 @@
               this.init();
             },
             controllerAs: 'edit',
-            template: '<span ng-if="!edit.isEditable && !editable && (key !== \'agreementEndDate\' && key !== \'agreementStartDate\')">{{value}}<a id="edit" ng-if="(isShowField && edit.editableFields.indexOf(key) > -1)" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a></span><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" ng-if="(key===\'agreementEndDate\' || key===\'agreementStartDate\')" type="text" ng-model="edit.value" readonly/>'
+            template: '<div class="txt-ellipsis" ng-if="!edit.isEditable && !editable && (key !== \'agreementEndDate\' && key !== \'agreementStartDate\')" tooltip-placement="top-left" uib-tooltip="{{value | symbolDecode}}" tooltip-class="cust-tooltip-family">{{value | symbolDecode}}<a id="edit" ng-if="(isShowField && edit.editableFields.indexOf(key) > -1)" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a></div><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /> <div class="input-group crm-table-date-picker" ng-if="(key===\'agreementEndDate\' || key===\'agreementStartDate\')"><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" type="text" ng-model="edit.value" ng-data="{{edit.value}}" readonly/><div class="input-group-addon"><span aria-hidden="true" class="glyphicon glyphicon-calendar"></span></div></div>'
             //templateUrl: 'template1.html'
           };
         });
-    
         app.directive('numberOnly', function ($filter) {
           return {
             restrict: 'A',
@@ -2830,7 +2603,6 @@
             }
           };
         });
-    
         app.directive('orderByPopup', function ($compile, $timeout) {
           return {
             restrict: 'E',
@@ -2840,14 +2612,19 @@
             template: '<div id="filter-popup" class="modal fade" role="dialog"> <div class="modal-dialog crm-modal-dialog"> <div class="modal-content"> <div class="modal-body"><button type="button" class="close crm-modal-popup-close" data-dismiss="modal"><span class="crm-close-icon">+</span></button> <div class="row"><div class="col-sm-4"><h4>Available Columns</h4><select class="form-control crm-form-control" multiple ng-model="orderBook.availableColumns" ng-options="col.name disable when col.isFixed for col in orderBook.config | visibleColumns"> </select> </div><div class="col-sm-2 crm-modal-add-remove-btn noPadding text-center"> <p><strong>Add</strong></p><button class="crm-add-remove-btn" ng-disabled="(!orderBook.selectedColumns || orderBook.selectedColumns.length==0)" ng-click="orderBook.removeColumnHandler()"><span class="glyphicon glyphicon-triangle-left"></span></button> <button class="crm-add-remove-btn" ng-disabled="(!orderBook.availableColumns || orderBook.availableColumns.length==0)" ng-click="orderBook.addColumnHandler()"><span class="glyphicon glyphicon-triangle-right"></span></button><p><strong>Remove</strong></p> </div><div class="col-sm-4"><h4>Selected Columns</h4> <select  class="form-control crm-form-control" multiple ng-model="orderBook.selectedColumns" ng-options="col.name disable when col.isFixed for col in orderBook.clonedConfig"> </select> </div><div class="col-sm-2 text-center crm-modal-add-remove-btn noPadding"> <p><strong>Up</strong></p><button class="crm-up-down-btn" ng-data="{{orderBook.selectedColumns}}" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'up\')"><span class="glyphicon glyphicon-triangle-top"></span></button> <button class="crm-up-down-btn" ng-disabled="(!orderBook.selectedColumns || (orderBook.selectedColumns && orderBook.selectedColumns.length > 1))" ng-click="orderBook.dragHandler(\'down\')"><span class="glyphicon glyphicon-triangle-bottom"></span></button><p><strong>Add</strong></p> </div></div></div><div class="modal-footer crm-modal-footer"> <button type="button" class="btn btn-default" ng-click="orderBook.saveHandler()">Save</button> <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button> </div></div></div></div>',
           };
         });
-        //cancel popup
+        app.filter('symbolDecode', function () {
+          return function (data) {
+            if (data) {
+              return String(data).replace(/\&amp\;/g, '&').replace(/\&quot\;/g, '"').replace(/\&\#39\;/g, '\'').replace(/\&lt\;/g, '<').replace(/\&gt\;/g, '>');
+            } else {
+              return '';
+            }
+          }
+        });
         app.directive('cancelPopup', function ($compile, $timeout) {
           return {
             restrict: 'E',
-            // controller: 'orderBookController',
-            controllerAs: 'orderBook',
-            bindToController: true,
-            template: '<div id="cancel-popup" class="modal fade" role="dialog"><div class="modal-dialog crm-modal-dialog"><div class="modal-content"><div class="modal-body">  this is the model to cancel this popup.....!!!!!! </div><div class="modal-footer crm-modal-footer"><button type="button" class="btn btn-default" ng-click="orderBook.cancelHandler()">Save</button><button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button></div></div></div></div>',
+            template: '<div id="cancel-popup" class="modal fade" role="dialog"><div class="modal-dialog crm-modal-dialog"><div class="modal-content new-popup-cancel-content"><div class="modal-header text-center"><h4 class="new-popup-Header" id="new-popup-cancel">Cancel</h4></div><div class="modal-body text-center"><section class="new-modal-body-p">Changes will be lost. Do you want to cancel?</section></div><div class="modal-footer crm-modal-footer"><input class="new-model-no-button crm-btn-cancel" data-dismiss="modal" type="button" value="No"> <input class="new-model-yes-button crm-btn-success" ng-click="orderBook.cancelHandler()" type="button" value="Yes"></div></div></div></div>',
           };
         });
         app.directive('showErrorMessage', function () {
@@ -2869,18 +2646,57 @@
             return array;
           };
         }]);
+        app.directive('fixedScroll', function () {
+          return {
+            restrict: 'A',
+            link: function (scope, element, attr) {
+              var scrollbar = $('<div id="scrollbar"><div></div></div>').appendTo(element);
+              scrollbar.css({
+                overflowX: 'auto',
+                position: 'fixed',
+                width: element.width(),
+                bottom: 0,
+                'z-index': 10,
+              });
+              function top(e) {
+                return e.offset().top;
+              }
+              function bottom(e) {
+                return e.offset().top + e.height();
+              }
+              function updateScrollPos() {
+                element.scrollLeft(scrollbar.scrollLeft());
+              }
+              function scrollPosition() {
+                if (bottom(element) > bottom(scrollbar)) {
+                  scrollbar.show();
+                  scrollbar.find('div').width(element.get(0).scrollWidth);
+                  scrollbar.find('div').height(1);
+                  scrollbar.css({ left: element.get(0).offsetLeft + 15 });
+                  scrollbar.scroll(updateScrollPos);
+                } else {
+                  scrollbar.hide();
+                }
+              }
+              setTimeout(function () {
+                scrollPosition();
+              }, 200);
+              $(window).scroll(scrollPosition);
+              $(window).resize(scrollPosition);
+            }
+          }
+        });
         app.directive('fixedHeader', function () {
           return {
             restrict: 'A',
             link: function (scope, element, attr) {
               function onscroll() {
                 var scroll = $(window).scrollTop();
-                var offsettest = $(".tableContainer table tr").offset().top;
+                var offsettest = ($(".tableContainer table tr") && $(".tableContainer table tr").offset()) ? $(".tableContainer table tr").offset().top : 0;
                 var topOffset = offsettest - $(document).scrollTop();
                 if (scroll > offsettest) {
                   $(".table.table-cxo").addClass("stickHeader");
-                  $(".tableContainer .table-cxo thead tr th").css({ "position": "relative", "top": (Math.abs(topOffset)) + "px" });
-    
+                  $(".tableContainer .table-cxo thead tr th").css({ "position": "relative", 'z-index': 10, "top": (Math.abs(topOffset)) + "px" });
                 } else {
                   $(".table.table-cxo").removeClass("stickHeader");
                   $(".tableContainer .table-cxo thead tr th").removeAttr('style');
@@ -2912,9 +2728,8 @@
                 stepMonths: false,
               });
               elPicker = datepicker.data('datepicker').picker;
-              if (ngModelController) {
+              if (ngModelController && ngModelController.$viewValue) {
                 var lastModelValueMoment;
-    
                 ngModelController.$formatters.push(function (modelValue) {
                   var viewValue,
                     m = moment(modelValue);
@@ -2960,6 +2775,11 @@
                 value = 0;
               }
               return value >= 0 ? $filter('currency')(value) : '(' + $filter('currency')(value).substr(1) + ')';
+            },
+            getMonthDateRange: function (year, month) {
+              var startDate = moment([parseInt(year), parseInt(month)]);
+              var endDate = moment(startDate).endOf('month');
+              return { start: startDate, end: endDate };
             }
           };
         });
