@@ -2773,7 +2773,7 @@
           return {
             currencyToNumber: function (value) {
               if (value) {
-                value = value[0] === '$' ? value.substr(1).replace(',', '') || 0 : value.replace(',', '') || 0;
+                value = value[0] === '$' ? value.substr(1).replace(/,/g, '') || 0 : value.replace(/,/g, '') || 0;
                 return Number(value);
               }
               return 0;
