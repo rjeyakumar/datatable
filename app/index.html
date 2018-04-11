@@ -3015,9 +3015,9 @@
             });
             elem.on('blur', function (evt) {
               if (!evt.target.value) {
-                elem.val('$' + modelCtrl.$viewValue);
-                modelCtrl.$setViewValue('$0.00');
-                modelCtrl.$render();
+                // elem.val('$' + modelCtrl.$viewValue);
+                // modelCtrl.$setViewValue('$0.00');
+                // modelCtrl.$render();
               }
             })
           }
@@ -3227,35 +3227,35 @@
       var orderBookFactory = {};
       orderBookFactory.getOrderBookData = function (filterType, startDate, endDate) {
         var deferred = $q.defer();
-        //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
-        try {
-          deferred.resolve(result);
-        } catch (err) {
-          deferred.reject(result);
-        }
-        //});
+        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
+          try {
+            deferred.resolve(result);
+          } catch (err) {
+            deferred.reject(result);
+          }
+        });
         return deferred.promise;
       }
       orderBookFactory.getTotalBurn = function (month, year) {
         var deferred = $q.defer();
-        //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
-        try {
-          deferred.resolve(result1);
-        } catch (err) {
-          deferred.reject(result);
-        }
-        //});
+        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
+          try {
+            deferred.resolve(result);
+          } catch (err) {
+            deferred.reject(result);
+          }
+        });
         return deferred.promise;
       }
       orderBookFactory.saveData = function (data, isDelete) {
         var deferred = $q.defer();
-        //Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.saveOrderBookUpside', data, isDelete, function (result, event) {
-        try {
-          deferred.resolve(result);
-        } catch (err) {
-          deferred.reject(result);
-        }
-        //});
+        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.saveOrderBookUpside', data, isDelete, function (result, event) {
+          try {
+            deferred.resolve(result);
+          } catch (err) {
+            deferred.reject(result);
+          }
+        });
         return deferred.promise;
       }
       return orderBookFactory;
