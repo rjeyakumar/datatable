@@ -2073,7 +2073,7 @@
               rows="orderBook.mergedFixedColumns" show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
           </div>
           <div class="col-sm-9 noPadding righttableContSection fixed-scrollbar" fixed-scroll="true" ng-if="orderBook.scrollableColumns.length > 0">
-            <div fixed-header="true" grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
+            <div class="scrollable-columns" fixed-header="true" grid="scrollable" filter-handler="orderBook.addRowHandler(index)" no-agreement="orderBook.projectwithNoAgreement"
               delete-handler="orderBook.deleteHandler(index, subIndex, type)" columns="orderBook.scrollableColumns" sub-columns="orderBook.scrollableSubColumns"
               rows="orderBook.mergedScrollableColumns" show-no-results="orderBook.showNoResults" grid-data="orderBook.data"></div>
           </div>
@@ -2311,7 +2311,7 @@
             ]
           },
           {
-            name: 'Total Agreement',
+            name: 'Total Agreement Value',
             key: 'totalAgreement',
             isVisible: false
           },
@@ -2957,7 +2957,7 @@
           filterHandler: '&',
           deleteHandler: '&',
         },
-        template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" ng-class="{\'header\': !headerCol.subColumns, \'crm-table-col-align\': (headerCol.key === \'agreementCategory\' || headerCol.key === \'agreementNumber\' || headerCol.key === \'accountName\')}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name | symbolDecode}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name | symbolDecode}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\': (data.grandTotal[col.key] && data.grandTotal[col.key][0]===\'(\')}">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\' : (account.account[col.key] && account.account[col.key][0]===\'(\'), \'crm-agreement-name\': col.key === \'agreementName\'}" ng-repeat="col in rows track by $index"><div class="txt-ellipsis" data-placement="right" data-toggle="tooltip" title="{{account.account[col.key] | symbolDecode}}">{{account.account[col.key] | symbolDecode}}</div></td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\'}" ng-if="col.key" ng-repeat="col in rows track by $index" data-placement="right" data-toggle="tooltip" title="{{agreement[col.key] | symbolDecode}}"> <div class="txt-ellipsis" ng-if="col.key === \'agreementName\'"><a ng-href="/lightning/r/Apttus__APTS_Agreement__c/{{agreement.requestData.id}}/view" target="_blank">{{agreement[col.key] | symbolDecode}}</a></div><div ng-class="{\'crm-text-error\': (agreement[col.key] && agreement[col.key][0]===\'(\')}" class="txt-ellipsis" ng-if="col.key !== \'agreementName\'">{{agreement[col.key] | symbolDecode}}</div> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\': col.key===\'agreementName\' || (oppty[col.key] && oppty[col.key][0]===\'(\'), \'crm-agreement-name\': col.key === \'agreementName\'}" ng-repeat="col in rows"><div class="txt-ellipsis" data-placement="right" data-toggle="tooltip" title="{{oppty[col.key] | symbolDecode}}">{{oppty[col.key] | symbolDecode}}</div></td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\'}" ng-repeat-end> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="upside[col.key].value"> <option ng-repeat="category in upside[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\'}"> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
+        template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" ng-class="{\'header\': !headerCol.subColumns, \'crm-table-col-align\': (headerCol.key === \'agreementCategory\' || headerCol.key === \'agreementNumber\' || headerCol.key === \'accountName\')}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name | symbolDecode}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name | symbolDecode}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\': (data.grandTotal[col.key] && data.grandTotal[col.key][0]===\'(\')}">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\' : (account.account[col.key] && account.account[col.key][0]===\'(\'), \'crm-agreement-name\': col.key === \'agreementName\'}" ng-repeat="col in rows track by $index"><div class="txt-ellipsis" data-placement="right" data-toggle="tooltip" title="{{account.account[col.key] | symbolDecode}}">{{account.account[col.key] | symbolDecode}}</div></td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\'}" ng-if="col.key" ng-repeat="col in rows track by $index" data-placement="right" data-toggle="tooltip" title="{{agreement[col.key] | symbolDecode}}"> <div class="txt-ellipsis" ng-if="col.key === \'agreementName\'"><a ng-href="/lightning/r/Apttus__APTS_Agreement__c/{{agreement.requestData.id}}/view" target="_blank">{{agreement[col.key] | symbolDecode}}</a></div><div ng-class="{\'crm-text-error\': (agreement[col.key] && agreement[col.key][0]===\'(\')}" class="txt-ellipsis" ng-if="col.key !== \'agreementName\'">{{agreement[col.key] | symbolDecode}}</div> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\': col.key===\'agreementName\' || (oppty[col.key] && oppty[col.key][0]===\'(\'), \'crm-agreement-name\': col.key === \'agreementName\'}" ng-repeat="col in rows"><div class="txt-ellipsis" data-placement="right" data-toggle="tooltip" title="{{oppty[col.key] | symbolDecode}}">{{oppty[col.key] | symbolDecode}}</div></td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\'}" ng-repeat-end> <div ng-switch="col.key"> <div ng-switch-when="agreementCategory">{{upside[col.key].value}}</div> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\'}"> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
       };
     });
     app.directive('editable', function ($compile, $filter, $timeout, $rootScope) {
@@ -2970,10 +2970,21 @@
           category: '='
         },
         controller: function ($scope, $filter, $timeout, $rootScope) {
+          _this = this;
           this.init = () => {
             this.editableFields = ['agreementCategory', 'agreementName', 'agreementStartDate', 'agreementEndDate', 'signed', 'unSigned', 'renewal', 'upSide'];
             this.isEditable = false;
+            this.isPreventBlur = false;
             this.value = $scope.value;
+            document.onclick = function (event) {
+              if (event.target.closest('.datepicker-days')) {
+                _this.isPreventBlur = true;
+              } else {
+                _this.isPreventBlur = false;
+              }
+            }
+            //document.removeEventListener('click', this.documentClickHandler, true);
+            //console.log(document.addEventListener('click', this.documentClickHandler, true));
           }
           this.editHandler = ($event, key) => {
             this.value = $scope.value;
@@ -2988,7 +2999,9 @@
           }
           this.blurHandler = (event) => {
             $timeout(() => {
-              this.isEditable = false;
+              if (!_this.isPreventBlur) {
+                this.isEditable = false;
+              }
             }, 200);
           }
           this.onChangeHandler = function () {
@@ -3004,7 +3017,7 @@
           this.init();
         },
         controllerAs: 'edit',
-        template: '<div class="txt-ellipsis" ng-if="!edit.isEditable && !editable && (key !== \'agreementEndDate\' && key !== \'agreementStartDate\')" data-placement="right" data-toggle="tooltip" title="{{value | symbolDecode}}">{{value | symbolDecode}}<a id="edit" ng-if="(isShowField && edit.editableFields.indexOf(key) > -1)" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a></div><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /> <div class="input-group crm-table-date-picker" ng-if="(key===\'agreementEndDate\' || key===\'agreementStartDate\')"><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" type="text" ng-model="edit.value" ng-data="{{edit.value}}" readonly/><div class="input-group-addon"><span aria-hidden="true" class="glyphicon glyphicon-calendar"></span></div></div>'
+        template: '<div class="txt-ellipsis" ng-if="!edit.isEditable && !editable" data-placement="right" data-toggle="tooltip" title="{{value | symbolDecode}}">{{value | symbolDecode}}<a id="edit" ng-if="(isShowField || (key === \'agreementEndDate\' || key === \'agreementStartDate\'))" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a></div><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /> <div class="input-group crm-table-date-picker" ng-if="(key===\'agreementEndDate\' || key===\'agreementStartDate\') && (edit.isEditable || editable)"><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" type="text" ng-model="edit.value" ng-data="{{edit.value}}" readonly/><div class="input-group-addon"><span aria-hidden="true" class="glyphicon glyphicon-calendar"></span></div></div>'
         //templateUrl: 'template1.html'
       };
     });
@@ -3098,22 +3111,38 @@
           function bottom(e) {
             return e.offset().top + e.height();
           }
-          function updateScrollPos(evt) {
-            if (evt.target.id === "scrollbar") {
-              activePos = scrollbar.scrollLeft();
-            } else {
-              activePos = parentEle.scrollLeft();
+          var lastActive;
+          function bindScrollEvent(evt) {
+            unBindScrollEvent();
+            if (evt.type === 'mousedown') {
+              lastActive = (evt.target.closest('scrollable-columns') || evt.target.id === "scrollbar") ? true : false;
             }
-            element.scrollLeft(activePos);
-            scrollbar.scrollLeft(activePos);
+            if (lastActive) {
+              scrollbar.bind('scroll', updateElePos);
+            } else {
+              element.bind('scroll', updateScrollPos);
+            }
           }
-          function scrollPosition() {
-            if (bottom(element) - 10 > bottom(scrollbar)) {
+          function unBindScrollEvent(evt) {
+            element.unbind('scroll');
+            scrollbar.unbind('scroll');
+          }
+          document.addEventListener('mousedown', bindScrollEvent);
+          document.addEventListener('keydown', bindScrollEvent);
+          document.addEventListener('mouseup', unBindScrollEvent);
+          document.addEventListener('keyup', unBindScrollEvent);
+          function updateElePos(evt) {
+            element.scrollLeft(scrollbar.scrollLeft());
+          }
+          function updateScrollPos(evt) {
+            scrollbar.scrollLeft(element.scrollLeft());
+          }
+          function scrollPosition(evt) {
+            if (bottom(element) > bottom(scrollbar)) {
               scrollbar.show();
               scrollbar.find('div').width(element.get(0).scrollWidth);
               scrollbar.find('div').height(1);
               scrollbar.css({ left: element.get(0).offsetLeft + 15 });
-              scrollbar.scroll(updateScrollPos);
               element.scroll(updateScrollPos);
             } else {
               scrollbar.hide();
@@ -3156,6 +3185,9 @@
       return {
         restrict: 'AC',
         require: 'ngModel',
+        scope: {
+          ngModel: '=ngModel',
+        },
         link: function (scope, element, attr, ngModelController) {
           var datepickerFormat = 'dd-M-yy',
             momentFormat = 'DD-MMM-YY',
@@ -3173,7 +3205,7 @@
             stepMonths: false,
           });
           elPicker = datepicker.data('datepicker').picker;
-          if (ngModelController && ngModelController.$viewValue) {
+          if (ngModelController && scope.ngModel) {
             var lastModelValueMoment;
             ngModelController.$formatters.push(function (modelValue) {
               var viewValue,
