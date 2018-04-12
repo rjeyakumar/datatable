@@ -89,7 +89,7 @@
     }
 
     .table-cxo thead tr th.header {
-      height: 49px;
+      height: 48px;
     }
 
     .table-cxo tbody tr td {
@@ -1464,8 +1464,9 @@
       display: table-cell;
       width: auto !important;
       border-color: #627ea58f;
-      border-left: 0;
-      border-right: 0;
+      border: 0;
+      position: relative;
+      top: 0.5px;
     }
 
     .tableContainer .righttableContSection .table tbody tr td:first-child,
@@ -1584,7 +1585,8 @@
     }
 
     .crm-green-icons {
-      padding-top: 5px
+      padding-top: 5px;
+      padding-left: 0;
     }
 
     .crm-green-icons .glyphicon {
@@ -1781,7 +1783,9 @@
 
     .glyphicon-pencil.crm-glyphicon-align {
       float: right;
-      color: #000
+      color: grey !important;
+      background: transparent;
+
     }
 
     .crm-select-form-control {
@@ -1845,7 +1849,7 @@
 
     .crm-btn-primary,
     .crm-btn-primary-active {
-      padding: 5px 10px;
+      padding: 5px 0px;
       border-radius: 0;
       background: transparent;
       border: none;
@@ -1946,10 +1950,10 @@
 
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
-        width: 60%;
+        width: 50%;
       }
       .lefttableContSection {
-        width: 40%;
+        width: 50%;
       }
     }
 
@@ -1964,11 +1968,19 @@
 
     @media only screen and (max-width: 1300px) {
       .righttableContSection {
-        width: 59%;
+        width: 50%;
       }
       .lefttableContSection {
-        width: 41%;
+        width: 50%;
       }
+      .crm-agreement-name .txt-ellipsis {
+      width: 225px;
+      text-align: left;
+    }
+    .prevNxtSec .glyphicon-triangle-left,
+    .prevNxtSec .glyphicon-triangle-right {
+      top: 0;
+    }
     }
 
     /***************************/
