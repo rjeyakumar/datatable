@@ -1382,12 +1382,12 @@
       text-align: center;
       white-space: normal;
       font-size: 10px;
-      padding: 0px 5px;
+      padding: 0 5px;
       color: #000;
       border: 1px solid #c4d6ef8f;
-      line-height: 10px;
-      height: 23px;
+      line-height: 12px;
       min-width: 75px;
+      height: 23px;
     }
 
     .tableContainer .lefttableContSection .table-cxo tbody tr.supacc-row td:first-child {
@@ -1570,18 +1570,20 @@
       width: 95px;
       margin-left: 5px;
       margin-right: 5px;
+      display: inline;
     }
 
     .crm-table-date-picker .input-group-addon {
-      right: 19px;
-      position: relative;
+      right: 14px;
+      position: absolute;
       z-index: 9;
       pointer-events: none;
       padding: 3px;
       font-size: 10px;
-      top: -1px;
+      top: -2px;
       border: none;
       background: transparent;
+      float: right;
     }
 
     .crm-green-icons {
@@ -1807,6 +1809,7 @@
     .crm-add-row {
       cursor: pointer;
       color: #019089;
+      float: left;
     }
 
     .crm-add-row:hover {
@@ -1918,7 +1921,9 @@
 
     .text_agreementEndDate,
     .text_agreementStartDate {
-      width: 75px
+      width: 100px;
+      margin-bottom: 2px;
+      margin-top: 3px;
     }
 
     .crm-table-col-align {
@@ -1948,6 +1953,12 @@
       margin-left: 15px;
     }
 
+    .tableContainer .table tbody tr td.crm-price-align:last-child {
+      font-weight: bold;
+    }
+    .text_agreementName {
+      float: left;
+    }
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
         width: 50%;
@@ -3136,7 +3147,7 @@
           scrollbar.css({
             overflowX: 'auto',
             position: 'fixed',
-            width: parentEle.width(),
+            width: element.width(),
             bottom: 0,
             'z-index': 10,
           });
@@ -3175,19 +3186,14 @@
           function scrollPosition(evt) {
             scrollbar.show();
             if (top(parentEle) < top(scrollbar) && bottom(parentEle) > bottom(scrollbar)) {
-              // if (bottom(parentEle) - 50 > top(scrollbar)) {
               scrollbar.find('div').width(parentEle[0].scrollWidth);
               scrollbar.find('div').height(1);
               scrollbar.css({ left: parentEle.offsetLeft });
               element.scroll(updateScrollPos);
             } else {
-              //scrollbar.hide();
+              scrollbar.hide();
             }
-            if (lastActive) {
-              scrollbar.bind('scroll', updateElePos);
-            } else {
-              element.bind('scroll', updateScrollPos);
-            }
+            scrollbar.scrollLeft(element.scrollLeft());
           }
           setTimeout(function () {
             scrollPosition();
