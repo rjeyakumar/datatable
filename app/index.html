@@ -1935,8 +1935,15 @@
       padding-right: 14px;
     }
 
-.topContSection .list-inline.list-unstyled li{margin-left:5px;padding:0}
-.topContSection .list-inline.list-unstyled li:first-child{margin-left:15px;}
+    .topContSection .list-inline.list-unstyled li {
+      margin-left: 5px;
+      padding: 0
+    }
+
+    .topContSection .list-inline.list-unstyled li:first-child {
+      margin-left: 15px;
+    }
+
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
         width: 60%;
@@ -2738,7 +2745,7 @@
           let filledProjectId = [];
           headerObj.accountName = list.Name;
           headerObj.id = list.Id;
-          let agreementList = data.agreementList.filter(agreement => headerObj.id === agreement.Apttus__Account__c).map(agreement => {
+          let agreementList = data.agreementList.filter(agreement => headerObj.id.substring(0, 15) === agreement.Main_Account__c).map(agreement => {
             let obj = {};
             let signed = {};
             if (filledProjectId.indexOf(agreement.Project_Id__c) === -1) {
@@ -2916,16 +2923,17 @@
         orderBook.showNoResults = (agreementList.length === orderBook.data.mainAccList.length) && (upsideList.length === orderBook.data.mainAccList.length) && (opptyList.length === orderBook.data.mainAccList.length);
       }
       orderBook.init = function (filterType, startDate, endDate) {
+        let startEndDate = common.getMonthDateRange(orderBook.selectedYear, orderBook.months.indexOf(orderBook.selectedMonth));
+        let monthStartDate = moment(startEndDate.start).format('YYYY-MM-DD');
         if (!filterType) {
-          let startEndDate = common.getMonthDateRange(orderBook.selectedYear, orderBook.months.indexOf(orderBook.selectedMonth));
           filterType = 'Live Contracts';
-          startDate = moment(startEndDate.start).format('YYYY-MM-DD');
+          startDate = monthStartDate;
           endDate = moment(startEndDate.end).format('YYYY-MM-DD');
         }
         orderBook.currentDateTime = moment().format("dddd, MMM Do YYYY, h:mm:ss a");
         orderBook.isShowLoading = true;
         orderBook.isEdited = false;
-        orderBookApi.getOrderBookData(filterType, startDate, endDate).then(function (response) {
+        orderBookApi.getOrderBookData(filterType, startDate, endDate, monthStartDate).then(function (response) {
           if (response.responseCode === 200) {
             console.log(response.responseObject);
             orderBook.data = orderBook.dataMapping(response.responseObject);
@@ -3117,7 +3125,7 @@
           scrollbar.css({
             overflowX: 'auto',
             position: 'fixed',
-            width: element.width(),
+            width: parentEle.width(),
             bottom: 0,
             'z-index': 10,
           });
@@ -3131,7 +3139,7 @@
           function bindScrollEvent(evt) {
             unBindScrollEvent();
             if (evt.type === 'mousedown') {
-              lastActive = (evt.target.closest('scrollable-columns') || evt.target.id === "scrollbar") ? true : false;
+              lastActive = (evt.target.closest('fixed-scrollbar') || evt.target.closest('scrollable-columns') || evt.target.id === "scrollbar") ? true : false;
             }
             if (lastActive) {
               scrollbar.bind('scroll', updateElePos);
@@ -3147,25 +3155,27 @@
           document.addEventListener('keydown', bindScrollEvent);
           document.addEventListener('mouseup', unBindScrollEvent);
           document.addEventListener('keyup', unBindScrollEvent);
-          function updateElePos(evt) {
+          function updateElePos() {
             element.scrollLeft(scrollbar.scrollLeft());
           }
-          function updateScrollPos(evt) {
+          function updateScrollPos() {
             scrollbar.scrollLeft(element.scrollLeft());
           }
           function scrollPosition(evt) {
-            if (bottom(element) > bottom(scrollbar)) {
-              scrollbar.show();
-              scrollbar.find('div').width(element.get(0).scrollWidth);
+            scrollbar.show();
+            if (top(parentEle) < top(scrollbar) && bottom(parentEle) > bottom(scrollbar)) {
+              // if (bottom(parentEle) - 50 > top(scrollbar)) {
+              scrollbar.find('div').width(parentEle[0].scrollWidth);
               scrollbar.find('div').height(1);
-              scrollbar.css({ left: element.get(0).offsetLeft + 15 });
+              scrollbar.css({ left: parentEle.offsetLeft });
               element.scroll(updateScrollPos);
             } else {
-              scrollbar.hide();
+              //scrollbar.hide();
             }
-            if (activePos) {
-              element.scrollLeft(activePos);
-              scrollbar.scrollLeft(activePos);
+            if (lastActive) {
+              scrollbar.bind('scroll', updateElePos);
+            } else {
+              element.bind('scroll', updateScrollPos);
             }
           }
           setTimeout(function () {
@@ -3284,9 +3294,9 @@
     });
     app.factory('orderBookApi', function ($q) {
       var orderBookFactory = {};
-      orderBookFactory.getOrderBookData = function (filterType, startDate, endDate) {
+      orderBookFactory.getOrderBookData = function (filterType, startDate, endDate, monthStartDate) {
         var deferred = $q.defer();
-        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, function (result, event) {
+        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.getOrderBookData', filterType, startDate, endDate, monthStartDate, function (result, event) {
           try {
             deferred.resolve(result);
           } catch (err) {
