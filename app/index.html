@@ -1570,18 +1570,20 @@
       width: 95px;
       margin-left: 5px;
       margin-right: 5px;
+      display: inline;
     }
 
     .crm-table-date-picker .input-group-addon {
-      right: 19px;
-      position: relative;
+      right: 14px;
+      position: absolute;
       z-index: 9;
       pointer-events: none;
       padding: 3px;
       font-size: 10px;
-      top: -1px;
+      top: -2px;
       border: none;
       background: transparent;
+      float: right;
     }
 
     .crm-green-icons {
@@ -1918,7 +1920,9 @@
 
     .text_agreementEndDate,
     .text_agreementStartDate {
-      width: 75px
+      width: 100px;
+      margin-bottom: 2px;
+      margin-top: 3px;
     }
 
     .crm-table-col-align {
@@ -1939,8 +1943,19 @@
       padding-right: 14px;
     }
 
-.topContSection .list-inline.list-unstyled li{margin-left:5px;padding:0}
-.topContSection .list-inline.list-unstyled li:first-child{margin-left:15px;}
+    .topContSection .list-inline.list-unstyled li {
+      margin-left: 5px;
+      padding: 0
+    }
+
+    .topContSection .list-inline.list-unstyled li:first-child {
+      margin-left: 15px;
+    }
+
+    .tableContainer .table tbody tr td.crm-price-align:last-child {
+      font-weight: bold;
+    }
+
     @media only screen and (max-width: 1650px) {
       .righttableContSection {
         width: 50%;
@@ -1967,13 +1982,13 @@
         width: 50%;
       }
       .crm-agreement-name .txt-ellipsis {
-      width: 225px;
-      text-align: left;
-    }
-    .prevNxtSec .glyphicon-triangle-left,
-    .prevNxtSec .glyphicon-triangle-right {
-      top: 0;
-    }
+        width: 225px;
+        text-align: left;
+      }
+      .prevNxtSec .glyphicon-triangle-left,
+      .prevNxtSec .glyphicon-triangle-right {
+        top: 0;
+      }
     }
 
     /***************************/
