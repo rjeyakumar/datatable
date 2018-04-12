@@ -2240,23 +2240,7 @@
         });
         orderBook.getTotal();
       }
-      /** @description Callback function Project with no agreement button
-       */
-      orderBook.noAgreementHandler = function () {
-        orderBook.projectwithNoAgreement = !orderBook.projectwithNoAgreement;
-        if (orderBook.liveContract || orderBook.isDateFilterEnabled) {
-          orderBook.liveContract = false;
-          orderBook.isDateFilterEnabled = false;
-          orderBook.init('All', orderBook.currentDate, orderBook.currentDate);
-          return;
-        }
-        if (orderBook.projectwithNoAgreement) {
-          orderBook.filterNoAgreement();
-        } else {
-          orderBook.data = $.extend(true, [], orderBook.clonedData);
-        }
-        orderBook.findNoResults();
-      }
+
       orderBook.selectMonthYearHandler = function (type) {
         if (type === 'month' && !orderBook.selectedMonth) {
           orderBook.selectedMonth = orderBook.months[0];
@@ -2930,7 +2914,8 @@
         });
         orderBookApi.saveData(requestData, true).then((response) => {
           if (response.responseCode === 200) {
-            orderBook.init();
+            let filterByObj = Object.keys(orderBook.agreementFilter).find(key => orderBook.agreementFilter[key])
+            orderBook.agreementFilterHandler(filterByObj);
           }
           else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
@@ -3000,7 +2985,6 @@
         link: function (scope, elem, attrs, Ctrl) {
           elem.on('click', function () {
             var scrollableTable = $('.scrollable-columns');
-            console.log(scope.index);
             $(scrollableTable.find('tr.table-crm-bg')[scope.index]).nextAll().each(function (index) {
               if ($(this).hasClass('table-crm-bg')) {
                 return false;
@@ -3013,7 +2997,13 @@
               }
               $(this).toggleClass("hidden");
             });
-            $(this).find('span').toggleClass("glyphicon-plus");
+            if ($(this).find('span').hasClass('glyphicon-plus')) {
+              $(this).find('span').removeClass("glyphicon-plus");
+              $(this).find('span').addClass("glyphicon-minus");
+            } else {
+              $(this).find('span').removeClass("glyphicon-minus");
+              $(this).find('span').addClass("glyphicon-plus");
+            }
           });
         }
       };
