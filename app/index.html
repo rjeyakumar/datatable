@@ -1566,7 +1566,7 @@
       position: relative;
       z-index: 9;
       pointer-events: none;
-      padding: 0 5px 0 0;
+      padding: 0 5px 0 6px;
     }
 
     .crm-table-date-picker {
@@ -1776,7 +1776,7 @@
     }
 
     .crm-time-stamp {
-      font-size: 11px;
+      font-size: 12px;
     }
 
     .crm-btn-primary,
@@ -1857,10 +1857,6 @@
       color: #019089;
       padding: 2px 15px;
       font-size: 12px;
-    }
-
-    .crm-time-stamp {
-      font-size: 11px;
     }
 
     .crm-btn-primary,
@@ -2081,19 +2077,19 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-3 col-md-3">
+        <div class="col-lg-4 col-md-4">
           <button type="button" class="crm-btn-white" data-toggle="modal" data-target="#filter-popup">Select Column
             <span class="glyphicon glyphicon-th"></span>
           </button>
         </div>
-        <div class="col-lg-6 col-md-6 text-center">
+        <div class="col-lg-4 col-md-4 text-center">
           <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
           <div class="crm-btn-cancel-save-align" ng-if="orderBook.isEdited">
             <button class="crm-btn-cancel" data-toggle="modal" data-target="#cancel-popup">Cancel</button>
             <button class="crm-btn-success" ng-click="orderBook.saveAllData()">Save</button>
           </div>
         </div>
-        <div class="col-lg-3 col-md-3 text-right crm-green-icons">
+        <div class="col-lg-4 col-md-4 text-right crm-green-icons">
           <span class="crm-time-stamp">As on {{orderBook.currentDateTime}}</span>
           <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
           <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel('overAllTable')"></span>
