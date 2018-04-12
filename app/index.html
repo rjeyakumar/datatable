@@ -89,7 +89,7 @@
     }
 
     .table-cxo thead tr th.header {
-      height: 48px;
+      height: 49px;
     }
 
     .table-cxo tbody tr td {
@@ -335,6 +335,7 @@
 
     table.table-cxo.table {
       margin-left: 0;
+      border: 1px;
       /*table-layout: fixed;*/
     }
 
@@ -1343,6 +1344,8 @@
       min-width: 120px;
       background: #019089;
       color: #fff;
+      text-transform: capitalize;
+      font-weight: 700;
     }
 
     .righttableContSection {
@@ -1381,13 +1384,12 @@
       vertical-align: middle;
       text-align: center;
       white-space: normal;
-      font-size: 10px;
+      font-size: 11px;
       padding: 0 5px;
       color: #000;
       border: 1px solid #c4d6ef8f;
-      line-height: 12px;
       min-width: 75px;
-      height: 23px;
+      height: 25px;
     }
 
     .tableContainer .lefttableContSection .table-cxo tbody tr.supacc-row td:first-child {
@@ -1428,10 +1430,11 @@
     }
 
     .tableContainer .lefttableContSection .table-cxo thead tr th {
-      /*line-height: 42px;*/
       height: 49px;
       background: #019089;
       color: #fff;
+      text-transform: capitalize;
+      font-weight: 700;
     }
 
     .filterResurce .dropdown-menu {
@@ -1563,7 +1566,7 @@
       position: relative;
       z-index: 9;
       pointer-events: none;
-      padding: 0 5px 0 0;
+      padding: 0 5px 0 6px;
     }
 
     .crm-table-date-picker {
@@ -1601,7 +1604,7 @@
       background: transparent;
       border: 1px solid #dadada;
       padding: 5px 10px;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: normal;
       margin-bottom: 15px;
     }
@@ -1660,22 +1663,28 @@
     }
 
     button.close.crm-modal-popup-close {
-      top: -13px;
-      right: -10px;
+      top: -32px;
+      right: -45px;
       background: black;
       opacity: 1 !important;
       border-radius: 50%;
       color: white;
       font-size: 25px;
-      position: absolute;
+      position: relative;
       border: 2px solid #fff !important;
-      transform: rotate(138deg);
       padding: 1px 5px;
       height: 30px;
       width: 30px;
     }
 
-    button.close.crm-modal-popup-close .crm-close-icon {}
+    button.close.crm-modal-popup-close .crm-close-icon {
+      transform: rotate(138deg);
+      -webkit-transform: rotate(138deg);
+      -moz-transform: rotate(138deg);
+      position: absolute;
+      top: 2px;
+      right: 4px;
+    }
 
     .crm-add-remove-btn,
     .crm-up-down-btn {
@@ -1726,6 +1735,9 @@
     .modal-footer.crm-modal-footer button {
       width: 100px;
       padding: 8px 10px;
+      font-weight: normal;
+      font-size: 12px;
+      font-family: inherit;
     }
 
     .crm-modal-add-remove-btn {
@@ -1764,7 +1776,7 @@
     }
 
     .crm-time-stamp {
-      font-size: 11px;
+      font-size: 12px;
     }
 
     .crm-btn-primary,
@@ -1773,6 +1785,8 @@
       border-radius: 0;
       background: transparent;
       border: none;
+      font-weight: normal;
+      font-size: 12px;
     }
 
     .crm-btn-primary-active {
@@ -1792,7 +1806,7 @@
 
     .crm-select-form-control {
       padding: 1px 2px;
-      height: 16px;
+      height: 20px;
       font-size: 10px;
       color: #000;
       background-color: #fff;
@@ -1809,7 +1823,6 @@
     .crm-add-row {
       cursor: pointer;
       color: #019089;
-      float: left;
     }
 
     .crm-add-row:hover {
@@ -1846,16 +1859,14 @@
       font-size: 12px;
     }
 
-    .crm-time-stamp {
-      font-size: 11px;
-    }
-
     .crm-btn-primary,
     .crm-btn-primary-active {
       padding: 5px 0px;
       border-radius: 0;
       background: transparent;
       border: none;
+      font-weight: normal;
+      font-size: 12px;
     }
 
     .crm-btn-primary-active {
@@ -1869,22 +1880,6 @@
     .glyphicon-pencil.crm-glyphicon-align {
       float: right;
       color: #000
-    }
-
-    .crm-select-form-control {
-      padding: 1px 2px;
-      height: 16px;
-      font-size: 10px;
-      color: #000;
-      background-color: #fff;
-      background-image: none;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-      -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-      -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-      transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
     }
 
     .crm-add-row {
@@ -1959,6 +1954,7 @@
 
     .text_agreementName {
       float: left;
+      width: 100%;
     }
 
     @media only screen and (max-width: 1650px) {
@@ -2081,19 +2077,19 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-lg-3 col-md-3">
+        <div class="col-lg-4 col-md-4">
           <button type="button" class="crm-btn-white" data-toggle="modal" data-target="#filter-popup">Select Column
             <span class="glyphicon glyphicon-th"></span>
           </button>
         </div>
-        <div class="col-lg-6 col-md-6 text-center">
+        <div class="col-lg-4 col-md-4 text-center">
           <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
           <div class="crm-btn-cancel-save-align" ng-if="orderBook.isEdited">
             <button class="crm-btn-cancel" data-toggle="modal" data-target="#cancel-popup">Cancel</button>
             <button class="crm-btn-success" ng-click="orderBook.saveAllData()">Save</button>
           </div>
         </div>
-        <div class="col-lg-3 col-md-3 text-right crm-green-icons">
+        <div class="col-lg-4 col-md-4 text-right crm-green-icons">
           <span class="crm-time-stamp">As on {{orderBook.currentDateTime}}</span>
           <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
           <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel('overAllTable')"></span>
