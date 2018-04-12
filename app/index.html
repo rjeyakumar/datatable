@@ -1974,13 +1974,13 @@
         width: 50%;
       }
       .crm-agreement-name .txt-ellipsis {
-      width: 225px;
-      text-align: left;
-    }
-    .prevNxtSec .glyphicon-triangle-left,
-    .prevNxtSec .glyphicon-triangle-right {
-      top: 0;
-    }
+        width: 225px;
+        text-align: left;
+      }
+      .prevNxtSec .glyphicon-triangle-left,
+      .prevNxtSec .glyphicon-triangle-right {
+        top: 0;
+      }
     }
 
     /***************************/
@@ -2030,13 +2030,13 @@
             <ul class="list-inline list-unstyled">
               <li>
                 <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.liveContracts}" class="crm-btn-primary"
-                  data-color="primary" ng-click="orderBook.agreementFilterHandler('liveContracts')">Live contracts</button>
+                  data-color="primary" ng-click="orderBook.agreementFilterHandler('liveContracts')">All Agreements</button>
                 <input type="checkbox" class="hidden" />
               </li>
               <li>|</li>
               <li>
-                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.all}" class="crm-btn-primary" data-color="primary"
-                  ng-click="orderBook.agreementFilterHandler('all')">All Agreements</button>
+                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.testing}" class="crm-btn-primary" data-color="primary"
+                  ng-click="orderBook.agreementFilterHandler('testing')">Live contracts</button>
                 <input type="checkbox" class="hidden" />
               </li>
               <li>|</li>
@@ -2131,7 +2131,7 @@
       };
       orderBook.agreementFilter = {
         liveContracts: true,
-        all: false,
+        testing: false,
         noAgreement: false,
         date: false,
       }
@@ -2205,17 +2205,16 @@
       }
 
       orderBook.agreementFilterHandler = function (key) {
-        orderBook.agreementFilter = { liveContracts: false, all: false, noAgreement: false, date: false, };
+        orderBook.agreementFilter = { liveContracts: false, testing: false, noAgreement: false, date: false, };
         orderBook.agreementFilter[key] = true;
         switch (key) {
+          case 'noAgreement':
           case 'liveContracts': {
             orderBook.init();
             break;
           }
-          case 'all':
-          case 'noAgreement': {
-            orderBook.init('All', orderBook.currentDate, orderBook.currentDate);
-            break;
+          case 'testing': {
+            orderBook.init('Testing', orderBook.currentDate, orderBook.currentDate);
           }
           default: {
             orderBook.init('Agreement date', moment(orderBook.fromDate).format('YYYY-MM-DD'), moment(orderBook.toDate).format('YYYY-MM-DD'))
@@ -3279,6 +3278,9 @@
     app.factory('common', function ($filter) {
       return {
         currencyToNumber: function (value) {
+          if (value === '-') {
+            return 0;
+          }
           if (value) {
             value = value[0] === '$' ? value.substr(1).replace(/,/g, '') || 0 : value.replace(/,/g, '') || 0;
             return Number(value);
