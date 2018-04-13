@@ -3184,7 +3184,7 @@
         scope: {
           index: '=',
         },
-        template: '<a class="crm-collapse-expand"><span class="glyphicon glyphicon-minus"></span></a>',
+        template: '<a class="crm-collapse-expand"><span class="glyphicon glyphicon glyphicon-chevron-down"></span></a>',
         link: function (scope, elem, attrs, Ctrl) {
           elem.on('click', function () {
             var scrollableTable = $('.scrollable-columns');
@@ -3200,12 +3200,12 @@
               }
               $(this).toggleClass("hidden");
             });
-            if ($(this).find('span').hasClass('glyphicon-plus')) {
-              $(this).find('span').removeClass("glyphicon-plus");
-              $(this).find('span').addClass("glyphicon-minus");
+            if ($(this).find('span').hasClass('glyphicon-chevron-up')) {
+              $(this).find('span').removeClass("glyphicon-chevron-up");
+              $(this).find('span').addClass("glyphicon-chevron-down");
             } else {
-              $(this).find('span').removeClass("glyphicon-minus");
-              $(this).find('span').addClass("glyphicon-plus");
+              $(this).find('span').removeClass("glyphicon-chevron-down");
+              $(this).find('span').addClass("glyphicon-chevron-up");
             }
           });
         }
@@ -3346,13 +3346,6 @@
           var activePos;
           var scrollbar = $('<div id="scrollbar"><div></div></div>').appendTo(element);
           var parentEle = $('.fixed-scrollbar');
-          scrollbar.css({
-            overflowX: 'auto',
-            position: 'fixed',
-            width: element.width(),
-            bottom: 0,
-            'z-index': 10,
-          });
           function top(e) {
             return e.offset().top;
           }
@@ -3388,9 +3381,16 @@
           function scrollPosition(evt) {
             scrollbar.show();
             if (top(parentEle) < top(scrollbar) && bottom(parentEle) > top(scrollbar)) {
+              scrollbar.css({
+                overflowX: 'auto',
+                position: 'fixed',
+                width: element.width(),
+                left: parentEle.offsetLeft,
+                bottom: 0,
+                'z-index': 10,
+              });
               scrollbar.find('div').width(parentEle[0].scrollWidth);
               scrollbar.find('div').height(1);
-              scrollbar.css({ left: parentEle.offsetLeft });
               element.scroll(updateScrollPos);
             } else {
               scrollbar.hide();
