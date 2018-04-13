@@ -3,7 +3,7 @@
   <html>
 
   <head>
-    <title>CSAT_FormSender</title>
+    <title>Order Book</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     </meta>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -1100,6 +1100,11 @@
       /*min-width:92px;  */
     }
 
+    .crm-list-check-filter {
+      display: inline-block;
+      margin-top: 10px;
+    }
+
     @media (min-width: 1600px) {
       .custom-asofrow.col-lg-5 {
         width: 32% !important;
@@ -1310,7 +1315,7 @@
     }
 
     .topContSection {
-      padding: 10px;
+      padding: 10px 10px 0;
       font-size: 12px;
       box-shadow: inset 0px 1px 4px 0px #ccdaf3;
       margin-top: 0;
@@ -1612,10 +1617,11 @@
     .crm-btn-white {
       background: transparent;
       border: 1px solid #dadada;
-      padding: 5px 10px;
+      padding: 3px 10px;
       font-size: 12px;
       font-weight: normal;
       margin-bottom: 15px;
+      margin-top: 15px;
     }
 
     .crm-btn-white .glyphicon {
@@ -1624,10 +1630,11 @@
 
     .crm-head-title {
       font-size: 14px;
-      margin: 5px 0 15px;
+      margin: 0px 0 25px;
       font-weight: 700;
       top: 10px;
       position: relative;
+      display: block;
     }
 
     .prevNxtSec {
@@ -2065,7 +2072,9 @@
           </div>
           <div class="col-sm-5 text-right">
             <div class="crm-align-date">
-              <label>As of Month:</label>
+              <label ng-if="!orderBook.agreementFilter.liveContracts && !orderBook.agreementFilter.testing">As of Month:</label>
+              <label ng-if="orderBook.agreementFilter.testing">From Month:</label>
+              <label ng-if="orderBook.agreementFilter.liveContracts">Until Month:</label>
               <div class=" prevNxtSec noPadding">
                 <i class="glyphicon glyphicon-triangle-left" id="previous" ng-click="orderBook.prevMonthHandler()" ng-disabled="orderBook.YearPrevDisable"></i>
                 <select class="form-control asofMonth-pickList asofmonth asofYear yearSelectBx" ng-change="orderBook.selectMonthYearHandler('month')"
@@ -2084,16 +2093,16 @@
             </div>
           </div>
           <div class="col-sm-12" ng-class="{'hide' : orderBook.showDatePicker}">
-            <ul class="list-inline list-unstyled">
+            <ul class="list-inline list-unstyled crm-list-check-filter">
               <li>
-                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.liveContracts}" class="crm-btn-primary"
-                  data-color="primary" ng-click="orderBook.agreementFilterHandler('liveContracts')">All Agreements</button>
+                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.testing}" class="crm-btn-primary" data-color="primary"
+                  ng-click="orderBook.agreementFilterHandler('testing')">Live Contracts</button>
                 <input type="checkbox" class="hidden" />
               </li>
               <li>|</li>
               <li>
-                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.testing}" class="crm-btn-primary" data-color="primary"
-                  ng-click="orderBook.agreementFilterHandler('testing')">Live contracts</button>
+                <button type="button" ng-class="{'crm-btn-primary-active':orderBook.agreementFilter.liveContracts}" class="crm-btn-primary"
+                  data-color="primary" ng-click="orderBook.agreementFilterHandler('liveContracts')">All Agreements</button>
                 <input type="checkbox" class="hidden" />
               </li>
               <li>|</li>
@@ -2121,14 +2130,15 @@
                 </div>
               </li>
             </ul>
+            <button type="button" class="crm-btn-white pull-right" data-toggle="modal" data-target="#filter-popup">Select Column
+              <span class="glyphicon glyphicon-th"></span>
+            </button>
           </div>
         </div>
       </div>
-      <div class="row">
+      <div class="row crm-title-bar">
         <div class="col-lg-4 col-md-4">
-          <button type="button" class="crm-btn-white" data-toggle="modal" data-target="#filter-popup">Select Column
-            <span class="glyphicon glyphicon-th"></span>
-          </button>
+
         </div>
         <div class="col-lg-4 col-md-4 text-center">
           <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
@@ -2187,8 +2197,8 @@
         upside: false,
       };
       orderBook.agreementFilter = {
-        liveContracts: true,
-        testing: false,
+        liveContracts: false,
+        testing: true,
         noAgreement: false,
         date: false,
       }
@@ -2218,7 +2228,6 @@
         if (index == 0) {
           orderBook.selectedYear = orderBook.years[orderBook.years.indexOf(orderBook.selectedYear) - 1];
           orderBook.selectedMonth = orderBook.months[11];
-          //orderBook.updateConfiguration();
           let filterByObj = Object.keys(orderBook.agreementFilter).find(key => orderBook.agreementFilter[key])
           orderBook.agreementFilterHandler(filterByObj);
           return;
@@ -2226,7 +2235,6 @@
 
         if (orderBook.months[prevIndex]) {
           orderBook.selectedMonth = orderBook.months[prevIndex];
-          //orderBook.updateConfiguration();
           let filterByObj = Object.keys(orderBook.agreementFilter).find(key => orderBook.agreementFilter[key])
           orderBook.agreementFilterHandler(filterByObj);
         }
@@ -2248,14 +2256,12 @@
         if (index == orderBook.months.length - 1) {
           orderBook.selectedYear = orderBook.years[orderBook.years.indexOf(orderBook.selectedYear) + 1];
           orderBook.selectedMonth = orderBook.months[0];
-          //orderBook.updateConfiguration();
           let filterByObj = Object.keys(orderBook.agreementFilter).find(key => orderBook.agreementFilter[key])
           orderBook.agreementFilterHandler(filterByObj);
           return;
         }
         if (orderBook.months[nextIndex]) {
           orderBook.selectedMonth = orderBook.months[nextIndex];
-          //orderBook.updateConfiguration();
           let filterByObj = Object.keys(orderBook.agreementFilter).find(key => orderBook.agreementFilter[key])
           orderBook.agreementFilterHandler(filterByObj);
         }
@@ -2267,7 +2273,10 @@
         switch (key) {
           case 'noAgreement':
           case 'liveContracts': {
-            orderBook.init();
+            let startEndDate = common.getMonthDateRange(orderBook.selectedYear, orderBook.months.indexOf(orderBook.selectedMonth));
+            let monthStartDate = moment(startEndDate.start).format('YYYY-MM-DD');
+            let monthEndDate = moment(startEndDate.end).format('YYYY-MM-DD')
+            orderBook.init('Live Contracts', monthStartDate, monthEndDate);
             break;
           }
           case 'testing': {
@@ -2295,7 +2304,6 @@
         }
         let filterByObj = Object.keys(orderBook.agreementFilter).find(key => orderBook.agreementFilter[key])
         orderBook.agreementFilterHandler(filterByObj);
-        //orderBook.updateConfiguration();
       };
 
       orderBook.datepickerShowHandler = function () {
@@ -2311,6 +2319,48 @@
         }, 100);
       }
       orderBook.updateConfiguration = function () {
+        let filterByObj = Object.keys(orderBook.agreementFilter).find(key => orderBook.agreementFilter[key]);
+        let revenueRecognized;
+        if (filterByObj === 'testing') {
+          revenueRecognized = {
+            name: 'Revenue Recognized',
+            isVisible: false,
+            subColumns: [
+              {
+                name: 'Burn Prior to Month',
+                key: 'priorBurn',
+                isVisible: true
+              },
+              {
+                name: 'Burn From Month',
+                key: 'fromMonth',
+                isVisible: true
+              },
+              {
+                name: 'Total Burn',
+                key: 'totalBurn',
+                isVisible: true
+              }
+            ]
+          }
+        } else {
+          revenueRecognized = {
+            name: 'Revenue Recognized',
+            isVisible: false,
+            subColumns: [
+              {
+                name: orderBook.selectedMonth,
+                key: 'march',
+                isVisible: true
+              },
+              {
+                name: 'Total Burn',
+                key: 'totalBurn',
+                isVisible: true
+              }
+            ]
+          }
+        }
         orderBook.config = [
           {
             name: 'Account Name',
@@ -2397,22 +2447,7 @@
             key: 'projectEndDate',
             isVisible: false
           },
-          {
-            name: 'Revenue Recognized',
-            isVisible: false,
-            subColumns: [
-              {
-                name: orderBook.selectedMonth,
-                key: 'march',
-                isVisible: true
-              },
-              {
-                name: 'Total Burn',
-                key: 'totalBurn',
-                isVisible: true
-              }
-            ]
-          },
+          revenueRecognized,
           {
             name: 'Balance',
             key: 'balance',
@@ -2421,7 +2456,7 @@
         ];
         orderBook.clonedConfig = $.extend(true, [], orderBook.config);
         orderBook.getColumns(orderBook.clonedConfig);
-        orderBook.getTotalBurn();
+        orderBook.getTotalAndPriorBurn();
       }
       /** @description Function to remove column based on selected columns
        * @param {config} array - contains the table configuration
@@ -2612,6 +2647,8 @@
           obj.projectDescription = '';
           obj.projectStartDate = '';
           obj.projectEndDate = '';
+          obj.priorBurn = '';
+          obj.fromMonth = '';
           obj.march = '';
           obj.totalBurn = '';
           obj.balance = '';
@@ -2626,6 +2663,11 @@
           orderBook.isEdited = true;
         }
       }
+
+      /** @description calculate total from given array base on key
+       * @param {array} array 
+       * @param {string} key
+       */
       orderBook.calculateTotal = function (array, key) {
         var total = 0;
         array.forEach(data => {
@@ -2645,11 +2687,19 @@
         });
         return common.formatAmount(total);
       }
+
+      /** @description calculate balance from given totalagreement and total burn
+       * @param {string} totalAgreement 
+       * @param {string} totalBurn
+       */
       orderBook.calculateBalance = function (totalAgreement, totalBurn) {
         let balance = 0;
         balance = common.currencyToNumber(totalAgreement) - common.currencyToNumber(totalBurn);
         return common.formatAmount(balance);
       }
+
+      /** @description callback function for delete button
+       */
       orderBook.deleteHandler = function (index, subIndex, type) {
         if (type === 'upside' && orderBook.data.mainAccList[index][type]) {
           let upside = orderBook.data.mainAccList[index][type][subIndex];
@@ -2670,6 +2720,106 @@
           orderBook.data.mainAccList[index][type].splice(subIndex, 1);
         }
       }
+      orderBook.getTotalAndPriorBurn = function () {
+        let filterByObj = Object.keys(orderBook.agreementFilter).find(key => orderBook.agreementFilter[key]);
+        if (filterByObj === 'testing') {
+          orderBook.getPriorBurn();
+        } else {
+          orderBook.getTotalBurn();
+        }
+      }
+      orderBook.getPriorBurn = function () {
+        orderBook.isShowLoading = true;
+        var grandTotalList = [];
+        orderBookApi.getPriorBurn(orderBook.selectedMonth, orderBook.selectedYear).then(function (response) {
+          if (response.responseCode === 200) {
+            let res = response.responseObject.burnedRevenueMap;
+            orderBook.data.mainAccList = orderBook.data.mainAccList.map(list => {
+              let filledProject = [];
+              list.agreement = list.agreement.map(agreement => {
+                if (agreement) {
+                  let projectId = agreement.projectId ? agreement.projectId.toString() : '';
+                  let currentProject = (projectId && res[projectId]) ? res[projectId] : null;
+                  if (filledProject.indexOf(projectId.toString()) > -1) {
+                    agreement.fromMonth = '-';
+                    agreement.priorBurn = '-';
+                    agreement.totalBurn = '-';
+                  } else {
+                    agreement.priorBurn = currentProject ? common.formatAmount(currentProject[1]) : '';
+                    agreement.fromMonth = currentProject ? common.formatAmount(currentProject[2]) : '';
+                    agreement.totalBurn = currentProject ? common.formatAmount(currentProject[3]) : '';
+                  }
+                  if (currentProject) {
+                    filledProject.push(projectId);
+                  }
+                  agreement.balance = orderBook.calculateBalance(agreement.totalAgreement, agreement.totalBurn);
+                  return agreement;
+                }
+              });
+              list.upside = list.upside.map(upside => {
+                if (upside) {
+                  let projectId = upside.projectId ? upside.projectId.toString() : '';
+                  let currentProject = (projectId && res[projectId]) ? res[projectId] : null;
+                  if (filledProject.indexOf(projectId) > -1) {
+                    upside.fromMonth = '-';
+                    upside.priorBurn = '-';
+                    upside.totalBurn = '-';
+                  } else {
+                    upside.priorBurn = currentProject ? common.formatAmount(currentProject[1]) : '';
+                    upside.fromMonth = currentProject ? common.formatAmount(currentProject[2]) : '';
+                    upside.totalBurn = currentProject ? common.formatAmount(currentProject[3]) : '';
+                  }
+                  if (currentProject) {
+                    filledProject.push(projectId);
+                  }
+                  upside.balance = orderBook.calculateBalance(upside.totalAgreement, upside.totalBurn);
+                  return upside;
+                }
+              });
+              list.oppty = list.oppty.map(oppty => {
+                if (oppty) {
+                  let projectId = oppty.projectId ? oppty.projectId.toString() : '';
+                  let currentProject = (projectId && res[projectId]) ? res[projectId] : null;
+                  if (filledProject.indexOf(projectId) > -1) {
+                    oppty.fromMonth = '-';
+                    oppty.priorBurn = '-';
+                    oppty.totalBurn = '-';
+                  } else {
+                    oppty.priorBurn = currentProject ? common.formatAmount(currentProject[1]) : '';
+                    oppty.fromMonth = currentProject ? common.formatAmount(currentProject[2]) : '';
+                    oppty.totalBurn = currentProject ? common.formatAmount(currentProject[3]) : '';
+                  }
+                  if (currentProject) {
+                    filledProject.push(projectId);
+                  }
+                  oppty.balance = orderBook.calculateBalance(oppty.totalAgreement, oppty.totalBurn);
+                  return oppty;
+                }
+              });
+              let mergedObj = list.oppty.concat(list.agreement).concat(list.upside);
+              grandTotalList = grandTotalList.concat(mergedObj);
+              list.account.priorBurn = orderBook.calculateTotal(mergedObj, 'priorBurn');
+              list.account.fromMonth = orderBook.calculateTotal(mergedObj, 'fromMonth');
+              list.account.totalBurn = orderBook.calculateTotal(mergedObj, 'totalBurn');
+              list.account.balance = orderBook.calculateTotal(mergedObj, 'balance');
+              return list;
+            });
+            orderBook.data.grandTotal.priorBurn = orderBook.calculateTotal(grandTotalList, 'priorBurn');
+            orderBook.data.grandTotal.fromMonth = orderBook.calculateTotal(grandTotalList, 'fromMonth');
+            orderBook.data.grandTotal.totalBurn = orderBook.calculateTotal(grandTotalList, 'totalBurn');
+            orderBook.data.grandTotal.balance = orderBook.calculateTotal(grandTotalList, 'balance');
+            orderBook.clonedData = $.extend(true, [], orderBook.data);
+            if (orderBook.agreementFilter.noAgreement) {
+              orderBook.filterNoAgreement();
+            }
+            orderBook.findNoResults();
+          } else {
+            orderBook.errorMessage = response.errorObject.ResponseMsg__c;
+          }
+          orderBook.isShowLoading = false;
+        });
+      }
+
       orderBook.getTotalBurn = function () {
         orderBook.isShowLoading = true;
         var grandTotalList = [];
@@ -2979,10 +3129,15 @@
       orderBook.init = function (filterType, startDate, endDate) {
         let startEndDate = common.getMonthDateRange(orderBook.selectedYear, orderBook.months.indexOf(orderBook.selectedMonth));
         let monthStartDate = moment(startEndDate.start).format('YYYY-MM-DD');
+        // if (!filterType) {
+        //   filterType = 'Live Contracts';
+        //   startDate = monthStartDate;
+        //   endDate = moment(startEndDate.end).format('YYYY-MM-DD');
+        // }
         if (!filterType) {
-          filterType = 'Live Contracts';
-          startDate = monthStartDate;
-          endDate = moment(startEndDate.end).format('YYYY-MM-DD');
+          filterType = 'Testing';
+          startDate = orderBook.currentDate;
+          endDate = orderBook.currentDate;
         }
         orderBook.currentDateTime = moment().format("dddd, MMM Do YYYY, h:mm:ss a");
         orderBook.isShowLoading = true;
@@ -3020,7 +3175,7 @@
           filterHandler: '&',
           deleteHandler: '&',
         },
-        template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" ng-class="{\'header\': !headerCol.subColumns, \'crm-table-col-align\': (headerCol.key === \'agreementCategory\' || headerCol.key === \'agreementNumber\' || headerCol.key === \'accountName\')}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name | symbolDecode}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name | symbolDecode}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\': (data.grandTotal[col.key] && data.grandTotal[col.key][0]===\'(\')}">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\' : (account.account[col.key] && account.account[col.key][0]===\'(\'), \'crm-agreement-name\': col.key === \'agreementName\'}" ng-repeat="col in rows track by $index"><div class="txt-ellipsis" data-placement="right" data-toggle="tooltip" title="{{account.account[col.key] | symbolDecode}}"><collapse ng-if="col.key === \'accountName\'" index="$parent.$parent.$parent.$index"></collapse>{{account.account[col.key] | symbolDecode}}</div></td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\', \'crm-date-align\': (col.key === \'agreementEndDate\' || col.key === \'agreementStartDate\')}" ng-if="col.key" ng-repeat="col in rows track by $index" data-placement="right" data-toggle="tooltip" title="{{agreement[col.key] | symbolDecode}}"> <div class="txt-ellipsis" ng-if="col.key === \'agreementName\'"><a ng-href="/lightning/r/Apttus__APTS_Agreement__c/{{agreement.requestData.id}}/view" target="_blank">{{agreement[col.key] | symbolDecode}}</a></div><div ng-class="{\'crm-text-error\': (agreement[col.key] && agreement[col.key][0]===\'(\')}" class="txt-ellipsis" ng-if="col.key !== \'agreementName\'">{{agreement[col.key] | symbolDecode}}</div> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\': col.key===\'agreementName\' || (oppty[col.key] && oppty[col.key][0]===\'(\'), \'crm-agreement-name\': col.key === \'agreementName\', \'crm-date-align\': (col.key === \'agreementEndDate\' || col.key === \'agreementStartDate\')}" ng-repeat="col in rows"><div class="txt-ellipsis" data-placement="right" data-toggle="tooltip" title="{{oppty[col.key] | symbolDecode}}">{{oppty[col.key] | symbolDecode}}</div></td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\', \'crm-date-align\': (col.key === \'agreementEndDate\' || col.key === \'agreementStartDate\')}" ng-repeat-end> <div ng-switch="col.key"> <div ng-switch-when="agreementCategory">{{upside[col.key].value}}</div> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\', \'crm-date-align\': (col.key === \'agreementEndDate\' || col.key === \'agreementStartDate\')}"> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
+        template: '<table class="table table-cxo"> <thead> <tr><th ng-repeat="headerCol in columns" colspan="{{headerCol.subColumns ? headerCol.subColumns.length : 0}}" ng-class="{\'header\': !headerCol.subColumns, \'crm-table-col-align\': (headerCol.key === \'agreementCategory\' || headerCol.key === \'agreementNumber\' || headerCol.key === \'accountName\')}" rowspan="{{headerCol.subColumns ? 1 : 2}}">{{headerCol.name | symbolDecode}}</th> </tr><tr ng-if="subColumns.length > 0"><th ng-data="{{subHeaderCol}}" ng-repeat="subHeaderCol in subColumns">{{subHeaderCol.name | symbolDecode}}</th> </tr></thead> <tbody ng-if="type !==\'fixed\' && (!data || data.mainAccList.length===0 || showNoResults)"> <tr> <td>No results found</td></tr></tbody> <tbody ng-if="data && data.mainAccList.length > 0 && !showNoResults"> <tr class="table-crm-grand-bg"><td ng-if="col.key" ng-repeat="col in rows track by $index" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'priorBurn\' || col.key === \'fromMonth\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\': (data.grandTotal[col.key] && data.grandTotal[col.key][0]===\'(\')}">{{data.grandTotal[col.key]}}</td></tr><tr class="table-crm-bg" ng-if="account  && !(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)" ng-repeat-start="account in data.mainAccList track by $index"><td ng-if="col.key" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'priorBurn\' || col.key === \'fromMonth\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\' : (account.account[col.key] && account.account[col.key][0]===\'(\'), \'crm-agreement-name\': col.key === \'agreementName\'}" ng-repeat="col in rows track by $index"><div class="txt-ellipsis" data-placement="right" data-toggle="tooltip" title="{{account.account[col.key] | symbolDecode}}"><collapse ng-if="col.key === \'accountName\'" index="$parent.$parent.$parent.$index"></collapse>{{account.account[col.key] | symbolDecode}}</div></td></tr><tr ng-if="agreement" ng-repeat="agreement in account.agreement track by $index"> <td ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'priorBurn\' || col.key === \'fromMonth\' || col.key === \'totalAgreement\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\', \'crm-date-align\': (col.key === \'agreementEndDate\' || col.key === \'agreementStartDate\')}" ng-if="col.key" ng-repeat="col in rows track by $index" data-placement="right" data-toggle="tooltip" title="{{agreement[col.key] | symbolDecode}}"> <div class="txt-ellipsis" ng-if="col.key === \'agreementName\'"><a ng-href="/lightning/r/Apttus__APTS_Agreement__c/{{agreement.requestData.id}}/view" target="_blank">{{agreement[col.key] | symbolDecode}}</a></div><div ng-class="{\'crm-text-error\': (agreement[col.key] && agreement[col.key][0]===\'(\')}" class="txt-ellipsis" ng-if="col.key !== \'agreementName\'">{{agreement[col.key] | symbolDecode}}</div> </td></tr><tr ng-if="oppty" ng-repeat="oppty in account.oppty track by $index"> <td ng-if="col.key" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'priorBurn\' || col.key === \'fromMonth\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-text-error\': col.key===\'agreementName\' || (oppty[col.key] && oppty[col.key][0]===\'(\'), \'crm-agreement-name\': col.key === \'agreementName\', \'crm-date-align\': (col.key === \'agreementEndDate\' || col.key === \'agreementStartDate\')}" ng-repeat="col in rows"><div class="txt-ellipsis" data-placement="right" data-toggle="tooltip" title="{{oppty[col.key] | symbolDecode}}">{{oppty[col.key] | symbolDecode}}</div></td></tr><tr ng-if="upside" ng-repeat="upside in account.upside track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex:$parent.$parent.$parent.$index, type:\'upside\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'priorBurn\' || col.key === \'fromMonth\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\', \'crm-date-align\': (col.key === \'agreementEndDate\' || col.key === \'agreementStartDate\')}" ng-repeat-end> <div ng-switch="col.key"> <div ng-switch-when="agreementCategory">{{upside[col.key].value}}</div> <div id="upside_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" ng-switch-default value="upside[col.key]" key="col.key" editable="false" category="upside[\'agreementCategory\'].value"></div></div></td></tr><tr ng-if="newRow" ng-repeat="newRow in account.newRows track by $index"> <td ng-repeat-start="col in rows" ng-if="col.key===\'accountName\'"> <a class="glyphicon glyphicon-trash crm-text-error crm-glyphicon-align" ng-click="deleteHandler({index:$parent.$parent.$parent.$parent.$index, subIndex: $parent.$parent.$parent.$index, type: \'newRows\'})"></a> </td><td ng-if="col.key && col.key !==\'accountName\'" ng-repeat-end ng-class="{\'crm-price-align\': col.key === \'signed\' || col.key === \'unSigned\' || col.key === \'renewal\' || col.key === \'upSide\' || col.key === \'totalAgreement\' || col.key === \'priorBurn\' || col.key === \'fromMonth\' || col.key === \'march\' || col.key === \'totalBurn\' || col.key === \'balance\', \'crm-agreement-name\': col.key === \'agreementName\', \'crm-date-align\': (col.key === \'agreementEndDate\' || col.key === \'agreementStartDate\')}"> <div ng-switch="col.key"> <select class="crm-select-form-control" ng-switch-when="agreementCategory" ng-model="newRow[col.key].value"> <option ng-repeat="category in newRow[col.key].data" value="{{category.value}}">{{category.label}}</option> </select> <div ng-switch-default value="newRow[col.key]" key="col.key" id="new_{{$parent.$parent.$parent.$parent.$index}}_{{$parent.$parent.$parent.$index}}_{{$parent.$parent.$index}}" editable="true" category="newRow[\'agreementCategory\'].value"></div></div></td></tr><tr ng-repeat-end ng-if="!(account.upside.length === 0 && account.agreement.length === 0 && account.oppty.length === 0)"> <td ng-if="col.key" ng-repeat="col in rows track by $index"> <a ng-if="col.key===\'accountName\'" class="crm-add-row crm-glyphicon-align" ng-click="filterHandler({index: $parent.$parent.$parent.$index})"><span class="glyphicon glyphicon-plus-sign"></span> Add Row</a> </td></tr></tbody></table>'
       };
     });
     app.directive('collapse', function ($filter) {
@@ -3112,7 +3267,6 @@
         },
         controllerAs: 'edit',
         template: '<div class="txt-ellipsis" ng-if="!edit.isEditable && !editable" data-placement="right" data-toggle="tooltip" title="{{value | symbolDecode}}">{{value | symbolDecode}}</div><a id="edit" ng-if="!edit.isEditable && !editable && (isShowField || (key === \'agreementEndDate\' || key === \'agreementStartDate\'))" class="glyphicon glyphicon-pencil crm-glyphicon-align" ng-click="edit.editHandler($event, key)"></a><input class="text_{{key}}" number-only ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key !==\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="15" /><input class="text_{{key}}" ng-change="edit.onChangeHandler()" ng-blur="edit.blurHandler()" ng-if="key===\'agreementName\' && isShowField && (edit.isEditable || editable)" type="text" ng-model="edit.value" maxlength="20" /> <div class="input-group crm-table-date-picker" ng-if="(key===\'agreementEndDate\' || key===\'agreementStartDate\') && (edit.isEditable || editable)"><input class="text_{{key}}" ng-blur="edit.blurHandler($event)" date-picker ng-change="edit.onChangeHandler($event)" type="text" ng-model="edit.value" ng-data="{{edit.value}}" readonly/><div class="input-group-addon"><span aria-hidden="true" class="glyphicon glyphicon-calendar"></span></div></div>'
-        //templateUrl: 'template1.html'
       };
     });
     app.directive('numberOnly', function ($filter) {
@@ -3233,7 +3387,7 @@
           }
           function scrollPosition(evt) {
             scrollbar.show();
-            if (top(parentEle) < top(scrollbar) && bottom(parentEle) > bottom(scrollbar)) {
+            if (top(parentEle) < top(scrollbar) && bottom(parentEle) > top(scrollbar)) {
               scrollbar.find('div').width(parentEle[0].scrollWidth);
               scrollbar.find('div').height(1);
               scrollbar.css({ left: parentEle.offsetLeft });
@@ -3257,13 +3411,18 @@
         link: function (scope, element, attr) {
           function onscroll() {
             var scroll = $(window).scrollTop();
+            var titleOffset = $('.topContSection') ? $('.topContSection').offset().top + $(".topContSection").outerHeight(true) : 0;
             var offsettest = ($(".tableContainer table tr") && $(".tableContainer table tr").offset()) ? $(".tableContainer table tr").offset().top : 0;
-            var topOffset = offsettest - $(document).scrollTop();
-            if (scroll > offsettest) {
+            //var topOffset = offsettest - $(document).scrollTop();
+            var topOffset = titleOffset - $(document).scrollTop();
+            //if (scroll > offsettest) {
+            if (scroll > titleOffset) {
+              $('.crm-title-bar').css({ "position": "relative", 'background-color': '#fff', 'z-index': 10, "top": (Math.abs(topOffset)) + "px" });
               $(".table.table-cxo").addClass("stickHeader");
               $(".tableContainer .table-cxo thead tr th").css({ "position": "relative", 'z-index': 10, "top": (Math.abs(topOffset)) + "px" });
             } else {
               $(".table.table-cxo").removeClass("stickHeader");
+              $('.crm-title-bar').removeAttr('style');
               $(".tableContainer .table-cxo thead tr th").removeAttr('style');
             }
           }
@@ -3376,6 +3535,17 @@
       orderBookFactory.getTotalBurn = function (month, year) {
         var deferred = $q.defer();
         Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuateTotalBurn', month, year, function (result, event) {
+          try {
+            deferred.resolve(result);
+          } catch (err) {
+            deferred.reject(result);
+          }
+        });
+        return deferred.promise;
+      }
+      orderBookFactory.getPriorBurn = function (month, year) {
+        var deferred = $q.defer();
+        Visualforce.remoting.Manager.invokeAction('CRM_R1_commomInterfaceforServices.calcuatePriorBurn', month, year, function (result, event) {
           try {
             deferred.resolve(result);
           } catch (err) {
