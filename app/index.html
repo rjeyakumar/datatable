@@ -1103,6 +1103,7 @@
     .crm-list-check-filter {
       display: inline-block;
       margin-top: 10px;
+      margin-bottom: 0;
     }
 
     @media (min-width: 1600px) {
@@ -1315,7 +1316,7 @@
     }
 
     .topContSection {
-      padding: 10px 10px 0;
+      padding: 10px 10px 10px;
       font-size: 12px;
       box-shadow: inset 0px 1px 4px 0px #ccdaf3;
       margin-top: 0;
@@ -1620,7 +1621,7 @@
       padding: 3px 10px;
       font-size: 12px;
       font-weight: normal;
-      margin-bottom: 15px;
+      margin-bottom: 0;
       margin-top: 15px;
     }
 
@@ -1646,8 +1647,9 @@
       color: white;
       font-size: 10px;
       background: #019089;
-      padding: 7.5px;
-      top: 1px;
+      padding: 7px;
+      top: 0;
+      height: 25px;
     }
 
     .prevNxtSec .glyphicon-triangle-left {
@@ -1843,7 +1845,7 @@
 
     .tableContainer .table tbody tr td.crm-date-align .glyphicon-pencil.crm-glyphicon-align {
       right: 0px;
-      top: -13px;
+      top: -10px;
       position: relative;
 
     }
@@ -1858,6 +1860,7 @@
     .tableContainer .table tbody tr td.crm-date-align .txt-ellipsis {
       text-align: right;
       padding-right: 15px;
+      top:5px;
     }
 
     .crm-select-form-control {
@@ -2011,31 +2014,36 @@
       float: left;
       width: 100%;
     }
-
-    @media only screen and (max-width: 1650px) {
+    .lefttableContSection {
+        width: 39%;
+      }
       .righttableContSection {
-        width: 50%;
+        width: 61%;
+      }
+    @media only screen and (min-width: 768px) and (max-width: 1650px) {
+      .righttableContSection {
+        width: 52%;
       }
       .lefttableContSection {
-        width: 50%;
+        width: 48%;
       }
     }
 
-    @media only screen and (max-width: 1400px) {
+   /* @media only screen and (max-width: 1400px) {
       .righttableContSection {
         width: 65%;
       }
       .lefttableContSection {
         width: 35%;
       }
-    }
+    }*/
 
-    @media only screen and (max-width: 1300px) {
+    @media only screen and (min-width: 768px) and (max-width: 1300px) {
       .righttableContSection {
-        width: 50%;
+        width: 52%;
       }
       .lefttableContSection {
-        width: 50%;
+        width: 48%;
       }
       .crm-agreement-name .txt-ellipsis {
         width: 225px;
