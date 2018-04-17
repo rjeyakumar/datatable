@@ -1796,25 +1796,28 @@
     }
 
     .crm-btn-cancel-save-align {
-      float: right;
+      float: left;
       display: inline-block;
-      padding-top: 5px;
     }
 
     .crm-btn-success {
       background: #019089;
-      text-transform: uppercase;
+      text-transform: capitalize;
       color: #FFF;
-      padding: 2px 15px;
-      font-size: 12px;
+      padding: 2px 8px;
+      font-size: 12px;      
+      font-weight: 400;
+      border-radius: 6px;
     }
 
     .crm-btn-cancel {
       border: 1px solid #019089;
-      text-transform: uppercase;
+      text-transform: capitalize;
       color: #019089;
-      padding: 2px 15px;
+      padding: 2px 8px;
       font-size: 12px;
+      font-weight: 400;
+      border-radius: 6px;
     }
 
     .crm-time-stamp {
@@ -1895,29 +1898,6 @@
     .crm-up-down-btn:last-child {
       margin-bottom: 12px
     }
-
-    .crm-btn-cancel-save-align {
-      float: right;
-      display: inline-block;
-      padding-top: 5px;
-    }
-
-    .crm-btn-success {
-      background: #019089;
-      text-transform: uppercase;
-      color: #FFF;
-      padding: 2px 15px;
-      font-size: 12px;
-    }
-
-    .crm-btn-cancel {
-      border: 1px solid #019089;
-      text-transform: uppercase;
-      color: #019089;
-      padding: 2px 15px;
-      font-size: 12px;
-    }
-
     .crm-btn-primary,
     .crm-btn-primary-active {
       padding: 5px 0px;
@@ -2157,12 +2137,12 @@
         </div>
         <div class="col-lg-4 col-md-4 text-center">
           <h3 class="text-uppercase crm-head-title">Book of Business as of {{orderBook.selectedMonth}} {{orderBook.selectedYear}}</h3>
+        </div>
+        <div class="col-lg-4 col-md-4 text-right crm-green-icons">
           <div class="crm-btn-cancel-save-align" ng-if="orderBook.isEdited">
             <button class="crm-btn-cancel" data-toggle="modal" data-target="#cancel-popup">Cancel</button>
             <button class="crm-btn-success" ng-click="orderBook.saveAllData()">Save</button>
           </div>
-        </div>
-        <div class="col-lg-4 col-md-4 text-right crm-green-icons">
           <span class="crm-time-stamp">As on {{orderBook.currentDateTime}}</span>
           <span class="glyphicon glyphicon-refresh" ng-click="orderBook.init()"></span>
           <span class="glyphicon glyphicon-save" ng-click="orderBook.exportToExcel()"></span>
