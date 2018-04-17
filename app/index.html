@@ -18,6 +18,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.3/chosen.min.css" rel="stylesheet"></link>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-chosen-localytics/1.8.0/angular-chosen.min.js"></script>
     <script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+    <script src="https://fastcdn.org/FileSaver.js/1.1.20151003/FileSaver.js" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
     <apex:stylesheet value="{!URLFOR($Resource.SLDS0102, 'assets/styles/salesforce-lightning-design-system-vf.css')}" />
     <!-- <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
@@ -2326,12 +2327,13 @@
       orderBook.exportToExcel = function () {
         $timeout(function () {
           let title = 'BOOK OF BUSINESS AS OF ' + orderBook.selectedMonth + ' ' + orderBook.selectedYear;
-          var exportHref = excel.tableToExcel(title.toUpperCase(), 'Order book');
-          var a = document.createElement('a');
-          a.target = '_blank';
-          a.href = exportHref;
-          a.download = 'Order Boook';
-          a.click();
+          excel.tableToExcel(title.toUpperCase(), 'Order book');
+          // var exportHref = excel.tableToExcel(title.toUpperCase(), 'Order book');
+          // var a = document.createElement('a');
+          // a.target = '_blank';
+          // a.href = exportHref;
+          // a.download = 'Order Boook';
+          // a.click();
         }, 100);
       }
       orderBook.updateConfiguration = function () {
@@ -3517,7 +3519,7 @@
             if (table2.find('thead').find('tr')[index]) {
               row += this.replaceTrTag(table2.find('thead').find('tr')[index]);
             }
-            thead += '<tr>' + row + '</tr>';
+            thead += '<tr style="background: #019089;">' + row + '</tr>';
           });
           return '<thead>' + thead + '</thead>';
         },
@@ -3525,13 +3527,16 @@
           var tbody = '';
           table1.find('tbody').find('tr').each((index, ele) => {
             let row = '';
+            let style = '';
             let isRemove = $(table1.find('tbody').find('tr')[index]).hasClass('crm-new-row');
             if (!isRemove) {
               row += this.replaceTrTag(table1.find('tbody').find('tr')[index]);
+              style += $(table1.find('tbody').find('tr')[index]).hasClass('table-crm-bg') ? "background-color: #8ED6AD": "";
+              style += $(table1.find('tbody').find('tr')[index]).hasClass('table-crm-grand-bg') ? "background-color: #77BC93" : "";
               if (table2.find('tbody').find('tr')[index]) {
                 row += this.replaceTrTag(table2.find('tbody').find('tr')[index]);
               }
-              tbody += '<tr>' + row + '</tr>';
+              tbody += '<tr style="' + style + '">' + row + '</tr>';
             }
           });
           return '<tbody>' + tbody + '</tbody>';
@@ -3561,9 +3566,12 @@
             header + body;
         },
         tableToExcel: function (title, worksheetName) {
-          var ctx = { worksheet: worksheetName, table: this.generateExcel(title) },
-            href = uri + base64(format(template, ctx));
-          return href;
+          var ctx = { worksheet: worksheetName, table: this.generateExcel(title) };
+          var fileName = 'orderBook_' + moment().format('YYYY_MM_DD') + '.xls';
+          var blob = new Blob([format(template, ctx)], { type: "application/vnd.ms-excel" })
+          window.saveAs(blob, fileName);
+          //var href = uri + base64(format(template, ctx));
+          //return href;
         }
       };
     });
