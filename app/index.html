@@ -2328,14 +2328,14 @@
       orderBook.exportToExcel = function () {
         $timeout(function () {
           let title = 'BOOK OF BUSINESS AS OF ' + orderBook.selectedMonth + ' ' + orderBook.selectedYear;
-          // excel.tableToExcel(title.toUpperCase(), 'Order book');
+          excel.tableToExcel(title.toUpperCase(), 'Order book');
           // console.log('enter');
-          var exportHref = excel.tableToExcel(title.toUpperCase(), 'Order book');
-          var a = document.createElement('a');
-          a.target = '_new';
-          a.href = exportHref;
-          a.download = 'orderBook_' + moment().format('YYYY_MM_DD') + '.xls';
-          a.click();
+          // var exportHref = excel.tableToExcel(title.toUpperCase(), 'Order book');
+          // var a = document.createElement('a');
+          // a.target = '_new';
+          // a.href = exportHref;
+          // a.download = 'orderBook_' + moment().format('YYYY_MM_DD') + '.xls';
+          // a.click();
         }, 100);
       }
       orderBook.updateConfiguration = function () {
@@ -3597,11 +3597,11 @@
         },
         tableToExcel: function (title, worksheetName) {
           var ctx = { worksheet: worksheetName, table: this.generateExcel(title) };
-          //var fileName = 'orderBook_' + moment().format('YYYY_MM_DD') + '.xls';
-          //var blob = new Blob([format(template, ctx)], { type: "application/vnd.ms-excel" })
-          //window.saveAs(blob, fileName);
-          var href = uri + base64(format(template, ctx));
-          return href;
+          var fileName = 'orderBook_' + moment().format('YYYY_MM_DD') + '.xls';
+          var blob = new Blob([format(template, ctx)], { type: "application/vnd.ms-excel" })
+          window.saveAs(blob, fileName);
+          // var href = uri + base64(format(template, ctx));
+          // return href;
         }
       };
     });
