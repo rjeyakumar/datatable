@@ -1805,7 +1805,7 @@
       text-transform: capitalize;
       color: #FFF;
       padding: 2px 8px;
-      font-size: 12px;      
+      font-size: 12px;
       font-weight: 400;
       border-radius: 6px;
     }
@@ -1898,6 +1898,7 @@
     .crm-up-down-btn:last-child {
       margin-bottom: 12px
     }
+
     .crm-btn-primary,
     .crm-btn-primary-active {
       padding: 5px 0px;
@@ -2795,11 +2796,13 @@
                 }
               });
               let mergedObj = list.oppty.concat(list.agreement).concat(list.upside);
-              grandTotalList = grandTotalList.concat(mergedObj);
               list.account.priorBurn = orderBook.calculateTotal(mergedObj, 'priorBurn');
               list.account.fromMonth = orderBook.calculateTotal(mergedObj, 'fromMonth');
               list.account.totalBurn = orderBook.calculateTotal(mergedObj, 'totalBurn');
               list.account.balance = orderBook.calculateTotal(mergedObj, 'balance');
+              if (list.account.priorBurn || list.account.fromMonth || list.account.totalBurn || list.account.balance) {
+                grandTotalList = grandTotalList.concat(mergedObj);
+              }
               return list;
             });
             orderBook.data.grandTotal.priorBurn = orderBook.calculateTotal(grandTotalList, 'priorBurn');
@@ -2810,6 +2813,7 @@
             if (orderBook.agreementFilter.noAgreement) {
               orderBook.filterNoAgreement();
             }
+            orderBook.filterRevenueData();
             orderBook.findNoResults();
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
@@ -2881,10 +2885,12 @@
                 }
               });
               let mergedObj = list.oppty.concat(list.agreement).concat(list.upside);
-              grandTotalList = grandTotalList.concat(mergedObj);
               list.account.march = orderBook.calculateTotal(mergedObj, 'march');
               list.account.totalBurn = orderBook.calculateTotal(mergedObj, 'totalBurn');
               list.account.balance = orderBook.calculateTotal(mergedObj, 'balance');
+              if (list.account.march || list.account.totalBurn || list.account.balance) {
+                grandTotalList = grandTotalList.concat(mergedObj);
+              }
               return list;
             });
             orderBook.data.grandTotal.march = orderBook.calculateTotal(grandTotalList, 'march');
@@ -2894,6 +2900,7 @@
             if (orderBook.agreementFilter.noAgreement) {
               orderBook.filterNoAgreement();
             }
+            orderBook.filterRevenueData();
             orderBook.findNoResults();
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
@@ -2906,7 +2913,6 @@
         let headerObj = {};
         let mainAccList = orderBook.data.mainAccList.map(list => {
           let mergeDataObj = list.agreement.concat(list.upside).concat(list.oppty);
-          grandTotalList = grandTotalList.concat(mergeDataObj);
           list.account = {
             ...list.account,
             signed: orderBook.calculateTotal(mergeDataObj, 'signed'),
@@ -2917,6 +2923,9 @@
             march: orderBook.calculateTotal(mergeDataObj, 'march'),
             totalBurn: orderBook.calculateTotal(mergeDataObj, 'totalBurn'),
             balance: orderBook.calculateTotal(mergeDataObj, 'balance'),
+          }
+          if (list.account.signed || list.account.unSigned || list.account.renewal || list.account.upSide || list.account.totalAgreement) {
+            grandTotalList = grandTotalList.concat(mergeDataObj);
           }
           return list;
         });
@@ -3043,12 +3052,14 @@
             return obj;
           });
           let mergeDataObj = agreementList.concat(upsideList);
-          grandTotalList = grandTotalList.concat(mergeDataObj);
           headerObj.signed = orderBook.calculateTotal(mergeDataObj, 'signed');
           headerObj.unSigned = orderBook.calculateTotal(mergeDataObj, 'unSigned');
           headerObj.renewal = orderBook.calculateTotal(mergeDataObj, 'renewal');
           headerObj.upSide = orderBook.calculateTotal(mergeDataObj, 'upSide');
           headerObj.totalAgreement = orderBook.calculateTotal(mergeDataObj, 'totalAgreement');
+          if (headerObj.signed || headerObj.unSigned || headerObj.renewal || headerObj.upSide || headerObj.totalAgreement) {
+            grandTotalList = grandTotalList.concat(mergeDataObj);
+          }
           obj.agreement = agreementList;
           obj.upside = upsideList;
           obj.account = headerObj;
@@ -3068,6 +3079,22 @@
           mainAccList,
           agreementCategory: data.obookAgmtpList,
         }
+      }
+      orderBook.filterRevenueData = function () {
+        console.log(orderBook.data.mainAccList, 'before changes');
+        orderBook.data.mainAccList = orderBook.data.mainAccList.filter(list =>
+          list.account.priorBurn ||
+          list.account.balance ||
+          list.account.fromMonth ||
+          list.account.renewal ||
+          list.account.signed ||
+          list.account.totalAgreement ||
+          list.account.march ||
+          list.account.totalBurn ||
+          list.account.unSigned ||
+          list.account.upSide
+        );
+        console.log(orderBook.data.mainAccList, 'after changes');
       }
       orderBook.saveAllData = function () {
         let requestData = [];
@@ -3142,7 +3169,6 @@
         orderBook.isEdited = false;
         orderBookApi.getOrderBookData(filterType, startDate, endDate, monthStartDate).then(function (response) {
           if (response.responseCode === 200) {
-            console.log(response.responseObject);
             orderBook.data = orderBook.dataMapping(response.responseObject);
             orderBook.updateConfiguration();
           } else {
@@ -3511,7 +3537,7 @@
             let isRemove = $(table1.find('tbody').find('tr')[index]).hasClass('crm-new-row');
             if (!isRemove) {
               row += this.replaceTrTag(table1.find('tbody').find('tr')[index]);
-              style += $(table1.find('tbody').find('tr')[index]).hasClass('table-crm-bg') ? "background-color: #8ED6AD": "";
+              style += $(table1.find('tbody').find('tr')[index]).hasClass('table-crm-bg') ? "background-color: #8ED6AD" : "";
               style += $(table1.find('tbody').find('tr')[index]).hasClass('table-crm-grand-bg') ? "background-color: #77BC93" : "";
               if (table2.find('tbody').find('tr')[index]) {
                 row += this.replaceTrTag(table2.find('tbody').find('tr')[index]);
