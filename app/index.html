@@ -1475,13 +1475,10 @@
 
     .righttableContSection table.table-cxo.table {
       margin-left: 0;
-      /* table-layout: fixed; */
       display: table-cell;
       width: auto !important;
       border-color: #627ea58f;
       border: 0;
-      position: relative;
-      top: 0.5px;
     }
 
     .tableContainer .righttableContSection .table tbody tr td:first-child,
@@ -1574,12 +1571,14 @@
     }
 
     .crm-date-picker {
-      width: 140px;
+      width: 150px;
       margin: 5px 15px 5px 5px;
     }
 
     .crm-date-picker .date-picker {
       height: 25px;
+      border: #ccc 1px solid;
+      border-radius: 3px;
     }
 
     .crm-date-picker .input-group-addon {
@@ -1641,7 +1640,7 @@
       font-weight: 700;
       top: 10px;
       position: relative;
-      display: block;
+      display: inline-block;
     }
 
     .prevNxtSec {
@@ -1675,16 +1674,10 @@
     }
 
     .crm-collapse-expand {
-      border: 1px solid #019089;
-      border-radius: 50%;
       padding: 2px 2px 3px 3px !important;
       margin-right: 5px;
       cursor: pointer;
       background: transparent;
-    }
-
-    .crm-collapse-expand:hover {
-      background: #77BC93
     }
 
     .table-crm-bg td .txt-ellipsis {
@@ -1851,7 +1844,7 @@
 
     .tableContainer .table tbody tr td.crm-date-align .glyphicon-pencil.crm-glyphicon-align {
       right: 0px;
-      top: -10px;
+      top: -9px;
       position: relative;
 
     }
@@ -1865,7 +1858,7 @@
 
     .tableContainer .table tbody tr td.crm-date-align .txt-ellipsis {
       text-align: right;
-      padding-right: 15px;
+      padding-right: 8px;
       top: 5px;
     }
 
@@ -2055,7 +2048,7 @@
         width: 48%;
       }
       .crm-agreement-name .txt-ellipsis {
-        width: 225px;
+        width: 170px;
         text-align: left;
       }
       .prevNxtSec .glyphicon-triangle-left,
