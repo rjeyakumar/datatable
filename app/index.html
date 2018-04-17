@@ -1582,8 +1582,8 @@
       border: #ccc 1px solid;
       border-radius: 3px;
       width: 100px;
-    	text-align: right;
-    	padding-right: 25px;
+      text-align: right;
+      padding-right: 25px;
       cursor: pointer;
     }
 
@@ -1601,7 +1601,11 @@
       margin-right: -10px;
       display: inline;
     }
-    .crm-table-date-picker input{text-align: right; padding-right: 17px}
+
+    .crm-table-date-picker input {
+      text-align: right;
+      padding-right: 17px
+    }
 
     .crm-table-date-picker .input-group-addon {
       right: 10px;
@@ -2011,8 +2015,15 @@
       width: 62%;
     }
 
-.datepicker-days .table-condensed td.active {background-color: #019089;color: #fff}
-.datepicker-days .table-condensed td:hover{cursor: pointer;}
+    .datepicker-days .table-condensed td.active {
+      background-color: #019089;
+      color: #fff
+    }
+
+    .datepicker-days .table-condensed td:hover {
+      cursor: pointer;
+    }
+
     @media only screen and (min-width: 768px) and (max-width: 1650px) {
       .righttableContSection {
         width: 52%;
@@ -2317,13 +2328,14 @@
       orderBook.exportToExcel = function () {
         $timeout(function () {
           let title = 'BOOK OF BUSINESS AS OF ' + orderBook.selectedMonth + ' ' + orderBook.selectedYear;
-          excel.tableToExcel(title.toUpperCase(), 'Order book');
-          // var exportHref = excel.tableToExcel(title.toUpperCase(), 'Order book');
-          // var a = document.createElement('a');
-          // a.target = '_blank';
-          // a.href = exportHref;
-          // a.download = 'Order Boook';
-          // a.click();
+          // excel.tableToExcel(title.toUpperCase(), 'Order book');
+          // console.log('enter');
+          var exportHref = excel.tableToExcel(title.toUpperCase(), 'Order book');
+          var a = document.createElement('a');
+          a.target = '_new';
+          a.href = exportHref;
+          a.download = 'orderBook_' + moment().format('YYYY_MM_DD') + '.xls';
+          a.click();
         }, 100);
       }
       orderBook.updateConfiguration = function () {
@@ -2737,7 +2749,7 @@
         }
       }
       orderBook.getPriorBurn = function () {
-        orderBook.isShowLoading = true;
+        // orderBook.isShowLoading = true;
         var grandTotalList = [];
         orderBookApi.getPriorBurn(orderBook.selectedMonth, orderBook.selectedYear).then(function (response) {
           if (response.responseCode === 200) {
@@ -2827,12 +2839,12 @@
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
           }
-          orderBook.isShowLoading = false;
+          // orderBook.isShowLoading = false;
         });
       }
 
       orderBook.getTotalBurn = function () {
-        orderBook.isShowLoading = true;
+        // orderBook.isShowLoading = true;
         var grandTotalList = [];
         orderBookApi.getTotalBurn(orderBook.selectedMonth, orderBook.selectedYear).then(function (response) {
           if (response.responseCode === 200) {
@@ -2914,7 +2926,7 @@
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
           }
-          orderBook.isShowLoading = false;
+          // orderBook.isShowLoading = false;
         });
       }
       orderBook.getTotal = function () {
@@ -3175,6 +3187,9 @@
         }
         orderBook.currentDateTime = moment().format("dddd, MMM Do YYYY, h:mm:ss a");
         orderBook.isShowLoading = true;
+        $timeout(() => {
+          orderBook.isShowLoading = false;
+        }, 20000);
         orderBook.isEdited = false;
         orderBookApi.getOrderBookData(filterType, startDate, endDate, monthStartDate).then(function (response) {
           if (response.responseCode === 200) {
@@ -3183,7 +3198,7 @@
           } else {
             orderBook.errorMessage = response.errorObject.ResponseMsg__c;
           }
-          orderBook.isShowLoading = false;
+          // orderBook.isShowLoading = false;
         });
       }
       orderBook.init();
@@ -3582,11 +3597,11 @@
         },
         tableToExcel: function (title, worksheetName) {
           var ctx = { worksheet: worksheetName, table: this.generateExcel(title) };
-          var fileName = 'orderBook_' + moment().format('YYYY_MM_DD') + '.xls';
-          var blob = new Blob([format(template, ctx)], { type: "application/vnd.ms-excel" })
-          window.saveAs(blob, fileName);
-          //var href = uri + base64(format(template, ctx));
-          //return href;
+          //var fileName = 'orderBook_' + moment().format('YYYY_MM_DD') + '.xls';
+          //var blob = new Blob([format(template, ctx)], { type: "application/vnd.ms-excel" })
+          //window.saveAs(blob, fileName);
+          var href = uri + base64(format(template, ctx));
+          return href;
         }
       };
     });
