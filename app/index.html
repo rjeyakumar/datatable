@@ -1573,14 +1573,18 @@
     }
 
     .crm-date-picker {
-      width: 150px;
-      margin: 5px 15px 5px 5px;
+      width: 125px;
+      margin: 5px -5px 5px 5px;
     }
 
     .crm-date-picker .date-picker {
       height: 25px;
       border: #ccc 1px solid;
       border-radius: 3px;
+      width: 100px;
+    	text-align: right;
+    	padding-right: 25px;
+      cursor: pointer;
     }
 
     .crm-date-picker .input-group-addon {
@@ -1594,12 +1598,13 @@
     .crm-table-date-picker {
       width: 95px;
       margin-left: 5px;
-      margin-right: 5px;
+      margin-right: -10px;
       display: inline;
     }
+    .crm-table-date-picker input{text-align: right; padding-right: 17px}
 
     .crm-table-date-picker .input-group-addon {
-      right: 14px;
+      right: 10px;
       position: absolute;
       z-index: 9;
       pointer-events: none;
@@ -1809,10 +1814,11 @@
       font-size: 12px;
       font-weight: 400;
       border-radius: 6px;
+      border-color: #019089;
     }
 
     .crm-btn-cancel {
-      border: 1px solid #019089;
+      border: 1px solid rgb(216, 221, 230);
       text-transform: capitalize;
       color: #019089;
       padding: 2px 8px;
@@ -2005,6 +2011,8 @@
       width: 62%;
     }
 
+.datepicker-days .table-condensed td.active {background-color: #019089;color: #fff}
+.datepicker-days .table-condensed td:hover{cursor: pointer;}
     @media only screen and (min-width: 768px) and (max-width: 1650px) {
       .righttableContSection {
         width: 52%;
